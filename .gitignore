@@ -1,0 +1,9 @@
+bin/
+target/
+*.bak
+*.log
+*.class
+*.~*
+.classpath
+.project
+.settings/
