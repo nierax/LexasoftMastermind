@@ -15,10 +15,22 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>5.7.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
 				<groupId>de.lexasoft</groupId>
 				<artifactId>ls-games</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+				<groupId>de.lexasoft.commons</groupId>
+				<artifactId>ls-commons</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 </project>
