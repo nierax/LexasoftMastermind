@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents one line of pins, both as question and answer.
+ * Represents one line of pins for question.
  * 
  * @author Axel
  */
