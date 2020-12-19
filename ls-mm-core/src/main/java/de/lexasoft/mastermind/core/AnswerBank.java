@@ -32,7 +32,7 @@ public class AnswerBank {
   /**
    * @return Get all pins in the bank.
    */
-  public List<Pin> getPins() {
+  List<Pin> getPins() {
     return pins;
   }
 
