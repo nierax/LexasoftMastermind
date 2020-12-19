@@ -1,6 +1,7 @@
 package de.lexasoft.mastermind.core;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +12,12 @@ import org.junit.jupiter.api.Test;
  * @author Axel
  */
 public class PinTest {
-	
+
 	private Pin cut;
-	
+
 	@BeforeEach
 	void prepare() {
-		cut = new Pin(5);
+		cut = new Pin(6);
 	}
 
 	/**
