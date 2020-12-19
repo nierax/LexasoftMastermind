@@ -3,12 +3,15 @@
  */
 package de.lexasoft.mastermind.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * This bank is used for questions about the color combination to guess.
+ * Represents one line of pins, both as question and answer.
  * 
  * @author Axel
  */
-public class QuestionBank extends AbstractBank {
+public class QuestionBank {
 
   /**
    * Minimum number of pins.
@@ -20,22 +23,41 @@ public class QuestionBank extends AbstractBank {
    */
   public static final int MINIMUM_NUMBER_OF_COLORS = 6;
 
+  private List<Pin> pins;
+
   /**
-   * @param nrOfPins
-   * @param nrOfColors
+   * Creates a bank of pins with the given number of pins, each with a range of
+   * the given number of colors.
+   * 
+   * @param nrOfPins   Number of pins in the bank.
+   * @param nrOfColors Range of colors, every pin can represent.
    */
   public QuestionBank(Integer nrOfPins, Integer nrOfColors) {
-    super(nrOfPins, nrOfColors);
+    if (nrOfPins < MINIMUM_NUMBER_OF_PINS) {
+      throw new IllegalArgumentException(String.format("Minimum number of pins is %s ", MINIMUM_NUMBER_OF_PINS));
+    }
+    if (nrOfColors < MINIMUM_NUMBER_OF_COLORS) {
+      throw new IllegalArgumentException(String.format("Minimum number of colors is %s ", MINIMUM_NUMBER_OF_COLORS));
+    }
+    pins = new ArrayList<>();
+    for (int i = 0; i < nrOfPins; i++) {
+      pins.add(new Pin(nrOfColors));
+    }
   }
 
-  @Override
-  protected Integer getMinimumNrOfPins() {
-    return MINIMUM_NUMBER_OF_PINS;
+  /**
+   * @return List of the pins in the bank.
+   */
+  public List<Pin> getPins() {
+    return pins;
   }
 
-  @Override
-  protected Integer getMinimumNrOfColors() {
-    return MINIMUM_NUMBER_OF_COLORS;
+  /**
+   * @param position
+   * @return Pin at the given position
+   */
+  public Pin getPin(int position) {
+    return pins.get(position);
   }
 
 }

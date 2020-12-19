@@ -18,17 +18,14 @@ import org.junit.jupiter.api.Test;
 class AnswerBankConstructorTest {
 
   /**
-   * Tests, whether the bank and the pins in it are initialized correctly after
-   * constructor.
+   * Tests, whether the bank is initialized correctly after constructor. The list
+   * must be initially empty.
    */
   @Test
   void testConstructorOk() {
     AnswerBank cut = new AnswerBank(4);
     List<Pin> pins = cut.getPins();
-    assertEquals(4, pins.size());
-    for (Pin pin : pins) {
-      assertEquals(2, pin.getNrOfColors());
-    }
+    assertEquals(0, pins.size());
   }
 
   /**

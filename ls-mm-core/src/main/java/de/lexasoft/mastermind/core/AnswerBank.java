@@ -3,12 +3,17 @@
  */
 package de.lexasoft.mastermind.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents the bank for answers with only white and black pins.
  * 
  * @author Axel
  */
-public class AnswerBank extends AbstractBank {
+public class AnswerBank {
+
+  private List<Pin> pins;
 
   /**
    * Creates the answer bank with the given number of pins. The number of colors
@@ -17,17 +22,39 @@ public class AnswerBank extends AbstractBank {
    * @param nrOfPins
    */
   public AnswerBank(Integer nrOfPins) {
-    super(nrOfPins, 2);
+    if (nrOfPins < QuestionBank.MINIMUM_NUMBER_OF_PINS) {
+      throw new IllegalArgumentException(String.format("Number of Pins was %s, but must be at least %s.", nrOfPins,
+          QuestionBank.MINIMUM_NUMBER_OF_PINS));
+    }
+    pins = new ArrayList<>();
   }
 
-  @Override
-  protected Integer getMinimumNrOfPins() {
-    return QuestionBank.MINIMUM_NUMBER_OF_PINS;
+  /**
+   * @return Get all pins in the bank.
+   */
+  public List<Pin> getPins() {
+    return pins;
   }
 
-  @Override
-  protected Integer getMinimumNrOfColors() {
-    return 2;
+  /**
+   * Copies all pins in the given list to it's own list. The original list is not
+   * reused.
+   * 
+   * @param pins The pins to get.
+   */
+  public void setPins(List<Pin> pins) {
+    for (Pin pin : pins) {
+      addPin(pin);
+    }
+  }
+
+  /**
+   * Adds the given pin to the bank.
+   * 
+   * @param pin Pin to be added.
+   */
+  public void addPin(Pin pin) {
+    this.pins.add(pin);
   }
 
 }
