@@ -75,4 +75,34 @@ public class QuestionBank {
     return pins.get(position);
   }
 
+  /**
+   * @param solution The bank to compare with
+   * @return Nr of black hits between these two banks.
+   */
+  private int countBlackHits(QuestionBank solution) {
+    int blackHits = 0;
+    for (int i = 0; i < pins.size(); i++) {
+      // Hits at the same position
+      if (getPin(i).getValue().equals(solution.getPin(i).getValue())) {
+        blackHits++;
+        // Must not be counted again.
+        getPin(i).setCounted();
+      }
+    }
+    return blackHits;
+  }
+
+  /**
+   * Compares this bank to the solution.
+   * 
+   * @param solution The bank with the solution, given to guess.
+   * @return The answer bank with the number of white and black pins
+   */
+  public AnswerBank answer(QuestionBank solution) {
+    AnswerBank answer = new AnswerBank(this.pins.size());
+    // Count black hits. Must be done first.
+    answer.addBlackPins(countBlackHits(solution));
+    return answer;
+  }
+
 }
