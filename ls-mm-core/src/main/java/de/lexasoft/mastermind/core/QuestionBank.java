@@ -52,6 +52,21 @@ public class QuestionBank {
     return pins;
   }
 
+  void setPinValue(int position, Integer value) {
+    getPin(position).setValue(value);
+  }
+
+  /**
+   * Sets the values of the pins to the entries in the given list.
+   * 
+   * @param pinValues The values of the pins.
+   */
+  void setPinValues(List<Integer> pinValues) {
+    for (int i = 0; i < pinValues.size(); i++) {
+      setPinValue(i, pinValues.get(i));
+    }
+  }
+
   /**
    * @param position
    * @return Pin at the given position
