@@ -1,6 +1,6 @@
 package de.lexasoft.mastermind.core;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,11 @@ class QuestionBankAnswerTest {
    * @return Arguments for test method testAnswerForBank
    */
   private static Stream<Arguments> provideTestCases() {
-    return Stream.of(Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 0, 1, 2, 3, }, 4, 0));
+    return Stream.of(Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 0, 1, 2, 3, }, 4, 0),
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 4, 4, 5, 5 }, 0, 0),
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 4, 2, 3, 5 }, 0, 2),
+        Arguments.of(new int[] { 4, 1, 2, 3 }, new int[] { 4, 1, 3, 5 }, 2, 1),
+        Arguments.of(new int[] { 1, 2, 2, 3 }, new int[] { 2, 1, 2, 4 }, 1, 2));
   }
 
   @ParameterizedTest
@@ -50,7 +54,11 @@ class QuestionBankAnswerTest {
   void testAnswerForBank(int[] question, int[] solution, int expectedBlack, int expectedWhite) {
     this.question.setPinValues(createListFromArray(question));
     this.solution.setPinValues(createListFromArray(solution));
-    fail("Not yet implemented");
+    // Test
+    AnswerBank answer = this.question.answer(this.solution);
+
+    assertEquals(expectedBlack, answer.getNrOfBlackPins());
+    assertEquals(expectedWhite, answer.getNrOfWhitePins());
   }
 
 }

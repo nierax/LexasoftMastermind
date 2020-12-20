@@ -86,10 +86,29 @@ public class QuestionBank {
       if (getPin(i).getValue().equals(solution.getPin(i).getValue())) {
         blackHits++;
         // Must not be counted again.
-        getPin(i).setCounted();
+        solution.getPin(i).setCounted();
       }
     }
+    System.out.println("Found black hits: " + blackHits);
     return blackHits;
+  }
+
+  private int countWhiteHits(QuestionBank solution) {
+    int whiteHits = 0;
+    for (int i = 0; i < pins.size(); i++) {
+      for (int j = 0; j < solution.getPins().size(); j++) {
+        // Same index would be black and must not be counted
+        if (i != j) {
+          if (getPin(i).getValue().equals(solution.getPin(j).getValue())) {
+            whiteHits++;
+            // Must not be counted again.
+            solution.getPin(i).setCounted();
+          }
+        }
+      }
+    }
+    System.out.println("Found white hits: " + whiteHits);
+    return whiteHits;
   }
 
   /**
@@ -102,6 +121,8 @@ public class QuestionBank {
     AnswerBank answer = new AnswerBank(this.pins.size());
     // Count black hits. Must be done first.
     answer.addBlackPins(countBlackHits(solution));
+    // White hits second
+    answer.addWhitePins(countWhiteHits(solution));
     return answer;
   }
 
