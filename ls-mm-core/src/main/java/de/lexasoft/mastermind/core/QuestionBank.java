@@ -126,7 +126,7 @@ public class QuestionBank {
         for (int j = 0; j < solution.getPins().size(); j++) {
           Pin solutionPin = solution.getPin(j);
           // Same index would be black and must not be counted
-          // If the solution pin was counted before, we must count this one
+          // If the solution pin was counted before, we must not count this one
           if ((i != j) && !solutionPin.isCounted()) {
             if (solutionPin.comparePin(myPin)) {
               // One more hit

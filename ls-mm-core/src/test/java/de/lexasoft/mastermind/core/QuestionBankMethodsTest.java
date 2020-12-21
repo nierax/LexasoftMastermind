@@ -59,7 +59,9 @@ class QuestionBankMethodsTest {
         Arguments.of(new int[] { 1, 1, 2, 3 }, new int[] { 1, 1, 2, 3 }, 4, 0),
         Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 0, 1, 2, 4 }, 3, 0),
         Arguments.of(new int[] { 0, 1, 1, 2 }, new int[] { 0, 3, 0, 4 }, 1, 0),
-        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 4, 4, 4, 2 }, 0, 1));
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 4, 4, 4, 2 }, 0, 1),
+        Arguments.of(new int[] { 0, 1, 1, 1 }, new int[] { 4, 0, 4, 4 }, 0, 1),
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 3, 2, 1, 0 }, 0, 4));
   }
 
   @ParameterizedTest
