@@ -47,7 +47,7 @@ public class Pin extends Value<Integer> {
   /**
    * Compares its own value against the value of the other pin.
    * <p>
-   * Pin is being marked as counted, so it won't be counted again.
+   * The own instance is being marked as counted, so it won't be counted again.
    * 
    * @param otherPin The pin to compare with.
    * @return True, if pins have the same value and this pin was not answered

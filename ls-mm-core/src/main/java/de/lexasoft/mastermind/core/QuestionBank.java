@@ -76,33 +76,67 @@ public class QuestionBank {
   }
 
   /**
+   * Sets all pins counted.
+   */
+  void setAllPinsCounted() {
+    for (Pin pin : pins) {
+      pin.setCounted();
+    }
+  }
+
+  /**
+   * Reset all pins counted.
+   */
+  void resetAllPinsCounted() {
+    for (Pin pin : pins) {
+      pin.resetCounted();
+    }
+  }
+
+  /**
    * @param solution The bank to compare with
-   * @return Nr of black hits between these two banks.
+   * @return Number of black hits between these two banks.
    */
   private int countBlackHits(QuestionBank solution) {
     int blackHits = 0;
     for (int i = 0; i < pins.size(); i++) {
+      Pin myPin = getPin(i);
+      Pin solutionPin = solution.getPin(i);
       // Hits at the same position
-      if (getPin(i).getValue().equals(solution.getPin(i).getValue())) {
+      if (solutionPin.comparePin(myPin)) {
         blackHits++;
-        // Must not be counted again.
-        solution.getPin(i).setCounted();
+        solutionPin.setCounted();
+        myPin.setCounted();
       }
     }
     System.out.println("Found black hits: " + blackHits);
     return blackHits;
   }
 
+  /**
+   * @param solution The bank to compare with
+   * @return Number of white hits between these two banks.
+   */
   private int countWhiteHits(QuestionBank solution) {
     int whiteHits = 0;
     for (int i = 0; i < pins.size(); i++) {
-      for (int j = 0; j < solution.getPins().size(); j++) {
-        // Same index would be black and must not be counted
-        if (i != j) {
-          if (getPin(i).getValue().equals(solution.getPin(j).getValue())) {
-            whiteHits++;
-            // Must not be counted again.
-            solution.getPin(i).setCounted();
+      Pin myPin = getPin(i);
+      // If the pin had a black hit before, it must not be counted again.
+      if (!myPin.isCounted()) {
+        for (int j = 0; j < solution.getPins().size(); j++) {
+          Pin solutionPin = solution.getPin(j);
+          // Same index would be black and must not be counted
+          // If the solution pin was counted before, we must count this one
+          if ((i != j) && !solutionPin.isCounted()) {
+            if (solutionPin.comparePin(myPin)) {
+              // One more hit
+              whiteHits++;
+              // Mark solution as counted
+              solutionPin.setCounted();
+              // Just count once. Because we break here, it is not necessary to set this pin
+              // as counted.
+              break;
+            }
           }
         }
       }
@@ -123,6 +157,9 @@ public class QuestionBank {
     answer.addBlackPins(countBlackHits(solution));
     // White hits second
     answer.addWhitePins(countWhiteHits(solution));
+    // Solution must be ready for the next answer.
+    solution.resetAllPinsCounted();
+    resetAllPinsCounted();
     return answer;
   }
 
