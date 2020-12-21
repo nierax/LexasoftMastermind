@@ -91,31 +91,4 @@ public class PinTest {
     assertFalse(cut.comparePin(otherPin), "Pins have different values. Must be false");
   }
 
-  /**
-   * Other pin has same value. True expected. Pin must be marked as counted.
-   * Second check for same value must be false.
-   */
-  @Test
-  void testAnswerPinEqual() {
-    cut.setValue(3);
-    Pin otherPin = new Pin(6);
-    otherPin.setValue(3);
-    assertTrue(cut.answerPin(otherPin), "Both pins have same value. Must be true");
-    assertTrue(cut.isCounted(), "Hit, pin must be marked as counted");
-    assertFalse(cut.answerPin(otherPin), "Pin is marked as counted, must be unequal now.");
-  }
-
-  /**
-   * Other pin has different value. False expected. Pin must be marked as not
-   * counted.
-   */
-  @Test
-  void testAnswerPinNotEqual() {
-    cut.setValue(3);
-    Pin otherPin = new Pin(6);
-    otherPin.setValue(5);
-    assertFalse(cut.answerPin(otherPin), "Pins have different values. Must be false");
-    assertFalse(cut.isCounted(), "No hit, pin is not counted.");
-  }
-
 }
