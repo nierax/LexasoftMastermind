@@ -14,7 +14,7 @@ import java.util.List;
 public class AnswerBank {
 
   private List<Pin> pins;
-  private int nrOfPins;
+  private NrOfPins nrOfPins;
 
   static final int WHITE_VALUE = 1;
   static final int BLACK_VALUE = 0;
@@ -43,11 +43,7 @@ public class AnswerBank {
    * 
    * @param nrOfPins
    */
-  public AnswerBank(Integer nrOfPins) {
-    if (nrOfPins < QuestionBank.MINIMUM_NUMBER_OF_PINS) {
-      throw new IllegalArgumentException(String.format("Number of Pins was %s, but must be at least %s.", nrOfPins,
-          QuestionBank.MINIMUM_NUMBER_OF_PINS));
-    }
+  public AnswerBank(NrOfPins nrOfPins) {
     this.nrOfPins = nrOfPins;
     this.pins = new ArrayList<>();
   }
@@ -60,7 +56,7 @@ public class AnswerBank {
   }
 
   private void checkPinBoundaries(int number) {
-    if (number > nrOfPins) {
+    if (number > nrOfPins.getValue()) {
       throw new IndexOutOfBoundsException(
           String.format("List with %s pins not allowed, %s maximum.", number, nrOfPins));
     }

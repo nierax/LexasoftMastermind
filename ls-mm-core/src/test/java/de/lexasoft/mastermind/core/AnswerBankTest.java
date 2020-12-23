@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class AnswerBankTest {
 
   private AnswerBank cut;
-  private static int NR_OF_PINS = 4;
+  private static final NrOfPins NR_OF_PINS = new NrOfPins(4);
 
   private List<Pin> createListOfPins(int nrOfPins) {
     List<Pin> pins = new ArrayList<>();
@@ -142,7 +142,7 @@ class AnswerBankTest {
    */
   @Test
   void testAddWhitePin_OutOfBounds() {
-    cut.addWhitePins(NR_OF_PINS);
+    cut.addWhitePins(NR_OF_PINS.getValue());
     assertThrows(IndexOutOfBoundsException.class, () -> {
       cut.addWhitePin();
     });
@@ -154,7 +154,7 @@ class AnswerBankTest {
    */
   @Test
   void testAddBlackPin_OutOfBounds() {
-    cut.addBlackPins(NR_OF_PINS);
+    cut.addBlackPins(NR_OF_PINS.getValue());
     assertThrows(IndexOutOfBoundsException.class, () -> {
       cut.addBlackPin();
     });

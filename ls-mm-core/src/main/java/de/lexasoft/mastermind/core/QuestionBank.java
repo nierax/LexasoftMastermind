@@ -25,6 +25,9 @@ public class QuestionBank {
 
   private List<Pin> pins;
 
+  private NrOfPins nrOfPins;
+  private NrOfColors nrOfColors;
+
   /**
    * Creates a bank of pins with the given number of pins, each with a range of
    * the given number of colors.
@@ -32,17 +35,21 @@ public class QuestionBank {
    * @param nrOfPins   Number of pins in the bank.
    * @param nrOfColors Range of colors, every pin can represent.
    */
-  public QuestionBank(Integer nrOfPins, Integer nrOfColors) {
-    if (nrOfPins < MINIMUM_NUMBER_OF_PINS) {
-      throw new IllegalArgumentException(String.format("Minimum number of pins is %s ", MINIMUM_NUMBER_OF_PINS));
-    }
-    if (nrOfColors < MINIMUM_NUMBER_OF_COLORS) {
-      throw new IllegalArgumentException(String.format("Minimum number of colors is %s ", MINIMUM_NUMBER_OF_COLORS));
-    }
+  public QuestionBank(NrOfPins nrOfPins, NrOfColors nrOfColors) {
+    this.nrOfColors = nrOfColors;
+    this.nrOfPins = nrOfPins;
     pins = new ArrayList<>();
-    for (int i = 0; i < nrOfPins; i++) {
-      pins.add(new Pin(nrOfColors));
+    for (int i = 0; i < nrOfPins.getValue(); i++) {
+      pins.add(new Pin(nrOfColors.getValue()));
     }
+  }
+
+  NrOfPins getNrOfPins() {
+    return nrOfPins;
+  }
+
+  NrOfColors getNrOfColors() {
+    return nrOfColors;
   }
 
   /**
@@ -152,7 +159,7 @@ public class QuestionBank {
    * @return The answer bank with the number of white and black pins
    */
   public AnswerBank answer(QuestionBank solution) {
-    AnswerBank answer = new AnswerBank(this.pins.size());
+    AnswerBank answer = new AnswerBank(getNrOfPins());
     // Count black hits. Must be done first.
     answer.addBlackPins(countBlackHits(solution));
     // White hits second
