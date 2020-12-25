@@ -14,7 +14,7 @@ import java.util.List;
 public class AnswerBank {
 
   private List<Pin> pins;
-  private NrOfPins nrOfPins;
+  private NrOfHoles nrOfHoles;
 
   static final int WHITE_VALUE = 1;
   static final int BLACK_VALUE = 0;
@@ -41,10 +41,10 @@ public class AnswerBank {
    * Creates the answer bank with the given number of pins. The number of colors
    * is set to 2, because there is only black and white.
    * 
-   * @param nrOfPins
+   * @param nrOfHoles
    */
-  public AnswerBank(NrOfPins nrOfPins) {
-    this.nrOfPins = nrOfPins;
+  public AnswerBank(NrOfHoles nrOfHoles) {
+    this.nrOfHoles = nrOfHoles;
     this.pins = new ArrayList<>();
   }
 
@@ -56,9 +56,9 @@ public class AnswerBank {
   }
 
   private void checkPinBoundaries(int number) {
-    if (number > nrOfPins.getValue()) {
+    if (number > nrOfHoles.getValue()) {
       throw new IndexOutOfBoundsException(
-          String.format("List with %s pins not allowed, %s maximum.", number, nrOfPins));
+          String.format("List with %s pins not allowed, %s maximum.", number, nrOfHoles));
     }
   }
 

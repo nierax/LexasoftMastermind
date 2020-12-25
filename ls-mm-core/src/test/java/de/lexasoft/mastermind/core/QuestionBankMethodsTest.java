@@ -26,8 +26,8 @@ class QuestionBankMethodsTest {
 
   @BeforeEach
   void prepareTestCase() {
-    question = new QuestionBank(new NrOfPins(4), new NrOfColors(6));
-    solution = new QuestionBank(new NrOfPins(4), new NrOfColors(6));
+    question = new QuestionBank(new NrOfHoles(4), new NrOfColors(6));
+    solution = new QuestionBank(new NrOfHoles(4), new NrOfColors(6));
   }
 
   /**

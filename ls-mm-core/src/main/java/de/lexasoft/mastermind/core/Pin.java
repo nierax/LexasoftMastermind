@@ -1,6 +1,6 @@
 package de.lexasoft.mastermind.core;
 
-import de.lexasoft.common.model.Range;
+import de.lexasoft.common.model.RangeValidator;
 import de.lexasoft.common.model.Value;
 
 /**
@@ -21,7 +21,7 @@ public class Pin extends Value<Integer> {
    * @param nrOfColors
    */
   public Pin(Integer nrOfColors) {
-    super(new Range<Integer>(0, nrOfColors - 1));
+    super(new RangeValidator<Integer>(0, nrOfColors - 1));
     counted = false;
   }
 
@@ -29,7 +29,7 @@ public class Pin extends Value<Integer> {
    * @return Number of colors, this pin can range.
    */
   public Integer getNrOfColors() {
-    return ((Range<Integer>) getValidator()).getMax() + 1;
+    return ((RangeValidator<Integer>) getValidator()).getMax() + 1;
   }
 
   /**

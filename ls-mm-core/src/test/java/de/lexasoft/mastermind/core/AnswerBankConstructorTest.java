@@ -23,7 +23,7 @@ class AnswerBankConstructorTest {
    */
   @Test
   void testConstructorOk() {
-    AnswerBank cut = new AnswerBank(new NrOfPins(4));
+    AnswerBank cut = new AnswerBank(new NrOfHoles(4));
     List<Pin> pins = cut.getPins();
     assertEquals(0, pins.size());
   }
@@ -35,7 +35,7 @@ class AnswerBankConstructorTest {
   @Test
   void testConstructorMinimumNrOfPins() {
     assertThrows(IllegalArgumentException.class, () -> {
-      new AnswerBank(new NrOfPins(3));
+      new AnswerBank(new NrOfHoles(3));
     });
   }
 

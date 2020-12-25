@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class AnswerBankTest {
 
   private AnswerBank cut;
-  private static final NrOfPins NR_OF_PINS = new NrOfPins(4);
+  private static final NrOfHoles NR_OF_PINS = new NrOfHoles(4);
 
   private List<Pin> createListOfPins(int nrOfPins) {
     List<Pin> pins = new ArrayList<>();

@@ -23,7 +23,7 @@ class QuestionBankConstructorTest {
    */
   @Test
   void testConstructorOk() {
-    QuestionBank cut = new QuestionBank(new NrOfPins(4), new NrOfColors(6));
+    QuestionBank cut = new QuestionBank(new NrOfHoles(4), new NrOfColors(6));
     List<Pin> pins = cut.getPins();
     assertEquals(4, pins.size());
     for (Pin pin : pins) {
@@ -38,7 +38,7 @@ class QuestionBankConstructorTest {
   @Test
   void testConstructorMinimumNrOfPins() {
     assertThrows(IllegalArgumentException.class, () -> {
-      new QuestionBank(new NrOfPins(3), new NrOfColors(6));
+      new QuestionBank(new NrOfHoles(3), new NrOfColors(6));
     });
   }
 
@@ -49,7 +49,7 @@ class QuestionBankConstructorTest {
   @Test
   void testConstructorMinimumNrOfColors() {
     assertThrows(IllegalArgumentException.class, () -> {
-      new QuestionBank(new NrOfPins(4), new NrOfColors(5));
+      new QuestionBank(new NrOfHoles(4), new NrOfColors(5));
     });
   }
 

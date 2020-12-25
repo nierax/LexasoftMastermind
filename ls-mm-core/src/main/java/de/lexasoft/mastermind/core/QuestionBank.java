@@ -25,27 +25,27 @@ public class QuestionBank {
 
   private List<Pin> pins;
 
-  private NrOfPins nrOfPins;
+  private NrOfHoles nrOfHoles;
   private NrOfColors nrOfColors;
 
   /**
    * Creates a bank of pins with the given number of pins, each with a range of
    * the given number of colors.
    * 
-   * @param nrOfPins   Number of pins in the bank.
+   * @param nrOfHoles   Number of pins in the bank.
    * @param nrOfColors Range of colors, every pin can represent.
    */
-  public QuestionBank(NrOfPins nrOfPins, NrOfColors nrOfColors) {
+  public QuestionBank(NrOfHoles nrOfHoles, NrOfColors nrOfColors) {
     this.nrOfColors = nrOfColors;
-    this.nrOfPins = nrOfPins;
+    this.nrOfHoles = nrOfHoles;
     pins = new ArrayList<>();
-    for (int i = 0; i < nrOfPins.getValue(); i++) {
+    for (int i = 0; i < nrOfHoles.getValue(); i++) {
       pins.add(new Pin(nrOfColors.getValue()));
     }
   }
 
-  NrOfPins getNrOfPins() {
-    return nrOfPins;
+  NrOfHoles getNrOfHoles() {
+    return nrOfHoles;
   }
 
   NrOfColors getNrOfColors() {
@@ -159,7 +159,7 @@ public class QuestionBank {
    * @return The answer bank with the number of white and black pins
    */
   public AnswerBank answer(QuestionBank solution) {
-    AnswerBank answer = new AnswerBank(getNrOfPins());
+    AnswerBank answer = new AnswerBank(getNrOfHoles());
     // Count black hits. Must be done first.
     answer.addBlackPins(countBlackHits(solution));
     // White hits second

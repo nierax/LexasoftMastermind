@@ -21,7 +21,7 @@ public class Move {
    * @param nrOfPins   Number of pins in the game
    * @param nrOfColors Number of colors in the game
    */
-  public Move(NrOfPins nrOfPins, NrOfColors nrOfColors) {
+  public Move(NrOfHoles nrOfPins, NrOfColors nrOfColors) {
     question = new QuestionBank(nrOfPins, nrOfColors);
     answer = new AnswerBank(nrOfPins);
   }
