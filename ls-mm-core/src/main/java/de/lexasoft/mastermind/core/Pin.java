@@ -26,6 +26,20 @@ public class Pin extends Value<Integer> {
   }
 
   /**
+   * This constructor allows to create the pin and set a value at once.
+   * <p>
+   * First of all thought to be used in test scenarios, that's why it is kept
+   * package protected.
+   * 
+   * @param nrOfColors
+   * @param value
+   */
+  Pin(Integer nrOfColors, Integer value) {
+    this(nrOfColors);
+    setValue(value);
+  }
+
+  /**
    * @return Number of colors, this pin can range.
    */
   public Integer getNrOfColors() {

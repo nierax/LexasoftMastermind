@@ -2,6 +2,7 @@ package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * 
  * @author Axel
  */
-class QuestionBankMethodsTest {
+class QuestionBankTest {
 
   private QuestionBank question;
   private QuestionBank solution;
@@ -36,10 +37,10 @@ class QuestionBankMethodsTest {
    * @param array
    * @return
    */
-  private List<Integer> createListFromArray(int[] array) {
-    List<Integer> list = new ArrayList<>();
+  private List<Pin> createListFromArray(int[] array) {
+    List<Pin> list = new ArrayList<>();
     for (int i = 0; i < array.length; i++) {
-      list.add(i, array[i]);
+      list.add(new Pin(6, array[i]));
     }
     return list;
   }
@@ -67,8 +68,8 @@ class QuestionBankMethodsTest {
   @ParameterizedTest
   @MethodSource("provideTestCases")
   void testAnswerForBank(int[] question, int[] solution, int expectedBlack, int expectedWhite) {
-    this.question.setPinValues(createListFromArray(question));
-    this.solution.setPinValues(createListFromArray(solution));
+    this.question.setPins(createListFromArray(question));
+    this.solution.setPins(createListFromArray(solution));
     // Test
     AnswerBank answer = this.question.answer(this.solution);
 
@@ -82,6 +83,46 @@ class QuestionBankMethodsTest {
     for (Pin pin : this.question.getPins()) {
       assertFalse(pin.isCounted());
     }
+  }
+
+  /**
+   * @return Parameters to run
+   *         {@link #testAnswerForBank_BanksNotFilled(int[], int[])}
+   * 
+   */
+  private static Stream<Arguments> testAnswerForBank_BanksNotFilled() {
+    return Stream.of(Arguments.of(new int[] { 0, 1, 2 }, new int[] { 0, 1, 2 }),
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 0, 1, 2 }),
+        Arguments.of(new int[] { 0, 1, 2 }, new int[] { 0, 1, 2, 3 }));
+  }
+
+  /**
+   * Test must fail, if at least one of the banks is not completely filled.
+   * 
+   * @param question
+   * @param solution
+   */
+  @ParameterizedTest
+  @MethodSource
+  void testAnswerForBank_BanksNotFilled(int[] question, int[] solution) {
+    this.question.setPins(createListFromArray(question));
+    this.solution.setPins(createListFromArray(solution));
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      this.question.answer(this.solution);
+    });
+  }
+
+  @Test
+  void testAnswerForBank_SameNumberOfHoles() {
+    // reset solution to an higher number holes.
+    solution = new QuestionBank(new NrOfHoles(5), new NrOfColors(6));
+    solution.setPins(createListFromArray(new int[] { 0, 1, 2, 3, 4 }));
+    question.setPins(createListFromArray(new int[] { 0, 1, 2, 3 }));
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      this.question.answer(this.solution);
+    });
   }
 
   /**

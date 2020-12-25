@@ -1,11 +1,8 @@
 package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,43 +17,9 @@ class AnswerBankTest {
   private AnswerBank cut;
   private static final NrOfHoles NR_OF_PINS = new NrOfHoles(4);
 
-  private List<Pin> createListOfPins(int nrOfPins) {
-    List<Pin> pins = new ArrayList<>();
-    for (int i = 0; i < nrOfPins; i++) {
-      Pin pin = new Pin(2);
-      pin.setValue(0);
-      pins.add(pin);
-    }
-    return pins;
-  }
-
   @BeforeEach
   void prepareTestCase() {
     cut = new AnswerBank(NR_OF_PINS);
-  }
-
-  /**
-   * Tests, whether the setPins() method does not reuse the given list, but has
-   * it's own list.
-   */
-  @Test
-  void testSetPinsOk() {
-    List<Pin> source = createListOfPins(4);
-    cut.setPins(source);
-    assertNotSame(source, cut.getPins());
-  }
-
-  /**
-   * Tests, whether the setPins() method does not accept a list with more elements
-   * in it, than the bank is allowed to have. In this case an
-   * IndexOutOfBoundsException is expected.
-   */
-  @Test
-  void testSetPinsTooManyElements() {
-    List<Pin> source = createListOfPins(5);
-    assertThrows(IndexOutOfBoundsException.class, () -> {
-      cut.setPins(source);
-    });
   }
 
   /**

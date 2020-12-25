@@ -3,60 +3,29 @@
  */
 package de.lexasoft.mastermind.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents one line of pins for question.
  * 
  * @author Axel
  */
-public class QuestionBank {
+public class QuestionBank extends AnyBank {
 
-  /**
-   * Minimum number of pins.
-   */
-  public static final int MINIMUM_NUMBER_OF_PINS = 4;
-
-  /**
-   * Minimum number of colors.
-   */
-  public static final int MINIMUM_NUMBER_OF_COLORS = 6;
-
-  private List<Pin> pins;
-
-  private NrOfHoles nrOfHoles;
   private NrOfColors nrOfColors;
 
   /**
    * Creates a bank of pins with the given number of pins, each with a range of
    * the given number of colors.
    * 
-   * @param nrOfHoles   Number of pins in the bank.
+   * @param nrOfHoles  Number of pins in the bank.
    * @param nrOfColors Range of colors, every pin can represent.
    */
   public QuestionBank(NrOfHoles nrOfHoles, NrOfColors nrOfColors) {
+    super(nrOfHoles);
     this.nrOfColors = nrOfColors;
-    this.nrOfHoles = nrOfHoles;
-    pins = new ArrayList<>();
-    for (int i = 0; i < nrOfHoles.getValue(); i++) {
-      pins.add(new Pin(nrOfColors.getValue()));
-    }
-  }
-
-  NrOfHoles getNrOfHoles() {
-    return nrOfHoles;
   }
 
   NrOfColors getNrOfColors() {
     return nrOfColors;
-  }
-
-  /**
-   * @return List of the pins in the bank.
-   */
-  List<Pin> getPins() {
-    return pins;
   }
 
   void setPinValue(int position, Integer value) {
@@ -64,29 +33,10 @@ public class QuestionBank {
   }
 
   /**
-   * Sets the values of the pins to the entries in the given list.
-   * 
-   * @param pinValues The values of the pins.
-   */
-  void setPinValues(List<Integer> pinValues) {
-    for (int i = 0; i < pinValues.size(); i++) {
-      setPinValue(i, pinValues.get(i));
-    }
-  }
-
-  /**
-   * @param position
-   * @return Pin at the given position
-   */
-  public Pin getPin(int position) {
-    return pins.get(position);
-  }
-
-  /**
    * Sets all pins counted.
    */
   void setAllPinsCounted() {
-    for (Pin pin : pins) {
+    for (Pin pin : getPins()) {
       pin.setCounted();
     }
   }
@@ -95,7 +45,7 @@ public class QuestionBank {
    * Reset all pins counted.
    */
   void resetAllPinsCounted() {
-    for (Pin pin : pins) {
+    for (Pin pin : getPins()) {
       pin.resetCounted();
     }
   }
@@ -106,7 +56,7 @@ public class QuestionBank {
    */
   private int countBlackHits(QuestionBank solution) {
     int blackHits = 0;
-    for (int i = 0; i < pins.size(); i++) {
+    for (int i = 0; i < getPins().size(); i++) {
       Pin myPin = getPin(i);
       Pin solutionPin = solution.getPin(i);
       // Hits at the same position
@@ -126,7 +76,7 @@ public class QuestionBank {
    */
   private int countWhiteHits(QuestionBank solution) {
     int whiteHits = 0;
-    for (int i = 0; i < pins.size(); i++) {
+    for (int i = 0; i < getPins().size(); i++) {
       Pin myPin = getPin(i);
       // If the pin had a black hit before, it must not be counted again.
       if (!myPin.isCounted()) {
@@ -153,12 +103,28 @@ public class QuestionBank {
   }
 
   /**
+   * Both the question and the solution must be filled completely.
+   * 
+   * @param question
+   * @param solution
+   */
+  private void validateBanks(QuestionBank question, QuestionBank solution) {
+    if (!question.isCompletelyFilled() || !solution.isCompletelyFilled()) {
+      throw new IllegalArgumentException("Both question and solution must be filled completely");
+    }
+    if (question.getNrOfHoles().getValue() != solution.getNrOfHoles().getValue()) {
+      throw new IllegalArgumentException("Both question and solution must have the same number of holes.");
+    }
+  }
+
+  /**
    * Compares this bank to the solution.
    * 
    * @param solution The bank with the solution, given to guess.
    * @return The answer bank with the number of white and black pins
    */
   public AnswerBank answer(QuestionBank solution) {
+    validateBanks(this, solution);
     AnswerBank answer = new AnswerBank(getNrOfHoles());
     // Count black hits. Must be done first.
     answer.addBlackPins(countBlackHits(solution));

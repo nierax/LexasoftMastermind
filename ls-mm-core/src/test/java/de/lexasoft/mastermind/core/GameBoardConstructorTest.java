@@ -1,6 +1,7 @@
 package de.lexasoft.mastermind.core;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,9 @@ class GameBoardConstructorTest {
    */
   @Test
   void testGameBoard() {
-    fail("Not yet implemented");
+    GameBoard cut = new GameBoard(new NrOfHoles(4), new NrOfColors(6), new NrOfMoves(6));
+    assertNotNull(cut.getMoves(), "List must be created after constructor");
+    assertEquals(0, cut.getMoveIndex(), "Inital move number must be 0");
   }
 
 }

@@ -18,6 +18,7 @@ public class GameBoard {
   private NrOfMoves maxNrOfMoves;
   private NrOfHoles nrOfHoles;
   private NrOfColors nrOfColors;
+  private QuestionBank solution;
 
   /**
    * Creates the game board with the given number of colors and pins and the
@@ -40,7 +41,7 @@ public class GameBoard {
   /**
    * @return Index of the current move, 0-based.
    */
-  public Integer getMove() {
+  public Integer getMoveIndex() {
     return 0;
   }
 
@@ -58,6 +59,39 @@ public class GameBoard {
 
   public NrOfColors getNrOfColors() {
     return nrOfColors;
+  }
+
+  /**
+   * @return Gets the bank with the questioned solution.
+   */
+  public QuestionBank getSolution() {
+    return solution;
+  }
+
+  /**
+   * Sets the bank with the questioned solution
+   * 
+   * @param solution The solution, which should be guessed.
+   */
+  public void setSolution(QuestionBank solution) {
+    this.solution = solution;
+  }
+
+  /**
+   * Checks, whether the solution is known to the question board.
+   * <p>
+   * In certain game situations it can make a difference, if the solution is known
+   * to the board or not. If the person has to guess the combination, the solution
+   * must be known to validate the persons answer.
+   * <p>
+   * If the computer has to guess the combination, the validation can be asked
+   * from the person, thus the solution should not be necessarily known to the
+   * game board.
+   * 
+   * @return True, if the solution is known, false otherwise.
+   */
+  public boolean isSolutionKnown() {
+    return solution != null;
   }
 
 }

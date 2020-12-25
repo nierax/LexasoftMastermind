@@ -3,18 +3,12 @@
  */
 package de.lexasoft.mastermind.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents the bank for answers with only white and black pins.
  * 
  * @author Axel
  */
-public class AnswerBank {
-
-  private List<Pin> pins;
-  private NrOfHoles nrOfHoles;
+public class AnswerBank extends AnyBank {
 
   static final int WHITE_VALUE = 1;
   static final int BLACK_VALUE = 0;
@@ -44,46 +38,7 @@ public class AnswerBank {
    * @param nrOfHoles
    */
   public AnswerBank(NrOfHoles nrOfHoles) {
-    this.nrOfHoles = nrOfHoles;
-    this.pins = new ArrayList<>();
-  }
-
-  /**
-   * @return Get all pins in the bank.
-   */
-  List<Pin> getPins() {
-    return pins;
-  }
-
-  private void checkPinBoundaries(int number) {
-    if (number > nrOfHoles.getValue()) {
-      throw new IndexOutOfBoundsException(
-          String.format("List with %s pins not allowed, %s maximum.", number, nrOfHoles));
-    }
-  }
-
-  /**
-   * Copies all pins in the given list to it's own list. The original list is not
-   * reused.
-   * 
-   * @param pins The pins to get.
-   */
-  public void setPins(List<Pin> pins) {
-    checkPinBoundaries(pins.size());
-    for (Pin pin : pins) {
-      addPin(pin);
-    }
-  }
-
-  /**
-   * Adds the given pin to the bank.
-   * 
-   * @param pin Pin to be added.
-   */
-  private void addPin(Pin pin) {
-    // One more element allowed?
-    checkPinBoundaries(this.pins.size() + 1);
-    this.pins.add(pin);
+    super(nrOfHoles);
   }
 
   /**
@@ -129,7 +84,7 @@ public class AnswerBank {
    */
   private int countValues(Integer value) {
     int nrOfValues = 0;
-    for (Pin pin : pins) {
+    for (Pin pin : getPins()) {
       if (pin.getValue().equals(value)) {
         nrOfValues++;
       }
