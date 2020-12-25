@@ -15,9 +15,9 @@ import java.util.List;
 public class GameBoard {
 
   private List<Move> moves;
-  private Integer maxNrOfMoves;
-  private Integer nrOfPins;
-  private Integer nrOfColors;
+  private NrOfMoves maxNrOfMoves;
+  private NrOfHoles nrOfHoles;
+  private NrOfColors nrOfColors;
 
   /**
    * Creates the game board with the given number of colors and pins and the
@@ -30,17 +30,17 @@ public class GameBoard {
    * @param nrOfColors   The number of colors
    * @param maxNrOfMoves the maximum number of pins allowed.
    */
-  public GameBoard(Integer nrOfPins, Integer nrOfColors, Integer maxNrOfMoves) {
+  public GameBoard(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves maxNrOfMoves) {
     moves = new ArrayList<Move>();
     this.maxNrOfMoves = maxNrOfMoves;
     this.nrOfColors = nrOfColors;
-    this.nrOfPins = nrOfPins;
+    this.nrOfHoles = nrOfHoles;
   }
 
   /**
    * @return Index of the current move, 0-based.
    */
-  public int getTurn() {
+  public Integer getMove() {
     return 0;
   }
 
@@ -48,15 +48,15 @@ public class GameBoard {
     return moves;
   }
 
-  public Integer getMaxNrOfMoves() {
+  public NrOfMoves getMaxNrOfMoves() {
     return maxNrOfMoves;
   }
 
-  public Integer getNrOfPins() {
-    return nrOfPins;
+  public NrOfHoles getNrOfHoles() {
+    return nrOfHoles;
   }
 
-  public Integer getNrOfColors() {
+  public NrOfColors getNrOfColors() {
     return nrOfColors;
   }
 
