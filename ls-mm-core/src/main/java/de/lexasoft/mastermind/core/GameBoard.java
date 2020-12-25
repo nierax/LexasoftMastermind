@@ -39,13 +39,41 @@ public class GameBoard {
   }
 
   /**
+   * Does the next move and delivers the object of this move.
+   * 
+   * @return The object of the newly created move.
+   */
+  public Move nextMove() {
+    Move move = new Move(nrOfHoles, nrOfColors);
+    moves.add(move);
+    return move;
+  }
+
+  /**
+   * Gets the current move without moving forward. If the {@link #nextMove()}
+   * method was not called before, the method will return null.
+   * 
+   * 
+   * @return The current move.
+   */
+  public Move currentMove() {
+    int index = getMoveIndex();
+    if (index < 0) {
+      return null;
+    }
+    return this.moves.get(index);
+  }
+
+  /**
+   * The index of the current move, 0-based. Must be -1 directly after creation.
+   * 
    * @return Index of the current move, 0-based.
    */
   public Integer getMoveIndex() {
-    return 0;
+    return moves.size() - 1;
   }
 
-  public List<Move> getMoves() {
+  List<Move> getMoves() {
     return moves;
   }
 

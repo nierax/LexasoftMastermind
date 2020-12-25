@@ -18,12 +18,12 @@ public class Move {
   /**
    * Creates the move.
    * 
-   * @param nrOfPins   Number of pins in the game
+   * @param nrOfHoles   Number of pins in the game
    * @param nrOfColors Number of colors in the game
    */
-  public Move(NrOfHoles nrOfPins, NrOfColors nrOfColors) {
-    question = new QuestionBank(nrOfPins, nrOfColors);
-    answer = new AnswerBank(nrOfPins);
+  public Move(NrOfHoles nrOfHoles, NrOfColors nrOfColors) {
+    question = new QuestionBank(nrOfHoles, nrOfColors);
+    answer = new AnswerBank(nrOfHoles);
   }
 
   /**
