@@ -10,8 +10,8 @@ package de.lexasoft.mastermind.core;
  */
 public class AnswerBank extends AnyBank {
 
-  static final int WHITE_VALUE = 1;
-  static final int BLACK_VALUE = 0;
+  static final int WHITE_VALUE = 0;
+  static final int BLACK_VALUE = 1;
 
   class WhitePin extends Pin {
 
