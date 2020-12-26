@@ -77,11 +77,11 @@ class QuestionBankTest {
     assertEquals(expectedBlack, answer.getNrOfBlackPins());
     assertEquals(expectedWhite, answer.getNrOfWhitePins());
     // Both solution and question must be free for another answer
-    for (Pin pin : this.solution.getPins()) {
-      assertFalse(pin.isCounted());
+    for (Hole hole : this.solution.getHoles()) {
+      assertFalse(hole.getPin().isCounted());
     }
-    for (Pin pin : this.question.getPins()) {
-      assertFalse(pin.isCounted());
+    for (Hole hole : this.solution.getHoles()) {
+      assertFalse(hole.getPin().isCounted());
     }
   }
 
@@ -131,13 +131,14 @@ class QuestionBankTest {
    */
   @Test
   void test_setResetAllPinsCounted() {
+    solution.setPins(createListFromArray(new int[] { 0, 1, 2, 3 }));
     solution.setAllPinsCounted();
-    for (Pin pin : solution.getPins()) {
-      assertTrue(pin.isCounted());
+    for (Hole hole : this.solution.getHoles()) {
+      assertTrue(hole.getPin().isCounted());
     }
     solution.resetAllPinsCounted();
-    for (Pin pin : solution.getPins()) {
-      assertFalse(pin.isCounted());
+    for (Hole hole : this.solution.getHoles()) {
+      assertFalse(hole.getPin().isCounted());
     }
   }
 

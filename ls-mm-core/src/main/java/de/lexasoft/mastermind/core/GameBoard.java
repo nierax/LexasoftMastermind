@@ -53,7 +53,6 @@ public class GameBoard {
    * Gets the current move without moving forward. If the {@link #nextMove()}
    * method was not called before, the method will return null.
    * 
-   * 
    * @return The current move.
    */
   public Move currentMove() {

@@ -84,9 +84,11 @@ public class AnswerBank extends AnyBank {
    */
   private int countValues(Integer value) {
     int nrOfValues = 0;
-    for (Pin pin : getPins()) {
-      if (pin.getValue().equals(value)) {
-        nrOfValues++;
+    for (Hole hole : getHoles()) {
+      if (hole.holdsAPin()) {
+        if (hole.getPin().getValue().equals(value)) {
+          nrOfValues++;
+        }
       }
     }
     return nrOfValues;

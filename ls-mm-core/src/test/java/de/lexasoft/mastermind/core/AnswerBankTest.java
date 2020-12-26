@@ -106,7 +106,7 @@ class AnswerBankTest {
   @Test
   void testAddWhitePin_OutOfBounds() {
     cut.addWhitePins(NR_OF_PINS.getValue());
-    assertThrows(IndexOutOfBoundsException.class, () -> {
+    assertThrows(MasterMindValidationException.class, () -> {
       cut.addWhitePin();
     });
   }
@@ -118,7 +118,7 @@ class AnswerBankTest {
   @Test
   void testAddBlackPin_OutOfBounds() {
     cut.addBlackPins(NR_OF_PINS.getValue());
-    assertThrows(IndexOutOfBoundsException.class, () -> {
+    assertThrows(MasterMindValidationException.class, () -> {
       cut.addBlackPin();
     });
   }

@@ -28,16 +28,14 @@ public class QuestionBank extends AnyBank {
     return nrOfColors;
   }
 
-  void setPinValue(int position, Integer value) {
-    getPin(position).setValue(value);
-  }
-
   /**
    * Sets all pins counted.
    */
   void setAllPinsCounted() {
-    for (Pin pin : getPins()) {
-      pin.setCounted();
+    for (Hole hole : getHoles()) {
+      if (hole.holdsAPin()) {
+        hole.getPin().setCounted();
+      }
     }
   }
 
@@ -45,8 +43,10 @@ public class QuestionBank extends AnyBank {
    * Reset all pins counted.
    */
   void resetAllPinsCounted() {
-    for (Pin pin : getPins()) {
-      pin.resetCounted();
+    for (Hole hole : getHoles()) {
+      if (hole.holdsAPin()) {
+        hole.getPin().resetCounted();
+      }
     }
   }
 
@@ -56,7 +56,7 @@ public class QuestionBank extends AnyBank {
    */
   private int countBlackHits(QuestionBank solution) {
     int blackHits = 0;
-    for (int i = 0; i < getPins().size(); i++) {
+    for (int i = 0; i < getNrOfHoles().getValue(); i++) {
       Pin myPin = getPin(i);
       Pin solutionPin = solution.getPin(i);
       // Hits at the same position
@@ -76,11 +76,11 @@ public class QuestionBank extends AnyBank {
    */
   private int countWhiteHits(QuestionBank solution) {
     int whiteHits = 0;
-    for (int i = 0; i < getPins().size(); i++) {
+    for (int i = 0; i < getNrOfHoles().getValue(); i++) {
       Pin myPin = getPin(i);
       // If the pin had a black hit before, it must not be counted again.
       if (!myPin.isCounted()) {
-        for (int j = 0; j < solution.getPins().size(); j++) {
+        for (int j = 0; j < solution.getNrOfHoles().getValue(); j++) {
           Pin solutionPin = solution.getPin(j);
           // Same index would be black and must not be counted
           // If the solution pin was counted before, we must not count this one

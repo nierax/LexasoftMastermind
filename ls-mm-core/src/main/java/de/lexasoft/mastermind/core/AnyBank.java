@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class AnyBank {
 
-  private List<Pin> pins;
+  private List<Hole> holes;
   private NrOfHoles nrOfHoles;
 
   /**
@@ -28,14 +28,25 @@ public class AnyBank {
    */
   public AnyBank(NrOfHoles nrOfHoles) {
     this.nrOfHoles = nrOfHoles;
-    this.pins = new ArrayList<>();
+    this.holes = new ArrayList<>();
+    for (int i = 0; i < nrOfHoles.getValue(); i++) {
+      holes.add(new Hole());
+    }
   }
 
   /**
    * @return Get all pins in the bank.
    */
-  List<Pin> getPins() {
-    return pins;
+  List<Hole> getHoles() {
+    return holes;
+  }
+
+  Hole getHole(int position) {
+    if ((position < 0) || (position > nrOfHoles.getValue())) {
+      throw new IndexOutOfBoundsException(
+          String.format("Position %s does not exist. Must be between %s and %s", position, 0, nrOfHoles.getValue()));
+    }
+    return holes.get(position);
   }
 
   void checkPinBoundaries(int number) {
@@ -59,14 +70,45 @@ public class AnyBank {
   }
 
   /**
-   * Adds the given pin to the bank.
+   * 
+   * @return The first hole, which is not used yet. Returns -1, if there is no
+   *         free hole left.
+   */
+  private int findFirstFreePosition() {
+    for (Hole hole : holes) {
+      if (!hole.holdsAPin()) {
+        return holes.indexOf(hole);
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * Adds a pin to the given position.
+   * <p>
+   * If the position is used, the new pin will replace the old one.
+   * 
+   * @param pin      The pin to add
+   * @param position The position, where the pin is to add.
+   * @return The pin, added before.
+   */
+  Pin addPin(Pin pin, int position) {
+    checkPinBoundaries(position);
+    getHole(position).setValue(pin);
+    return pin;
+  }
+
+  /**
+   * Adds the given pin to the bank at the first free position.
    * 
    * @param pin Pin to be added.
    */
-  void addPin(Pin pin) {
-    // One more element allowed?
-    checkPinBoundaries(this.pins.size() + 1);
-    this.pins.add(pin);
+  Pin addPin(Pin pin) {
+    int position = findFirstFreePosition();
+    if (position < 0) {
+      throw new MasterMindValidationException("Could not add a pin, because there was no free hole.");
+    }
+    return addPin(pin, position);
   }
 
   /**
@@ -75,7 +117,13 @@ public class AnyBank {
    * @return
    */
   int currentNrOfPins() {
-    return this.pins.size();
+    int number = 0;
+    for (Hole hole : holes) {
+      if (hole.holdsAPin()) {
+        number++;
+      }
+    }
+    return number;
   }
 
   /**
@@ -99,7 +147,7 @@ public class AnyBank {
    * @return Pin at the given position
    */
   public Pin getPin(int position) {
-    return pins.get(position);
+    return holes.get(position).getPin();
   }
 
 }
