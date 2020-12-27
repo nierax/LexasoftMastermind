@@ -39,4 +39,11 @@ public class Hole extends Value<Pin> {
   public Pin setPin(Pin pin) {
     return setValue(pin);
   }
+
+  /**
+   * Removes the pin from the hole.
+   */
+  public void removePin() {
+    unsetValue();
+  }
 }
