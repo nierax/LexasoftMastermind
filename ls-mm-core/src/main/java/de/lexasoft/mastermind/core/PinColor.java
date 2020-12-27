@@ -39,7 +39,7 @@ public class PinColor extends Value<Integer> {
    * Not allowed to unset value of color.
    */
   @Override
-  public void unsetValue() {
+  public Integer unsetValue() {
     throw new MasterMindValidationException("Color must not be removed.");
   }
 

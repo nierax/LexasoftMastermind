@@ -18,7 +18,7 @@ public class Move {
   /**
    * Creates the move.
    * 
-   * @param nrOfHoles   Number of pins in the game
+   * @param nrOfHoles  Number of pins in the game
    * @param nrOfColors Number of colors in the game
    */
   public Move(NrOfHoles nrOfHoles, NrOfColors nrOfColors) {
@@ -34,10 +34,20 @@ public class Move {
   }
 
   /**
-   * @return The answe, connected with this move
+   * @return The answer, connected with this move
    */
   public AnswerBank getAnswer() {
     return answer;
+  }
+
+  /**
+   * The move is complete, when the question bank is completely filled out and the
+   * answer is given.
+   * 
+   * @return True, if the move is complete, false otherwise
+   */
+  public boolean isComplete() {
+    return question.isCompletelyFilled() && answer.isGiven();
   }
 
 }

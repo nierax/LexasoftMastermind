@@ -112,6 +112,16 @@ public class AnyBank {
   }
 
   /**
+   * Removes the pin from the given position. Returns the removed pin.
+   * 
+   * @param position The position, where the pin should be removed.
+   * @return The removed pin, if there was one before. Null otherwise.
+   */
+  Pin removePin(int position) {
+    return getHole(position).removePin();
+  }
+
+  /**
    * Gets the currently used number of pins.
    * 
    * @return

@@ -13,6 +13,8 @@ public class AnswerBank extends AnyBank {
   static final int WHITE_VALUE = 0;
   static final int BLACK_VALUE = 1;
 
+  private boolean answerGiven;
+
   class WhitePin extends Pin {
 
     public WhitePin() {
@@ -37,6 +39,7 @@ public class AnswerBank extends AnyBank {
    */
   public AnswerBank(NrOfHoles nrOfHoles) {
     super(nrOfHoles);
+    answerGiven = false;
   }
 
   /**
@@ -108,6 +111,27 @@ public class AnswerBank extends AnyBank {
    */
   public int getNrOfBlackPins() {
     return countValues(new BlackPin());
+  }
+
+  /**
+   * @return True, when the answer is completely given, false otherwise.
+   */
+  public boolean isGiven() {
+    return answerGiven;
+  }
+
+  /**
+   * Sets the state of the bank to be completely answered.
+   */
+  public void setGiven() {
+    this.answerGiven = true;
+  }
+
+  /**
+   * Sets the state of the bank not to be completely answered.
+   */
+  public void setNotGiven() {
+    this.answerGiven = false;
   }
 
 }

@@ -151,6 +151,19 @@ class AnyBankTest {
     assertEquals(4, cut.currentNrOfPins(), "Now 4 pins added, so the number should be 4");
   }
 
+  @Test
+  void testRemovePin_i_() {
+    // Fill the bank
+    List<Pin> pins = createListOfPins(NR_OF_HOLES.getValue());
+    cut.setPins(pins);
+    assertEquals(NR_OF_HOLES.getValue(), cut.currentNrOfPins());
+    // Remove the first pin
+    Pin pin = cut.removePin(0);
+    assertNotNull(pin, "Pin expected to be returned, but wasn't.");
+    assertEquals(NR_OF_HOLES.getValue() - 1, cut.currentNrOfPins(),
+        "After removing the pin, the number of pins should be reduced to one below the number of holes.");
+  }
+
   /**
    * checks, whether the completely filled method works correctly.
    */
