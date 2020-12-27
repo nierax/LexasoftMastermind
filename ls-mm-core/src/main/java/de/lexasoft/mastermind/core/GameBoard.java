@@ -36,6 +36,7 @@ public class GameBoard {
     this.maxNrOfMoves = maxNrOfMoves;
     this.nrOfColors = nrOfColors;
     this.nrOfHoles = nrOfHoles;
+    createNextMove();
   }
 
   /**
@@ -44,6 +45,13 @@ public class GameBoard {
    * @return The object of the newly created move.
    */
   public Move nextMove() {
+    return createNextMove();
+  }
+
+  /**
+   * @return
+   */
+  private Move createNextMove() {
     Move move = new Move(nrOfHoles, nrOfColors);
     moves.add(move);
     return move;

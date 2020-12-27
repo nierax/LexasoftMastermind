@@ -2,7 +2,6 @@ package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -26,15 +25,15 @@ class GameBoardTest {
   @Test
   void testGameBoard() {
     assertNotNull(cut.getMoves(), "List must be created after constructor");
-    assertEquals(-1, cut.getMoveIndex(), "Initally the move index is -1.");
-    assertNull(cut.currentMove(), "Current move must be null after creation.");
+    assertEquals(0, cut.getMoveIndex(), "First move must be initialzed.");
+    assertNotNull(cut.currentMove(), "Current move must be initialized.");
   }
 
   @Test
   void testNextMove() {
     Move move = cut.nextMove();
     assertNotNull(move, "The new move object must not be null.");
-    assertEquals(0, cut.getMoveIndex(), "After the first move the move index should be 0.");
+    assertEquals(1, cut.getMoveIndex(), "After the first move the move index should be 1.");
     assertEquals(NR_OF_HOLES.getValue(), move.getQuestion().getNrOfHoles().getValue(),
         "Question in move must have same number of holes as the board.");
     assertEquals(NR_OF_HOLES.getValue(), move.getAnswer().getNrOfHoles().getValue(),
