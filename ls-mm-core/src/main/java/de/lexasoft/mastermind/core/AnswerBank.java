@@ -16,8 +16,7 @@ public class AnswerBank extends AnyBank {
   class WhitePin extends Pin {
 
     public WhitePin() {
-      super(2);
-      setValue(WHITE_VALUE);
+      super(new AnswerPinColor(WHITE_VALUE));
     }
 
   }
@@ -25,8 +24,7 @@ public class AnswerBank extends AnyBank {
   class BlackPin extends Pin {
 
     public BlackPin() {
-      super(2);
-      setValue(BLACK_VALUE);
+      super(new AnswerPinColor(BLACK_VALUE));
     }
 
   }
@@ -82,11 +80,11 @@ public class AnswerBank extends AnyBank {
    * @param value Value in question
    * @return Number of pins with the given values.
    */
-  private int countValues(Integer value) {
+  private int countValues(Pin pin) {
     int nrOfValues = 0;
     for (Hole hole : getHoles()) {
       if (hole.holdsAPin()) {
-        if (hole.getPin().getValue().equals(value)) {
+        if (hole.getPin().equals(pin)) {
           nrOfValues++;
         }
       }
@@ -100,7 +98,7 @@ public class AnswerBank extends AnyBank {
    * @return The number of white pins in this bank.
    */
   public int getNrOfWhitePins() {
-    return countValues(WHITE_VALUE);
+    return countValues(new WhitePin());
   }
 
   /**
@@ -109,7 +107,7 @@ public class AnswerBank extends AnyBank {
    * @return The number of black pins in this bank.
    */
   public int getNrOfBlackPins() {
-    return countValues(BLACK_VALUE);
+    return countValues(new BlackPin());
   }
 
 }

@@ -15,7 +15,10 @@ import de.lexasoft.common.model.Value;
 public class PinColor extends Value<Integer> {
 
   /**
-   * Color requires a validator and an value.
+   * Color requires a validator and a value.
+   * <p>
+   * The validator should be used in derived classes to check the range of the
+   * color.
    * 
    * @param validator
    * @param value
@@ -38,6 +41,17 @@ public class PinColor extends Value<Integer> {
   @Override
   public void unsetValue() {
     throw new MasterMindValidationException("Color must not be removed.");
+  }
+
+  /**
+   * Colors are equals, if their values are equal.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof PinColor)) {
+      return false;
+    }
+    return getValue().equals(((PinColor) obj).getValue());
   }
 
 }

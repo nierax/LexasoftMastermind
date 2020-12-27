@@ -1,6 +1,5 @@
 package de.lexasoft.mastermind.core;
 
-import de.lexasoft.common.model.RangeValidator;
 import de.lexasoft.common.model.Value;
 
 /**
@@ -11,7 +10,7 @@ import de.lexasoft.common.model.Value;
  * 
  * @author Axel
  */
-public class Pin extends Value<Integer> {
+public class Pin extends Value<PinColor> {
 
   private boolean counted;
 
@@ -20,30 +19,18 @@ public class Pin extends Value<Integer> {
    * 
    * @param nrOfColors
    */
-  public Pin(Integer nrOfColors) {
-    super(new RangeValidator<Integer>(0, nrOfColors - 1));
+  public Pin(PinColor color) {
+    super(color);
     counted = false;
   }
 
   /**
-   * This constructor allows to create the pin and set a value at once.
-   * <p>
-   * First of all thought to be used in test scenarios, that's why it is kept
-   * package protected.
+   * For better readability.
    * 
-   * @param nrOfColors
-   * @param value
+   * @return The color of this pin.
    */
-  Pin(Integer nrOfColors, Integer value) {
-    this(nrOfColors);
-    setValue(value);
-  }
-
-  /**
-   * @return Number of colors, this pin can range.
-   */
-  public Integer getNrOfColors() {
-    return ((RangeValidator<Integer>) getValidator()).getMax() + 1;
+  public PinColor getColor() {
+    return getValue();
   }
 
   /**
@@ -55,7 +42,7 @@ public class Pin extends Value<Integer> {
    * @return True, if pins have the same value, false otherwise.
    */
   public boolean comparePin(Pin otherPin) {
-    return getValue().equals(otherPin.getValue());
+    return equals(otherPin);
   }
 
   /**
@@ -78,6 +65,17 @@ public class Pin extends Value<Integer> {
    */
   void resetCounted() {
     counted = false;
+  }
+
+  /**
+   * Pins are equal, if their colors are equal.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Pin)) {
+      return false;
+    }
+    return getColor().equals(((Pin) obj).getColor());
   }
 
 }

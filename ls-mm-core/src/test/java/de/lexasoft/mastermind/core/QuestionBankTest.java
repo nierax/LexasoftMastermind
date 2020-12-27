@@ -25,6 +25,8 @@ class QuestionBankTest {
   private QuestionBank question;
   private QuestionBank solution;
 
+  private static final NrOfColors NR_OF_COLORS = new NrOfColors(6);
+
   @BeforeEach
   void prepareTestCase() {
     question = new QuestionBank(new NrOfHoles(4), new NrOfColors(6));
@@ -40,7 +42,7 @@ class QuestionBankTest {
   private List<Pin> createListFromArray(int[] array) {
     List<Pin> list = new ArrayList<>();
     for (int i = 0; i < array.length; i++) {
-      list.add(new Pin(6, array[i]));
+      list.add(new Pin(new QuestionPinColor(NR_OF_COLORS, array[i])));
     }
     return list;
   }

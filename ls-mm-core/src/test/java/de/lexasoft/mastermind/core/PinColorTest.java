@@ -3,7 +3,9 @@
  */
 package de.lexasoft.mastermind.core;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +21,13 @@ class PinColorTest {
 
   @BeforeEach
   void prepareTestCase() {
-    cut = new PinColor((Integer) -> {
+    cut = createColor(1);
+  }
+
+  private PinColor createColor(int value) {
+    return new PinColor((Integer) -> {
       return true;
-    }, 1);
+    }, value);
   }
 
   /**
@@ -43,6 +49,15 @@ class PinColorTest {
     assertThrows(MasterMindValidationException.class, () -> {
       cut.setValue(2);
     });
+  }
+
+  @Test
+  void testEquals() {
+    PinColor theOtherColor = createColor(cut.getValue());
+    assertTrue(cut.equals(theOtherColor));
+
+    theOtherColor = createColor(cut.getValue() + 1);
+    assertFalse(cut.equals(theOtherColor));
   }
 
 }
