@@ -57,6 +57,29 @@ public class AnyBank {
   }
 
   /**
+   * Copies the given source bank and returns the result.
+   * <p>
+   * This is just possible, if the number holes does not differ between the source
+   * and this object.
+   * 
+   * @param source
+   * @return
+   */
+  public AnyBank copy(AnyBank source) {
+    if (!nrOfHoles.equals(source.nrOfHoles)) {
+      throw new MasterMindValidationException("Banks to copy must have same number of holes.");
+    }
+    for (int i = 0; i < getNrOfHoles().getValue(); i++) {
+      if (source.getHole(i).holdsAPin()) {
+        this.getHole(i).setPin(source.getPin(i));
+      } else {
+        this.getHole(i).removePin();
+      }
+    }
+    return this;
+  }
+
+  /**
    * Copies all pins in the given list to it's own list. The original list is not
    * reused.
    * 

@@ -2,6 +2,7 @@ package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.stream.Stream;
 
@@ -15,11 +16,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 class AnswerBankTest {
 
   private AnswerBank cut;
-  private static final NrOfHoles NR_OF_PINS = new NrOfHoles(4);
+  private static final NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
 
   @BeforeEach
   void prepareTestCase() {
-    cut = new AnswerBank(NR_OF_PINS);
+    cut = new AnswerBank(NR_OF_HOLES);
   }
 
   /**
@@ -105,7 +106,7 @@ class AnswerBankTest {
    */
   @Test
   void testAddWhitePin_OutOfBounds() {
-    cut.addWhitePins(NR_OF_PINS.getValue());
+    cut.addWhitePins(NR_OF_HOLES.getValue());
     assertThrows(MasterMindValidationException.class, () -> {
       cut.addWhitePin();
     });
@@ -117,9 +118,52 @@ class AnswerBankTest {
    */
   @Test
   void testAddBlackPin_OutOfBounds() {
-    cut.addBlackPins(NR_OF_PINS.getValue());
+    cut.addBlackPins(NR_OF_HOLES.getValue());
     assertThrows(MasterMindValidationException.class, () -> {
       cut.addBlackPin();
+    });
+  }
+
+  private static Stream<Arguments> testIsCorrect() {
+    return Stream.of(Arguments.of(0, 0, false), Arguments.of(0, 4, true), Arguments.of(4, 0, false),
+        Arguments.of(1, 1, false), Arguments.of(0, 3, false));
+  }
+
+  /**
+   * Is the answer considered as correct? This happens, when all holes are filled
+   * with black pins.
+   * 
+   * @param nrOfWhite
+   * @param nrOfBlack
+   * @param result
+   */
+  @ParameterizedTest
+  @MethodSource
+  void testIsCorrect(int nrOfWhite, int nrOfBlack, boolean result) {
+    cut.addWhitePins(nrOfWhite);
+    cut.addBlackPins(nrOfBlack);
+    assertEquals(result, cut.isCorrect());
+  }
+
+  /**
+   * Does the copy method also include additional attributes to AnyBank()?
+   */
+  @Test
+  void testCopy_Ok() {
+    AnswerBank answer = new AnswerBank(NR_OF_HOLES);
+    answer.setGiven();
+    cut.setNotGiven();
+
+    cut.copy(answer);
+
+    assertTrue(cut.isGiven(), "Attribute given was not transferred.");
+  }
+
+  @Test
+  void testCopy_WrongOject() {
+    AnyBank anyBank = new AnyBank(NR_OF_HOLES);
+    assertThrows(IllegalArgumentException.class, () -> {
+      cut.copy(anyBank);
     });
   }
 }

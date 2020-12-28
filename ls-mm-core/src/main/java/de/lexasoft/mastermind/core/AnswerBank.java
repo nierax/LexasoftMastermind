@@ -134,4 +134,23 @@ public class AnswerBank extends AnyBank {
     this.answerGiven = false;
   }
 
+  /**
+   * Is the answer correctly given? This happens, when all holes are filled with
+   * black pins.
+   * 
+   * @return True, if the answer is correct, false if not.
+   */
+  public boolean isCorrect() {
+    return getNrOfBlackPins() == getNrOfHoles().getValue();
+  }
+
+  @Override
+  public AnyBank copy(AnyBank source) {
+    if (!(source instanceof AnswerBank)) {
+      throw new IllegalArgumentException("Banks to copy must be comparable instances.");
+    }
+    this.answerGiven = ((AnswerBank) source).answerGiven;
+    return super.copy(source);
+  }
+
 }

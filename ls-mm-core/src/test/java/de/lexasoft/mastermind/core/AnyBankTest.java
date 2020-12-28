@@ -180,4 +180,32 @@ class AnyBankTest {
     assertTrue(cut.isCompletelyFilled(), "All holes filled, so the bank must be confirmed filled.");
   }
 
+  /**
+   * Checks the copy method.
+   */
+  @Test
+  void testCopy_ok() {
+    cut.setPins(createListOfPins(4));
+    AnyBank source = new AnyBank(NR_OF_HOLES);
+    Pin pin0 = new Pin(new QuestionPinColor(NR_OF_COLORS, 1));
+    Pin pin2 = new Pin(new QuestionPinColor(NR_OF_COLORS, 2));
+    source.addPin(pin0, 0);
+    source.addPin(pin2, 2);
+
+    cut.copy(source);
+
+    assertEquals(pin0, cut.getPin(0), "Pin on position 0 not the expected");
+    assertEquals(pin2, cut.getPin(2), "Pin on position 2 not the expected");
+    assertFalse(cut.getHole(1).holdsAPin(), "The pin on position 1 was not removed.");
+    assertFalse(cut.getHole(3).holdsAPin(), "The pin on position 3 was not removed.");
+  }
+
+  @Test
+  void testCopy_DifferentNrOfHoles() {
+    AnyBank source = new AnyBank(new NrOfHoles(5));
+    assertThrows(MasterMindValidationException.class, () -> {
+      cut.copy(source);
+    });
+  }
+
 }

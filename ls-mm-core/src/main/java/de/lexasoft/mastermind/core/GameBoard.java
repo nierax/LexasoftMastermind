@@ -58,6 +58,15 @@ public class GameBoard {
   }
 
   /**
+   * Is there one more move allowed or is the board already filled with moves?
+   * 
+   * @return True, if at least one more move is allowed, false otherwise.
+   */
+  boolean nextMoveAllowed() {
+    return getMoveIndex() < getMaxNrOfMoves().getValue() - 1;
+  }
+
+  /**
    * Gets the current move without moving forward. If the {@link #nextMove()}
    * method was not called before, the method will return null.
    * 
@@ -68,7 +77,7 @@ public class GameBoard {
     if (index < 0) {
       return null;
     }
-    return this.moves.get(index);
+    return getMove(index);
   }
 
   /**
@@ -78,6 +87,18 @@ public class GameBoard {
    */
   public Integer getMoveIndex() {
     return moves.size() - 1;
+  }
+
+  /**
+   * Gets the move on position index.
+   * <p>
+   * Not part of the official api of this class.
+   * 
+   * @param index The position of the move.
+   * @return The move on position index
+   */
+  Move getMove(int index) {
+    return this.moves.get(index);
   }
 
   List<Move> getMoves() {
@@ -127,6 +148,38 @@ public class GameBoard {
    */
   public boolean isSolutionKnown() {
     return solution != null;
+  }
+
+  /**
+   * Takes the questions and compares them to the solution. With the answer, given
+   * a new move with an empty question will be initialized.
+   * 
+   * @param question
+   * @return
+   */
+  public GameState answer(QuestionBank question) {
+    return GameState.MOVE_OPEN;
+  }
+
+  /**
+   * The currentMove is the one, that's been guessed. That's why, the answer is
+   * registered at the current move.
+   * <p>
+   * After that the next move is created.
+   * 
+   * @param answer The answer to register.
+   * @return The state of the game (open / lost / won)
+   */
+  public GameState answer(AnswerBank answer) {
+    currentMove().getAnswer().copy(answer);
+    if (answer.isCorrect()) {
+      return GameState.WON;
+    }
+    if (nextMoveAllowed()) {
+      nextMove();
+      return GameState.MOVE_OPEN;
+    }
+    return GameState.LOST;
   }
 
 }
