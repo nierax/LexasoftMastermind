@@ -39,6 +39,20 @@ class GameBoardTest {
   }
 
   /**
+   * Creates a question bank with the given color values.
+   * 
+   * @param values The values of the colors of the pins
+   * @return A newly created question bank.
+   */
+  private QuestionBank createQuestionbankFromArray(int[] values) {
+    QuestionBank question = new QuestionBank(NR_OF_HOLES, NR_OF_COLORS);
+    for (int i = 0; i < values.length; i++) {
+      question.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, values[i])));
+    }
+    return question;
+  }
+
+  /**
    * Constructor should instantiate list of moves. The current turn is 0;
    */
   @Test
@@ -98,15 +112,60 @@ class GameBoardTest {
     }
   }
 
+  /**
+   * 
+   * @return Parameters for testNextMoveAllowed()
+   */
   private static Stream<Arguments> testNextMoveAllowed() {
     return Stream.of(Arguments.of(0, true), Arguments.of(1, true), Arguments.of(2, true), Arguments.of(3, true),
         Arguments.of(4, true), Arguments.of(5, false));
   }
 
+  /**
+   * Checks, whether the nextMoveAllowed() method gives true for all move index
+   * below the maximum number of moves.
+   * 
+   * @param moveIndex The move index to check
+   * @param expected  Expected result
+   */
   @ParameterizedTest
   @MethodSource
   void testNextMoveAllowed(int moveIndex, boolean expected) {
     fillCutWithMoves(moveIndex);
     assertEquals(expected, cut.nextMoveAllowed());
+  }
+
+  private static Stream<Arguments> testAnswer_QuestionBank_() {
+    return Stream.of(
+        // Not right answered, moves left => MOVE_OPEN
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 0, 0, 0, 0 }, 1, 0, 0, GameState.MOVE_OPEN),
+        // Right answered, moves left => WON
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 0, 1, 2, 3 }, 4, 0, 0, GameState.WON),
+        // Not right answered, no moves left => LOST
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 3, 2, 1, 0 }, 0, 4, 5, GameState.LOST),
+        // Not completely filled out, no answer => MOVE_OPEN
+        Arguments.of(new int[] { 0, 1, 2, 3 }, new int[] { 0, 1, 2 }, 0, 0, 0, GameState.MOVE_OPEN));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void testAnswer_QuestionBank_(int[] solution, int[] question, int expBlack, int expWhite, int moveIndex,
+      GameState expState) {
+    QuestionBank solutionBank = createQuestionbankFromArray(solution);
+    cut.setSolution(solutionBank);
+    fillCutWithMoves(moveIndex);
+    QuestionBank questionBank = createQuestionbankFromArray(question);
+
+    // Get the banks, the result is written in before the possible move to the next
+    // move.
+    AnswerBank answerBank = cut.currentMove().getAnswer();
+    QuestionBank questionBank2 = cut.currentMove().getQuestion();
+
+    GameState result = cut.answer(questionBank);
+
+    assertEquals(questionBank2, questionBank, "Question bank was not transferred");
+    assertEquals(expBlack, answerBank.getNrOfBlackPins(), "Number of black pins not correct.");
+    assertEquals(expWhite, answerBank.getNrOfWhitePins(), "Number of white pins not correct.");
+    assertEquals(expState, result, "Not the right state delivered.");
   }
 }

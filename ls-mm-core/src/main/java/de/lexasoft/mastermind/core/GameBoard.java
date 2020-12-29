@@ -158,6 +158,11 @@ public class GameBoard {
    * @return
    */
   public GameState answer(QuestionBank question) {
+    QuestionBank myQuestion = currentMove().getQuestion();
+    myQuestion.copy(question);
+    if (myQuestion.isCompletelyFilled() && isSolutionKnown()) {
+      return answer(myQuestion.answer(getSolution()));
+    }
     return GameState.MOVE_OPEN;
   }
 

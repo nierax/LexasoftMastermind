@@ -10,10 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
@@ -206,6 +209,32 @@ class AnyBankTest {
     assertThrows(MasterMindValidationException.class, () -> {
       cut.copy(source);
     });
+  }
+
+  private static Stream<Arguments> testEquals() {
+    return Stream.of(Arguments.of(new AnyBank(NR_OF_HOLES), new int[] { 0, 1, 2, 3 }, false),
+        Arguments.of(new AnyBank(NR_OF_HOLES), new int[] { 0, 0, 0, 0 }, true),
+        Arguments.of(new AnyBank(new NrOfHoles(5)), new int[] { 0, 0, 0, 0, 0 }, false),
+        Arguments.of(new AnyBank(new NrOfHoles(5)), new int[] { 0, 0, 0, 0 }, false));
+  }
+
+  /**
+   * Tests the equals() method
+   * 
+   * @param otherBank The bank to be compared to the cut.
+   * @param values    The values in the otherBank
+   * @param expResult The expected result.
+   */
+  @ParameterizedTest
+  @MethodSource
+  void testEquals(AnyBank otherBank, int[] values, boolean expResult) {
+    // Fill all holes with pins with color 0
+    cut.setPins(createListOfPins(4));
+    // Fill the other bank with the values given
+    for (int i = 0; i < values.length; i++) {
+      otherBank.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, values[i])));
+    }
+    assertEquals(expResult, cut.equals(otherBank));
   }
 
 }

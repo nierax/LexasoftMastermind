@@ -159,6 +159,9 @@ class AnswerBankTest {
     assertTrue(cut.isGiven(), "Attribute given was not transferred.");
   }
 
+  /**
+   * If the number of holes differs, the copy exception must throw an exception.
+   */
   @Test
   void testCopy_WrongOject() {
     AnyBank anyBank = new AnyBank(NR_OF_HOLES);

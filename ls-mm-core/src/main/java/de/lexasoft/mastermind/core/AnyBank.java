@@ -183,4 +183,23 @@ public class AnyBank {
     return holes.get(position).getPin();
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof AnyBank)) {
+      return false;
+    }
+    if (super.equals(obj)) {
+      return true;
+    }
+    if (!nrOfHoles.equals(((AnyBank) obj).nrOfHoles)) {
+      return false;
+    }
+    for (int i = 0; i < nrOfHoles.getValue(); i++) {
+      if (!holes.get(i).equals(((AnyBank) obj).holes.get(i))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
