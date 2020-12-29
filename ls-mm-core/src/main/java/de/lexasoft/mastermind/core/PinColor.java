@@ -54,4 +54,9 @@ public class PinColor extends Value<Integer> {
     return getValue().equals(((PinColor) obj).getValue());
   }
 
+  @Override
+  public String toString() {
+    return getValue().toString();
+  }
+
 }

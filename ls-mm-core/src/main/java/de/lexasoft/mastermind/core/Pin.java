@@ -78,4 +78,9 @@ public class Pin extends Value<PinColor> {
     return getColor().equals(((Pin) obj).getColor());
   }
 
+  @Override
+  public String toString() {
+    return getColor().toString();
+  }
+
 }
