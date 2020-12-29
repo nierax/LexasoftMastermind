@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,20 +32,6 @@ class QuestionBankTest {
   }
 
   /**
-   * Helps to create a list form an integer array
-   * 
-   * @param array
-   * @return
-   */
-  private List<Pin> createListFromArray(int[] array) {
-    List<Pin> list = new ArrayList<>();
-    for (int i = 0; i < array.length; i++) {
-      list.add(new Pin(new QuestionPinColor(NR_OF_COLORS, array[i])));
-    }
-    return list;
-  }
-
-  /**
    * Provides the arguments for the Method testAnswerForBank.
    * 
    * @return Arguments for test method testAnswerForBank
@@ -70,8 +54,8 @@ class QuestionBankTest {
   @ParameterizedTest
   @MethodSource("provideTestCases")
   void testAnswerForBank(int[] question, int[] solution, int expectedBlack, int expectedWhite) {
-    this.question.setPins(createListFromArray(question));
-    this.solution.setPins(createListFromArray(solution));
+    this.question.setPins(BankFactory.createListFromArray(NR_OF_COLORS, question));
+    this.solution.setPins(BankFactory.createListFromArray(NR_OF_COLORS, solution));
     // Test
     AnswerBank answer = this.question.answer(this.solution);
 
@@ -107,8 +91,8 @@ class QuestionBankTest {
   @ParameterizedTest
   @MethodSource
   void testAnswerForBank_BanksNotFilled(int[] question, int[] solution) {
-    this.question.setPins(createListFromArray(question));
-    this.solution.setPins(createListFromArray(solution));
+    this.question.setPins(BankFactory.createListFromArray(NR_OF_COLORS, question));
+    this.solution.setPins(BankFactory.createListFromArray(NR_OF_COLORS, solution));
 
     assertThrows(IllegalArgumentException.class, () -> {
       this.question.answer(this.solution);
@@ -119,8 +103,8 @@ class QuestionBankTest {
   void testAnswerForBank_SameNumberOfHoles() {
     // reset solution to an higher number holes.
     solution = new QuestionBank(new NrOfHoles(5), new NrOfColors(6));
-    solution.setPins(createListFromArray(new int[] { 0, 1, 2, 3, 4 }));
-    question.setPins(createListFromArray(new int[] { 0, 1, 2, 3 }));
+    solution.setPins(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3, 4 }));
+    question.setPins(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 }));
 
     assertThrows(IllegalArgumentException.class, () -> {
       this.question.answer(this.solution);
@@ -133,7 +117,7 @@ class QuestionBankTest {
    */
   @Test
   void test_setResetAllPinsCounted() {
-    solution.setPins(createListFromArray(new int[] { 0, 1, 2, 3 }));
+    solution.setPins(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 }));
     solution.setAllPinsCounted();
     for (Hole hole : this.solution.getHoles()) {
       assertTrue(hole.getPin().isCounted());
