@@ -8,8 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author admin
- *
+ * Creates all combinations of number of colors and holes one by one by calling
+ * the next() method.
+ * <p>
+ * Can be used to form a foreach loop. Thus the logic of scanning the possible
+ * combinations against a question can be optimized, as the check can be done
+ * directly after the creation of the comibination.
+ * 
+ * @author Axel
  */
 public class CombinationCreator implements Iterable<List<Pin>>, Iterator<List<Pin>> {
 
@@ -75,6 +81,9 @@ public class CombinationCreator implements Iterable<List<Pin>>, Iterator<List<Pi
     return combination;
   }
 
+  /**
+   * Added to be able, to put the creator into a foreach loop.
+   */
   @Override
   public Iterator<List<Pin>> iterator() {
     return this;
