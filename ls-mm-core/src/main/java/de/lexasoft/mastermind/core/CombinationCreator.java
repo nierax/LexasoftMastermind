@@ -13,7 +13,7 @@ import java.util.List;
  * <p>
  * Can be used to form a foreach loop. Thus the logic of scanning the possible
  * combinations against a question can be optimized, as the check can be done
- * directly after the creation of the comibination.
+ * directly after the creation of the combination.
  * 
  * @author Axel
  */
