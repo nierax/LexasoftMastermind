@@ -3,6 +3,10 @@
  */
 package de.lexasoft.mastermind.core;
 
+import java.util.List;
+
+import de.lexasoft.game.DiceCup;
+
 /**
  * Represents one line of pins for question.
  * 
@@ -11,6 +15,7 @@ package de.lexasoft.mastermind.core;
 public class QuestionBank extends AnyBank {
 
   private NrOfColors nrOfColors;
+  private DiceCup diceCup;
 
   /**
    * Creates a bank of pins with the given number of pins, each with a range of
@@ -22,6 +27,7 @@ public class QuestionBank extends AnyBank {
   public QuestionBank(NrOfHoles nrOfHoles, NrOfColors nrOfColors) {
     super(nrOfHoles);
     this.nrOfColors = nrOfColors;
+    diceCup = new DiceCup(getNrOfHoles().getValue(), 1, nrOfColors.getValue());
   }
 
   NrOfColors getNrOfColors() {
@@ -134,6 +140,23 @@ public class QuestionBank extends AnyBank {
     solution.resetAllPinsCounted();
     resetAllPinsCounted();
     return answer;
+  }
+
+  /**
+   * All pins are set with random values.
+   * <p>
+   * This happens for all pins, even if they have had a value before.
+   * 
+   * @return The question bank with the new values.
+   */
+  public QuestionBank roll() {
+    removeAllPins();
+    List<Integer> values = diceCup.roll();
+    for (Integer value : values) {
+      // Subtract 1 from the value, because dice is 1-based, but pins are 0-based.
+      addPin(new Pin(new QuestionPinColor(nrOfColors, value - 1)));
+    }
+    return this;
   }
 
 }

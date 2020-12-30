@@ -237,4 +237,17 @@ class AnyBankTest {
     assertEquals(expResult, cut.equals(otherBank));
   }
 
+  @Test
+  void testRemoveAllPins() {
+    // Fill all holes with pins with color 0
+    cut.setPins(createListOfPins(4));
+    // now remove all pins
+    AnyBank result = cut.removeAllPins();
+    assertNotNull(result, "removeAllPins() must not return null.");
+    assertSame(result, cut, "removeAllPins() must return same object as cut.");
+    for (Hole hole : result.getHoles()) {
+      assertFalse(hole.holdsAPin(), "Hole mus be empty now.");
+    }
+  }
+
 }

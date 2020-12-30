@@ -2,6 +2,8 @@ package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -126,6 +128,15 @@ class QuestionBankTest {
     for (Hole hole : this.solution.getHoles()) {
       assertFalse(hole.getPin().isCounted());
     }
+  }
+
+  @Test
+  void testRoll() {
+    assertFalse(question.isCompletelyFilled(), "After creation holes must be empty.");
+    QuestionBank result = question.roll();
+    assertNotNull(result, "The retruned bank must not be null.");
+    assertSame(result, question, "The retruned bank must be the same object as the called.");
+    assertTrue(result.isCompletelyFilled(), "After roll all pins mus have a value.");
   }
 
 }

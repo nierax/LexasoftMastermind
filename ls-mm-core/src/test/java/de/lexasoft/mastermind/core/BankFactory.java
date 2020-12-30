@@ -28,11 +28,24 @@ public class BankFactory {
    * @return A questionBank filled with the given values.
    */
   final static QuestionBank createQuestionBank(NrOfColors nrOfColors, NrOfHoles nrOfHoles, int[] values) {
-    QuestionBank questionBank = new QuestionBank(nrOfHoles, nrOfColors);
     List<Pin> pins = new ArrayList<>();
     for (int i = 0; i < values.length; i++) {
       pins.add(i, new Pin(new QuestionPinColor(nrOfColors, values[i])));
     }
+    return createQuestionBank(nrOfColors, nrOfHoles, pins);
+  }
+
+  /**
+   * Creates a question bank with the given pins.
+   * 
+   * @param nrOfColors Number of colors.
+   * @param nrOfHoles  Number of holes.
+   * @param pins       List with the pins to set.
+   * @return
+   */
+  final static QuestionBank createQuestionBank(NrOfColors nrOfColors, NrOfHoles nrOfHoles, List<Pin> pins) {
+    QuestionBank questionBank = new QuestionBank(nrOfHoles, nrOfColors);
+    questionBank.setPins(pins);
     return questionBank;
   }
 

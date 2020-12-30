@@ -145,6 +145,18 @@ public class AnyBank {
   }
 
   /**
+   * Removes all pins from the holes.
+   * 
+   * @return Reference to this object.
+   */
+  AnyBank removeAllPins() {
+    for (Hole hole : holes) {
+      hole.removePin();
+    }
+    return this;
+  }
+
+  /**
    * Gets the currently used number of pins.
    * 
    * @return
