@@ -6,17 +6,19 @@ package de.lexasoft.mastermind.core;
 import java.util.List;
 
 import de.lexasoft.mastermind.core.api.GameState;
-import de.lexasoft.mastermind.core.api.MasterMindBoard;
+import de.lexasoft.mastermind.core.api.MasterMindAPI;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.NrOfMoves;
 import de.lexasoft.mastermind.core.api.Pin;
 
 /**
- * @author admin
+ * This is the default implementation of the master mind api.
+ * 
+ * @author Axel
  *
  */
-public class MasterMindBoardImpl implements MasterMindBoard {
+public class MasterMindAPIImpl implements MasterMindAPI {
 
   private GameBoard gameBoard;
   private MMStrategy strategy;
@@ -24,7 +26,7 @@ public class MasterMindBoardImpl implements MasterMindBoard {
   /**
    * 
    */
-  public MasterMindBoardImpl(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
+  public MasterMindAPIImpl(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
     gameBoard = new GameBoard(nrOfHoles, nrOfColors, nrOfMoves);
     strategy = new MMStrategy(nrOfColors, nrOfHoles);
   }

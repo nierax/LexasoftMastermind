@@ -3,22 +3,22 @@
  */
 package de.lexasoft.mastermind.core.api;
 
-import de.lexasoft.mastermind.core.MasterMindBoardImpl;
+import de.lexasoft.mastermind.core.MasterMindAPIImpl;
 
 /**
- * This class holds an api for the master mind game for the use by clients.
+ * This class creates a master mind api for use with a client.
  * <p>
- * Pattern: Facade
+ * Pattern: Factory
  * 
  * @author Axel
  *
  */
-public class MasterMindCoreAPI {
+public class MasterMindFactoryAPI {
 
   /**
    * 
    */
-  public MasterMindCoreAPI() {
+  public MasterMindFactoryAPI() {
     // TODO Auto-generated constructor stub
   }
 
@@ -30,8 +30,8 @@ public class MasterMindCoreAPI {
    * @param nrOfMoves     Maximum number of moves to win the game.
    * @return
    */
-  public MasterMindBoard createBoard(NrOfHoles nrOfPositions, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
-    return new MasterMindBoardImpl(nrOfPositions, nrOfColors, nrOfMoves);
+  public MasterMindAPI createBoard(NrOfHoles nrOfPositions, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
+    return new MasterMindAPIImpl(nrOfPositions, nrOfColors, nrOfMoves);
   }
 
   /**
@@ -42,7 +42,7 @@ public class MasterMindCoreAPI {
    * @param nrOfMoves     Maximum number of moves to win the game.
    * @return
    */
-  public MasterMindBoard createBoard(int nrOfPositions, int nrOfColors, int nrOfMoves) {
+  public MasterMindAPI createBoard(int nrOfPositions, int nrOfColors, int nrOfMoves) {
     return createBoard(new NrOfHoles(nrOfPositions), new NrOfColors(nrOfColors), new NrOfMoves(nrOfMoves));
   }
 

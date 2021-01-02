@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import de.lexasoft.mastermind.core.api.GameState;
-import de.lexasoft.mastermind.core.api.MasterMindBoard;
-import de.lexasoft.mastermind.core.api.MasterMindCoreAPI;
+import de.lexasoft.mastermind.core.api.MasterMindAPI;
+import de.lexasoft.mastermind.core.api.MasterMindFactoryAPI;
 import de.lexasoft.mastermind.core.api.Pin;
 import de.lexasoft.mastermind.core.api.QuestionPinColor;
 
@@ -23,8 +23,8 @@ public class MMCLI {
 
   private MMInputValidator validator;
 
-  private MasterMindCoreAPI mmApi;
-  private MasterMindBoard mmBoard;
+  private MasterMindFactoryAPI mmApi;
+  private MasterMindAPI mmBoard;
   private String playersName;
   private Scanner scanner;
 
@@ -33,7 +33,7 @@ public class MMCLI {
    */
   private MMCLI() {
     validator = new MMInputValidator();
-    mmApi = new MasterMindCoreAPI();
+    mmApi = new MasterMindFactoryAPI();
     scanner = new Scanner(System.in);
   }
 
@@ -70,7 +70,7 @@ public class MMCLI {
   /**
    * 
    */
-  private MasterMindBoard askParameters() {
+  private MasterMindAPI askParameters() {
     int iNrOfColors;
     int iNrOfHoles;
     int iNrOfMoves;

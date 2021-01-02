@@ -14,9 +14,9 @@ import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.NrOfMoves;
 import de.lexasoft.mastermind.core.api.Pin;
 
-class MasterMindBoardImplTest {
+class MasterMindAPIImplTest {
 
-  private MasterMindBoardImpl cut;
+  private MasterMindAPIImpl cut;
 
   private final static NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
   private final static NrOfColors NR_OF_COLORS = new NrOfColors(6);
@@ -24,7 +24,7 @@ class MasterMindBoardImplTest {
 
   @BeforeEach
   void prepareTestCase() {
-    cut = new MasterMindBoardImpl(NR_OF_HOLES, NR_OF_COLORS, NR_OF_MOVES);
+    cut = new MasterMindAPIImpl(NR_OF_HOLES, NR_OF_COLORS, NR_OF_MOVES);
   }
 
   @Test

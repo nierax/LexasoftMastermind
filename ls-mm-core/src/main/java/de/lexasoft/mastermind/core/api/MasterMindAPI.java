@@ -2,7 +2,7 @@ package de.lexasoft.mastermind.core.api;
 
 import java.util.List;
 
-public interface MasterMindBoard {
+public interface MasterMindAPI {
 
   /**
    * Is there one more move allowed or is the board already filled with moves?
