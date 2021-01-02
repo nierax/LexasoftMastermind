@@ -7,16 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import de.lexasoft.mastermind.core.AnswerBank;
-import de.lexasoft.mastermind.core.GameBoard;
-import de.lexasoft.mastermind.core.GameState;
-import de.lexasoft.mastermind.core.MMStrategy;
-import de.lexasoft.mastermind.core.NrOfColors;
-import de.lexasoft.mastermind.core.NrOfHoles;
-import de.lexasoft.mastermind.core.NrOfMoves;
-import de.lexasoft.mastermind.core.Pin;
-import de.lexasoft.mastermind.core.QuestionBank;
-import de.lexasoft.mastermind.core.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.GameState;
+import de.lexasoft.mastermind.core.api.MasterMindBoard;
+import de.lexasoft.mastermind.core.api.MasterMindCoreAPI;
+import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPinColor;
 
 /**
  * CLI application for master mind. Demo purpose only.
@@ -28,8 +23,8 @@ public class MMCLI {
 
   private MMInputValidator validator;
 
-  private GameBoard mmBoard;
-  private MMStrategy strategy;
+  private MasterMindCoreAPI mmApi;
+  private MasterMindBoard mmBoard;
   private String playersName;
   private Scanner scanner;
 
@@ -38,6 +33,7 @@ public class MMCLI {
    */
   private MMCLI() {
     validator = new MMInputValidator();
+    mmApi = new MasterMindCoreAPI();
     scanner = new Scanner(System.in);
   }
 
@@ -47,7 +43,6 @@ public class MMCLI {
    */
   void runGame(String[] args) {
     mmBoard = askParameters();
-    strategy = new MMStrategy(mmBoard.getNrOfColors(), mmBoard.getNrOfHoles());
     playPlayerGuess();
     System.out.println("Good bye.");
   }
@@ -56,17 +51,14 @@ public class MMCLI {
    * The procedure, when the player has to guess.
    */
   private void playPlayerGuess() {
-    mmBoard.setSolution(strategy.createSolution());
+    mmBoard.createSolution();
     System.out.println(String.format("I've got a combination. Your turn, %s.", playersName));
     while (mmBoard.getState() == GameState.MOVE_OPEN) {
       int moveIdx = mmBoard.getMoveIndex();
       System.out.print(String.format("%s guess nr.%s (X, X, X, X): ", playersName, moveIdx + 1));
-      List<Pin> guessedPins = readQuestionFromKeyboard();
-      QuestionBank guess = new QuestionBank(mmBoard.getNrOfHoles(), mmBoard.getNrOfColors());
-      guess.setPins(guessedPins);
-      AnswerBank answer = mmBoard.answer(guess);
-      System.out.println(" Answer: " + answer.toString());
-      if (answer.isCorrect()) {
+      List<Pin> answerPins = mmBoard.answerQuestion(readQuestionFromKeyboard());
+      System.out.println(" Answer: " + answerPins.toString());
+      if (mmBoard.getState() == GameState.WON) {
         System.out.println(String.format("Correct. %s has won in %s moves.", playersName, moveIdx + 1));
         return;
       }
@@ -78,38 +70,35 @@ public class MMCLI {
   /**
    * 
    */
-  private GameBoard askParameters() {
-    NrOfColors nrOfColors;
-    NrOfHoles nrOfHoles;
-    NrOfMoves nrOfMoves;
+  private MasterMindBoard askParameters() {
+    int iNrOfColors;
+    int iNrOfHoles;
+    int iNrOfMoves;
     System.out.print("Player's name: ");
     playersName = scanner.next();
     System.out.println("Ok, " + playersName);
     while (true) {
       System.out.print("Number of colors to guess (at least 6): ");
-      int iNrOfColors = scanner.nextInt();
+      iNrOfColors = scanner.nextInt();
       if (validator.validateNrOfColors(iNrOfColors)) {
-        nrOfColors = new NrOfColors(iNrOfColors);
         break;
       }
     }
     while (true) {
       System.out.print("Number of positions in combination (at least 4): ");
-      int iNrOfHoles = scanner.nextInt();
+      iNrOfHoles = scanner.nextInt();
       if (validator.validateNrOfHoles(iNrOfHoles)) {
-        nrOfHoles = new NrOfHoles(iNrOfHoles);
         break;
       }
     }
     while (true) {
       System.out.print("Number of moves to guess (ar least 6): ");
-      int iNrOfMoves = scanner.nextInt();
+      iNrOfMoves = scanner.nextInt();
       if (validator.validateNrOfMoves(iNrOfMoves)) {
-        nrOfMoves = new NrOfMoves(iNrOfMoves);
         break;
       }
     }
-    return new GameBoard(nrOfHoles, nrOfColors, nrOfMoves);
+    return mmApi.createBoard(iNrOfHoles, iNrOfColors, iNrOfMoves);
   }
 
   private List<Pin> readQuestionFromKeyboard() {

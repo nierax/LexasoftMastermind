@@ -3,6 +3,9 @@
  */
 package de.lexasoft.mastermind.core;
 
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+
 /**
  * Represents one move in the game board.
  * <p>

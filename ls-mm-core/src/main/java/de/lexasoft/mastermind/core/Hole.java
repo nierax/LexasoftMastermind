@@ -4,6 +4,7 @@
 package de.lexasoft.mastermind.core;
 
 import de.lexasoft.common.model.Value;
+import de.lexasoft.mastermind.core.api.Pin;
 
 /**
  * One hole in the bank, which can hold a pin in it.

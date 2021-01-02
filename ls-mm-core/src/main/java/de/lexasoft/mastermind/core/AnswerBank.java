@@ -3,6 +3,10 @@
  */
 package de.lexasoft.mastermind.core;
 
+import de.lexasoft.mastermind.core.api.AnswerPinColor;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.Pin;
+
 /**
  * Represents the bank for answers with only white and black pins.
  * 

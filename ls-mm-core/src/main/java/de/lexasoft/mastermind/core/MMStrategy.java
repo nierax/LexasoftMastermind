@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.lexasoft.game.Dice;
+import de.lexasoft.mastermind.core.api.MasterMindValidationException;
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.Pin;
 
 /**
  * Holds the strategy, the computer uses to find the right combination.

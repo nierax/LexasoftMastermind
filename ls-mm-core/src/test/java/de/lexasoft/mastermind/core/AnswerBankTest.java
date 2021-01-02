@@ -13,6 +13,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import de.lexasoft.mastermind.core.api.MasterMindValidationException;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+
 class AnswerBankTest {
 
   private AnswerBank cut;

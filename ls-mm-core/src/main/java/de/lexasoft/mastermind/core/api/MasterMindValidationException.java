@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.lexasoft.mastermind.core;
+package de.lexasoft.mastermind.core.api;
 
 /**
  * Signalizes a situation in Master Kind, where a validation failed.

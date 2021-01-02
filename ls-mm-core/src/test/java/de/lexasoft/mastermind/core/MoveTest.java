@@ -9,6 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPinColor;
+
 /**
  * Tests the move class
  * 

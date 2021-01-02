@@ -6,6 +6,11 @@ package de.lexasoft.mastermind.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPinColor;
+
 /**
  * Help class to easily create instances of banks in test situations.
  * 

@@ -15,6 +15,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import de.lexasoft.mastermind.core.QuestionBank.QuestionPin;
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+
 /**
  * Tests the important methods in question bank.
  * 
@@ -66,10 +70,10 @@ class QuestionBankTest {
     assertEquals(expectedWhite, answer.getNrOfWhitePins());
     // Both solution and question must be free for another answer
     for (Hole hole : this.solution.getHoles()) {
-      assertFalse(hole.getPin().isCounted());
+      assertFalse(((QuestionPin) hole.getPin()).isCounted());
     }
     for (Hole hole : this.solution.getHoles()) {
-      assertFalse(hole.getPin().isCounted());
+      assertFalse(((QuestionPin) hole.getPin()).isCounted());
     }
     assertTrue(answer.isGiven(), "The answer must be marked as given.");
   }
@@ -123,11 +127,11 @@ class QuestionBankTest {
     solution.setPins(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 }));
     solution.setAllPinsCounted();
     for (Hole hole : this.solution.getHoles()) {
-      assertTrue(hole.getPin().isCounted());
+      assertTrue(((QuestionPin) hole.getPin()).isCounted());
     }
     solution.resetAllPinsCounted();
     for (Hole hole : this.solution.getHoles()) {
-      assertFalse(hole.getPin().isCounted());
+      assertFalse(((QuestionPin) hole.getPin()).isCounted());
     }
   }
 

@@ -1,4 +1,4 @@
-package de.lexasoft.mastermind.core;
+package de.lexasoft.mastermind.core.api;
 
 import de.lexasoft.common.model.Value;
 
@@ -12,8 +12,6 @@ import de.lexasoft.common.model.Value;
  */
 public class Pin extends Value<PinColor> {
 
-  private boolean counted;
-
   /**
    * Create a pin with number of colors.
    * 
@@ -21,7 +19,6 @@ public class Pin extends Value<PinColor> {
    */
   public Pin(PinColor color) {
     super(color);
-    counted = false;
   }
 
   /**
@@ -43,28 +40,6 @@ public class Pin extends Value<PinColor> {
    */
   public boolean comparePin(Pin otherPin) {
     return equals(otherPin);
-  }
-
-  /**
-   * 
-   * @return True, if the pin has already been counted, false otherwise.
-   */
-  boolean isCounted() {
-    return counted;
-  }
-
-  /**
-   * Marks the pin counted.
-   */
-  void setCounted() {
-    counted = true;
-  }
-
-  /**
-   * Removes the counted mark from the pin.
-   */
-  void resetCounted() {
-    counted = false;
   }
 
   /**

@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import de.lexasoft.mastermind.core.api.AnswerPinColor;
+
 /**
  * Make sure, only valid value are accepted.
  * 
@@ -18,7 +20,7 @@ class AnswerPinColorTest {
 
   /**
    * Test method for
-   * {@link de.lexasoft.mastermind.core.AnswerPinColor#AnswerPinColor(java.lang.Integer)}.
+   * {@link de.lexasoft.mastermind.core.api.AnswerPinColor#AnswerPinColor(java.lang.Integer)}.
    * Should accept a valid value to the color.
    */
   @ParameterizedTest
@@ -30,7 +32,7 @@ class AnswerPinColorTest {
 
   /**
    * Test method for
-   * {@link de.lexasoft.mastermind.core.AnswerPinColor#AnswerPinColor(java.lang.Integer)}.
+   * {@link de.lexasoft.mastermind.core.api.AnswerPinColor#AnswerPinColor(java.lang.Integer)}.
    * Should reject an invalid value to the color.
    */
   @ParameterizedTest

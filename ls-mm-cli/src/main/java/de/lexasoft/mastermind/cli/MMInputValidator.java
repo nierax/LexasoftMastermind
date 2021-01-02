@@ -3,9 +3,9 @@
  */
 package de.lexasoft.mastermind.cli;
 
-import de.lexasoft.mastermind.core.NrOfColors;
-import de.lexasoft.mastermind.core.NrOfHoles;
-import de.lexasoft.mastermind.core.NrOfMoves;
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.NrOfMoves;
 
 /**
  * @author admin

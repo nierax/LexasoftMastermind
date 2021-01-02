@@ -6,6 +6,10 @@ package de.lexasoft.mastermind.core;
 import java.util.List;
 
 import de.lexasoft.game.DiceCup;
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPinColor;
 
 /**
  * Represents one line of pins for question.
@@ -16,6 +20,43 @@ public class QuestionBank extends AnyBank {
 
   private NrOfColors nrOfColors;
   private DiceCup diceCup;
+
+  /**
+   * Adds a counted attribute to the pin, which is needed for the internal
+   * answering process.
+   */
+  class QuestionPin extends Pin {
+    private boolean counted;
+
+    public QuestionPin(Pin pin) {
+      super(pin.getColor());
+      setValue(pin.getColor());
+      counted = false;
+    }
+
+    /**
+     * 
+     * @return True, if the pin has already been counted, false otherwise.
+     */
+    boolean isCounted() {
+      return counted;
+    }
+
+    /**
+     * Marks the pin counted.
+     */
+    void setCounted() {
+      counted = true;
+    }
+
+    /**
+     * Removes the counted mark from the pin.
+     */
+    void resetCounted() {
+      counted = false;
+    }
+
+  }
 
   /**
    * Creates a bank of pins with the given number of pins, each with a range of
@@ -40,7 +81,7 @@ public class QuestionBank extends AnyBank {
   void setAllPinsCounted() {
     for (Hole hole : getHoles()) {
       if (hole.holdsAPin()) {
-        hole.getPin().setCounted();
+        ((QuestionPin) hole.getPin()).setCounted();
       }
     }
   }
@@ -51,7 +92,7 @@ public class QuestionBank extends AnyBank {
   void resetAllPinsCounted() {
     for (Hole hole : getHoles()) {
       if (hole.holdsAPin()) {
-        hole.getPin().resetCounted();
+        ((QuestionPin) hole.getPin()).resetCounted();
       }
     }
   }
@@ -63,8 +104,8 @@ public class QuestionBank extends AnyBank {
   private int countBlackHits(QuestionBank solution) {
     int blackHits = 0;
     for (int i = 0; i < getNrOfHoles().getValue(); i++) {
-      Pin myPin = getPin(i);
-      Pin solutionPin = solution.getPin(i);
+      QuestionPin myPin = (QuestionPin) getPin(i);
+      QuestionPin solutionPin = (QuestionPin) solution.getPin(i);
       // Hits at the same position
       if (solutionPin.comparePin(myPin)) {
         blackHits++;
@@ -83,11 +124,11 @@ public class QuestionBank extends AnyBank {
   private int countWhiteHits(QuestionBank solution) {
     int whiteHits = 0;
     for (int i = 0; i < getNrOfHoles().getValue(); i++) {
-      Pin myPin = getPin(i);
+      QuestionPin myPin = (QuestionPin) getPin(i);
       // If the pin had a black hit before, it must not be counted again.
       if (!myPin.isCounted()) {
         for (int j = 0; j < solution.getNrOfHoles().getValue(); j++) {
-          Pin solutionPin = solution.getPin(j);
+          QuestionPin solutionPin = (QuestionPin) solution.getPin(j);
           // Same index would be black and must not be counted
           // If the solution pin was counted before, we must not count this one
           if ((i != j) && !solutionPin.isCounted()) {
@@ -159,6 +200,30 @@ public class QuestionBank extends AnyBank {
       addPin(new Pin(new QuestionPinColor(nrOfColors, value - 1)));
     }
     return this;
+  }
+
+  /**
+   * Replaces the pin by an instance of question pin.
+   * <p>
+   * This is necessary for being able to mark pins as counted under the answering
+   * process.
+   */
+  @Override
+  Pin addPin(Pin pin, int position) {
+    QuestionPin myPin = new QuestionPin(pin);
+    return super.addPin(myPin, position);
+  }
+
+  /**
+   * Replaces the pin by an instance of question pin.
+   * <p>
+   * This is necessary for being able to mark pins as counted under the answering
+   * process.
+   */
+  @Override
+  Pin addPin(Pin pin) {
+    QuestionPin myPin = new QuestionPin(pin);
+    return super.addPin(myPin);
   }
 
 }

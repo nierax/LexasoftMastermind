@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.lexasoft.mastermind.core;
+package de.lexasoft.mastermind.core.api;
 
 /**
  * Signalizes, whether the game is still running (a move is open to answer),

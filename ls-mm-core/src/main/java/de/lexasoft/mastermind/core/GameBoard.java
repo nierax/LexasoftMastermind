@@ -6,6 +6,11 @@ package de.lexasoft.mastermind.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.lexasoft.mastermind.core.api.GameState;
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.NrOfMoves;
+
 /**
  * Represents the board, on which the game is played, thus being the anchor
  * object for the whole game.
@@ -131,8 +136,9 @@ public class GameBoard {
    * 
    * @param solution The solution, which should be guessed.
    */
-  public void setSolution(QuestionBank solution) {
+  public QuestionBank setSolution(QuestionBank solution) {
     this.solution = solution;
+    return this.solution;
   }
 
   /**

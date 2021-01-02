@@ -3,6 +3,10 @@ package de.lexasoft.mastermind.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.lexasoft.mastermind.core.api.MasterMindValidationException;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.Pin;
+
 /**
  * Base class for any bank in the game.
  * <p>
@@ -193,6 +197,22 @@ public class AnyBank {
    */
   public Pin getPin(int position) {
     return holes.get(position).getPin();
+  }
+
+  /**
+   * This method returns a list of all pins, currently set. Holes, which are
+   * empty, are ignored.
+   * 
+   * @return List of pins.
+   */
+  public List<Pin> getPins() {
+    List<Pin> pins = new ArrayList<>();
+    for (Hole hole : holes) {
+      if (hole.holdsAPin()) {
+        pins.add(hole.getPin());
+      }
+    }
+    return pins;
   }
 
   @Override

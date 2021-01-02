@@ -1,4 +1,4 @@
-package de.lexasoft.mastermind.core;
+package de.lexasoft.mastermind.core.api;
 
 import de.lexasoft.common.model.MinimumValidator;
 import de.lexasoft.common.model.Value;
