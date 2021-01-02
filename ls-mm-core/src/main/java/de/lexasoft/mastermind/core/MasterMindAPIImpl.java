@@ -83,4 +83,24 @@ public class MasterMindAPIImpl implements MasterMindAPI {
     return gameBoard.getSolution().getPins();
   }
 
+  @Override
+  public List<Pin> setSolution(List<Pin> solution) {
+    QuestionBank solutionBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
+    return gameBoard.setSolution(solutionBank).getPins();
+  }
+
+  @Override
+  public List<Pin> nextComputerGuess(List<Pin> lastGuess, List<Pin> lastAnswer) {
+    QuestionBank lastGuessBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
+    lastGuessBank.setPins(lastGuess);
+    AnswerBank answerBank = new AnswerBank(getNrOfHoles());
+    answerBank.setPins(lastAnswer);
+    return strategy.nextGuess(lastGuessBank, answerBank).getPins();
+  }
+
+  @Override
+  public List<Pin> firstComputerGuess() {
+    return strategy.firstGuess().getPins();
+  }
+
 }

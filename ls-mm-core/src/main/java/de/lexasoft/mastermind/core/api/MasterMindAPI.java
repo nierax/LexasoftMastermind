@@ -47,6 +47,14 @@ public interface MasterMindAPI {
   List<Pin> getSolution();
 
   /**
+   * Sets a new solution to guess.
+   * 
+   * @param solution
+   * @return The list will be returned.
+   */
+  List<Pin> setSolution(List<Pin> solution);
+
+  /**
    * @return the state
    */
   GameState getState();
@@ -67,5 +75,19 @@ public interface MasterMindAPI {
    * @return
    */
   List<Pin> answerQuestion(List<Pin> pins);
+
+  /**
+   * Next guess, the computer does according to its strategy.
+   * 
+   * @return The list of pins, guessed by the computer.
+   */
+  List<Pin> nextComputerGuess(List<Pin> lastGuess, List<Pin> lastAnswer);
+
+  /**
+   * First guess, the computer does in the beginning of the game.
+   * 
+   * @return The list of pins, guessed by the computer.
+   */
+  List<Pin> firstComputerGuess();
 
 }

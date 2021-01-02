@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import de.lexasoft.mastermind.core.api.AnswerPinColor;
 import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.MasterMindAPI;
 import de.lexasoft.mastermind.core.api.MasterMindFactoryAPI;
@@ -23,8 +24,8 @@ public class MMCLI {
 
   private MMInputValidator validator;
 
-  private MasterMindFactoryAPI mmApi;
-  private MasterMindAPI mmBoard;
+  private MasterMindFactoryAPI mmFactory;
+  private MasterMindAPI mmApi;
   private String playersName;
   private Scanner scanner;
 
@@ -33,7 +34,7 @@ public class MMCLI {
    */
   private MMCLI() {
     validator = new MMInputValidator();
-    mmApi = new MasterMindFactoryAPI();
+    mmFactory = new MasterMindFactoryAPI();
     scanner = new Scanner(System.in);
   }
 
@@ -42,7 +43,7 @@ public class MMCLI {
    * @param args
    */
   void runGame(String[] args) {
-    mmBoard = askParameters();
+    mmApi = askParameters();
     playPlayerGuess();
     System.out.println("Good bye.");
   }
@@ -51,20 +52,39 @@ public class MMCLI {
    * The procedure, when the player has to guess.
    */
   private void playPlayerGuess() {
-    mmBoard.createSolution();
+    mmApi.createSolution();
     System.out.println(String.format("I've got a combination. Your turn, %s.", playersName));
-    while (mmBoard.getState() == GameState.MOVE_OPEN) {
-      int moveIdx = mmBoard.getMoveIndex();
+    while (mmApi.getState() == GameState.MOVE_OPEN) {
+      int moveIdx = mmApi.getMoveIndex();
       System.out.print(String.format("%s guess nr.%s (X, X, X, X): ", playersName, moveIdx + 1));
-      List<Pin> answerPins = mmBoard.answerQuestion(readQuestionFromKeyboard());
+      List<Pin> answerPins = mmApi.answerQuestion(readQuestionFromKeyboard());
       System.out.println(" Answer: " + answerPins.toString());
-      if (mmBoard.getState() == GameState.WON) {
+      if (mmApi.getState() == GameState.WON) {
         System.out.println(String.format("Correct. %s has won in %s moves.", playersName, moveIdx + 1));
         return;
       }
     }
     System.out.println(
-        String.format("%s has lost, unfortunately. Right combination was: %s", playersName, mmBoard.getSolution()));
+        String.format("%s has lost, unfortunately. Right combination was: %s", playersName, mmApi.getSolution()));
+  }
+
+  private void playComputerGuess() {
+    System.out.println(String.format("Now it is Your turn to find a combination, %s.", playersName));
+    System.out.print("Enter Your combination or just <ENTER>, if You want to answer Yourself: ");
+    List<Pin> solution = readQuestionFromKeyboard();
+    if (solution.size() == mmApi.getNrOfHoles().getValue()) {
+      mmApi.setSolution(solution);
+    }
+    List<Pin> computerGuess = mmApi.firstComputerGuess();
+    while (mmApi.getState() == GameState.MOVE_OPEN) {
+      int moveIdx = mmApi.getMoveIndex();
+      List<Pin> answer2Computer;
+      System.out.println(String.format("My guess nr %s is: %s", moveIdx + 1, computerGuess.toString()));
+      if (!mmApi.isSolutionKnown()) {
+        System.out.print(String.format("%s, it is Your turn to give the answer (white pin: 0, black pin: 1): "));
+        answer2Computer = readAnswerFromKeyboard();
+      }
+    }
   }
 
   /**
@@ -98,7 +118,7 @@ public class MMCLI {
         break;
       }
     }
-    return mmApi.createBoard(iNrOfHoles, iNrOfColors, iNrOfMoves);
+    return mmFactory.createBoard(iNrOfHoles, iNrOfColors, iNrOfMoves);
   }
 
   private List<Pin> readQuestionFromKeyboard() {
@@ -106,9 +126,20 @@ public class MMCLI {
     String[] values = value.split(",");
     List<Pin> pins = new ArrayList<Pin>();
     for (int i = 0; i < values.length; i++) {
-      pins.add(new Pin(new QuestionPinColor(mmBoard.getNrOfColors(), Integer.valueOf(values[i]))));
+      pins.add(new Pin(new QuestionPinColor(mmApi.getNrOfColors(), Integer.valueOf(values[i]))));
     }
     return pins;
+  }
+
+  private List<Pin> readAnswerFromKeyboard() {
+    List<Pin> pins = new ArrayList<Pin>();
+    String value = scanner.next();
+    String[] values = value.split(",");
+    for (int i = 0; i < values.length; i++) {
+      pins.add(new Pin(new AnswerPinColor(Integer.valueOf(values[i]))));
+    }
+    return pins;
+
   }
 
   /**
