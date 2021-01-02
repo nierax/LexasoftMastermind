@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import de.lexasoft.mastermind.core.AnswerBank;
 import de.lexasoft.mastermind.core.GameBoard;
+import de.lexasoft.mastermind.core.GameState;
 import de.lexasoft.mastermind.core.MMStrategy;
 import de.lexasoft.mastermind.core.NrOfColors;
 import de.lexasoft.mastermind.core.NrOfHoles;
@@ -57,23 +58,21 @@ public class MMCLI {
   private void playPlayerGuess() {
     mmBoard.setSolution(strategy.createSolution());
     System.out.println(String.format("I've got a combination. Your turn, %s.", playersName));
-    for (int i = 0; i < mmBoard.getMaxNrOfMoves().getValue(); i++) {
-      System.out.print(String.format("%s guess nr.%s (X, X, X, X): ", playersName, i + 1));
+    while (mmBoard.getState() == GameState.MOVE_OPEN) {
+      int moveIdx = mmBoard.getMoveIndex();
+      System.out.print(String.format("%s guess nr.%s (X, X, X, X): ", playersName, moveIdx + 1));
       List<Pin> guessedPins = readQuestionFromKeyboard();
       QuestionBank guess = new QuestionBank(mmBoard.getNrOfHoles(), mmBoard.getNrOfColors());
       guess.setPins(guessedPins);
-      mmBoard.answer(guess);
-      AnswerBank answer = mmBoard.getLastAnsweredMove().getAnswer();
+      AnswerBank answer = mmBoard.answer(guess);
       System.out.println(" Answer: " + answer.toString());
       if (answer.isCorrect()) {
-        System.out.println(String.format("Correct. %s has won in %s moves.", playersName, i + 1));
-        break;
-      }
-      if (i == mmBoard.getMaxNrOfMoves().getValue() - 1) {
-        System.out.println(
-            String.format("%s has lost, unfortunately. Right combination was: %", playersName, mmBoard.getSolution()));
+        System.out.println(String.format("Correct. %s has won in %s moves.", playersName, moveIdx + 1));
+        return;
       }
     }
+    System.out.println(
+        String.format("%s has lost, unfortunately. Right combination was: %s", playersName, mmBoard.getSolution()));
   }
 
   /**

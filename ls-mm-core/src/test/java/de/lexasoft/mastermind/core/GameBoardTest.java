@@ -102,13 +102,13 @@ class GameBoardTest {
     answer.addBlackPins(nrOfBlacks);
 
     // Now call the answer method
-    GameState received = cut.answer(answer);
+    AnswerBank answerReceived = cut.answer(answer);
+    GameState received = cut.getState();
 
     // Check
-    Move move = cut.getMove(moveIndex);
     assertEquals(expected, received, "Not the expected GameState delivered.");
-    assertEquals(nrOfWhites, move.getAnswer().getNrOfWhitePins(), "Number of white pins not set correctly.");
-    assertEquals(nrOfBlacks, move.getAnswer().getNrOfBlackPins(), "Number of black pins not set correctly.");
+    assertEquals(nrOfWhites, answerReceived.getNrOfWhitePins(), "Number of white pins not set correctly.");
+    assertEquals(nrOfBlacks, answerReceived.getNrOfBlackPins(), "Number of black pins not set correctly.");
     if (expected == GameState.MOVE_OPEN) {
       assertEquals(moveIndex + 1, cut.getMoveIndex(), "moveIndex was not increased.");
     }
@@ -160,14 +160,14 @@ class GameBoardTest {
 
     // Get the banks, the result is written in before the possible move to the next
     // move.
-    AnswerBank answerBank = cut.currentMove().getAnswer();
     QuestionBank questionBank2 = cut.currentMove().getQuestion();
 
-    GameState result = cut.answer(questionBank);
+    AnswerBank answerReceived = cut.answer(questionBank);
+    GameState result = cut.getState();
 
     assertEquals(questionBank2, questionBank, "Question bank was not transferred");
-    assertEquals(expBlack, answerBank.getNrOfBlackPins(), "Number of black pins not correct.");
-    assertEquals(expWhite, answerBank.getNrOfWhitePins(), "Number of white pins not correct.");
+    assertEquals(expBlack, answerReceived.getNrOfBlackPins(), "Number of black pins not correct.");
+    assertEquals(expWhite, answerReceived.getNrOfWhitePins(), "Number of white pins not correct.");
     assertEquals(expState, result, "Not the right state delivered.");
   }
 

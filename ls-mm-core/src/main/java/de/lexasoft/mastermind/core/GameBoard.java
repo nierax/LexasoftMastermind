@@ -19,6 +19,7 @@ public class GameBoard {
   private NrOfHoles nrOfHoles;
   private NrOfColors nrOfColors;
   private QuestionBank solution;
+  private GameState state;
 
   /**
    * Creates the game board with the given number of colors and pins and the
@@ -37,6 +38,7 @@ public class GameBoard {
     this.nrOfColors = nrOfColors;
     this.nrOfHoles = nrOfHoles;
     createNextMove();
+    state = GameState.MOVE_OPEN;
   }
 
   /**
@@ -62,7 +64,7 @@ public class GameBoard {
    * 
    * @return True, if at least one more move is allowed, false otherwise.
    */
-  boolean nextMoveAllowed() {
+  public boolean nextMoveAllowed() {
     return getMoveIndex() < getMaxNrOfMoves().getValue() - 1;
   }
 
@@ -157,13 +159,14 @@ public class GameBoard {
    * @param question
    * @return
    */
-  public GameState answer(QuestionBank question) {
+  public AnswerBank answer(QuestionBank question) {
     QuestionBank myQuestion = currentMove().getQuestion();
     myQuestion.copy(question);
     if (myQuestion.isCompletelyFilled() && isSolutionKnown()) {
       return answer(myQuestion.answer(getSolution()));
     }
-    return GameState.MOVE_OPEN;
+    setState(GameState.MOVE_OPEN);
+    return currentMove().getAnswer();
   }
 
   /**
@@ -175,16 +178,18 @@ public class GameBoard {
    * @param answer The answer to register.
    * @return The state of the game (open / lost / won)
    */
-  public GameState answer(AnswerBank answer) {
-    currentMove().getAnswer().copy(answer);
+  public AnswerBank answer(AnswerBank answer) {
+    AnswerBank answer2Give = currentMove().getAnswer();
+    answer2Give.copy(answer);
     if (answer.isCorrect()) {
-      return GameState.WON;
-    }
-    if (nextMoveAllowed()) {
+      setState(GameState.WON);
+    } else if (nextMoveAllowed()) {
       nextMove();
-      return GameState.MOVE_OPEN;
+      setState(GameState.MOVE_OPEN);
+    } else {
+      setState(GameState.LOST);
     }
-    return GameState.LOST;
+    return answer2Give;
   }
 
   /**
@@ -201,6 +206,21 @@ public class GameBoard {
       }
     }
     return null;
+  }
+
+  /**
+   * @return the state
+   */
+  public GameState getState() {
+    return state;
+  }
+
+  /**
+   * @param state the state to set
+   */
+  private GameState setState(GameState state) {
+    this.state = state;
+    return this.state;
   }
 
 }
