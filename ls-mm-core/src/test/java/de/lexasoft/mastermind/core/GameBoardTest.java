@@ -2,6 +2,7 @@ package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.stream.Stream;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class GameBoardTest {
 
@@ -168,4 +170,28 @@ class GameBoardTest {
     assertEquals(expWhite, answerBank.getNrOfWhitePins(), "Number of white pins not correct.");
     assertEquals(expState, result, "Not the right state delivered.");
   }
+
+  /**
+   * Find the last answered question, if this is one position behind the current
+   * move.
+   */
+  @ParameterizedTest
+  @ValueSource(ints = { 2, 3, 4 })
+  void testGetLastAnsweredMove_Ok(int nrOfMoves) {
+    fillCutWithMoves(nrOfMoves);
+    Move expected = cut.getMove(nrOfMoves - 2);
+    expected.getAnswer().setGiven();
+    assertSame(expected, cut.getLastAnsweredMove(), "Did not find the last answered move.");
+  }
+
+  /**
+   * Find, that there is no last answered question.
+   */
+  @ParameterizedTest
+  @ValueSource(ints = { 0, 1 })
+  void testGetLastAnsweredMove_None(int nrOfMoves) {
+    fillCutWithMoves(nrOfMoves);
+    assertNull(cut.getLastAnsweredMove(), "The last answered move is null, if there isn't any.");
+  }
+
 }

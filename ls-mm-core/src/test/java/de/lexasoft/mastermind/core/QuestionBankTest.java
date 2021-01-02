@@ -71,6 +71,7 @@ class QuestionBankTest {
     for (Hole hole : this.solution.getHoles()) {
       assertFalse(hole.getPin().isCounted());
     }
+    assertTrue(answer.isGiven(), "The answer must be marked as given.");
   }
 
   /**

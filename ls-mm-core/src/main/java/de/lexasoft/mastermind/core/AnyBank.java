@@ -214,4 +214,12 @@ public class AnyBank {
     return true;
   }
 
+  /**
+   * Representing string is the list of holes with their values;
+   */
+  @Override
+  public String toString() {
+    return getHoles().toString();
+  }
+
 }

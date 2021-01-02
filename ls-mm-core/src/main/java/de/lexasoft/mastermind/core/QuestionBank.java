@@ -136,6 +136,8 @@ public class QuestionBank extends AnyBank {
     answer.addBlackPins(countBlackHits(solution));
     // White hits second
     answer.addWhitePins(countWhiteHits(solution));
+    // Mark answer as given.
+    answer.setGiven();
     // Solution must be ready for the next answer.
     solution.resetAllPinsCounted();
     resetAllPinsCounted();

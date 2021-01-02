@@ -46,4 +46,13 @@ public class Hole extends Value<Pin> {
   public Pin removePin() {
     return unsetValue();
   }
+
+  @Override
+  public String toString() {
+    if (!holdsAPin()) {
+      return "empty";
+    }
+    return super.toString();
+  }
+
 }

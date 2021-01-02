@@ -187,4 +187,20 @@ public class GameBoard {
     return GameState.LOST;
   }
 
+  /**
+   * Gets the last move, that was answered or null, if there wasn't.
+   * 
+   * @return The last move with a given answer.
+   */
+  public Move getLastAnsweredMove() {
+    for (int i = getMoveIndex(); i >= 0; i--) {
+      Move move = getMove(i);
+      AnswerBank answer = move.getAnswer();
+      if (answer.isGiven()) {
+        return move;
+      }
+    }
+    return null;
+  }
+
 }
