@@ -102,6 +102,7 @@ public class MasterMindAPIImpl implements MasterMindAPI {
   @Override
   public List<Pin> setSolution(List<Pin> solution) {
     QuestionBank solutionBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
+    solutionBank.setPins(solution);
     return gameBoard.setSolution(solutionBank).getPins();
   }
 
