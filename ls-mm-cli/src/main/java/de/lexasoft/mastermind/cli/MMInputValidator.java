@@ -30,4 +30,8 @@ public class MMInputValidator {
   public boolean validateNrOfMoves(int nrOfMoves) {
     return NrOfMoves.MINIMUM_NUMBER_OF_MOVES <= nrOfMoves;
   }
+
+  public boolean validatePlayerMode(int modus) {
+    return (modus == 0) || (modus == 1) || (modus == 2);
+  }
 }

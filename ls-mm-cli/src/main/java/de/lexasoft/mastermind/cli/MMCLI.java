@@ -33,6 +33,8 @@ public class MMCLI {
   private MasterMindAPI mmApi;
   private String playersName;
   private Scanner scanner;
+  private boolean playerGuess;
+  private boolean computerGuess;
 
   /**
    * 
@@ -50,9 +52,13 @@ public class MMCLI {
   void runGame(String[] args) {
     LOGGER.info("Starting game...");
     mmApi = askParameters();
-    playPlayerGuess();
+    if (playerGuess) {
+      playPlayerGuess();
+    }
     mmApi = mmApi.newGame();
-    playComputerGuess();
+    if (computerGuess) {
+      playComputerGuess();
+    }
     System.out.println("Good bye.");
     LOGGER.info("Game over...");
   }
@@ -78,7 +84,7 @@ public class MMCLI {
   }
 
   private void playComputerGuess() {
-    System.out.println(String.format("Now it is Your turn to find a combination, %s.", playersName));
+    System.out.println(String.format("Now it is Your turn to give me a combination to guess, %s.", playersName));
     System.out.print("Enter Your combination or just <ENTER>, if You want to answer Yourself: ");
     List<Pin> solution = readQuestionFromKeyboard();
     if (solution.size() == mmApi.getNrOfHoles().getValue()) {
@@ -96,6 +102,7 @@ public class MMCLI {
       System.out.println(String.format("My guess nr %s is: %s", moveIdx + 1, computerGuess.toString()));
       if (mmApi.isSolutionKnown()) {
         answer2Computer = mmApi.answerQuestion(computerGuess);
+        System.out.println(String.format("Answer: %s", answer2Computer.toString()));
       } else {
         System.out
             .print(String.format("%s, it is Your turn to give the answer (white pin: 0, black pin: 1): ", playersName));
@@ -118,7 +125,7 @@ public class MMCLI {
   }
 
   /**
-   * 
+   * Input the parameters for the game.
    */
   private MasterMindAPI askParameters() {
     int iNrOfColors;
@@ -148,6 +155,15 @@ public class MMCLI {
         break;
       }
     }
+    while (true) {
+      System.out.print("Modus (0: You play alone, 1: Computer plays alone, 2: Both play: ");
+      int iModus = scanner.nextInt();
+      if (validator.validatePlayerMode(iModus)) {
+        playerGuess = (iModus == 0) || (iModus == 2);
+        computerGuess = (iModus == 1) || (iModus == 2);
+        break;
+      }
+    }
     return mmFactory.createBoard(iNrOfHoles, iNrOfColors, iNrOfMoves);
   }
 
@@ -173,6 +189,8 @@ public class MMCLI {
   }
 
   /**
+   * Starts the game.
+   * 
    * @param args
    */
   public static void main(String[] args) {
