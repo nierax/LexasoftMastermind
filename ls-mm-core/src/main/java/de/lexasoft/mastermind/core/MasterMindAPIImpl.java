@@ -27,6 +27,15 @@ public class MasterMindAPIImpl implements MasterMindAPI {
    * 
    */
   public MasterMindAPIImpl(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
+    doInitialize(nrOfHoles, nrOfColors, nrOfMoves);
+  }
+
+  /**
+   * @param nrOfHoles
+   * @param nrOfColors
+   * @param nrOfMoves
+   */
+  private void doInitialize(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
     gameBoard = new GameBoard(nrOfHoles, nrOfColors, nrOfMoves);
     strategy = new MMStrategy(nrOfColors, nrOfHoles);
   }
@@ -79,6 +88,13 @@ public class MasterMindAPIImpl implements MasterMindAPI {
   }
 
   @Override
+  public List<Pin> provideAnswer(List<Pin> pins) {
+    AnswerBank answer = new AnswerBank(getNrOfHoles());
+    answer.setPins(pins);
+    return gameBoard.answer(answer).getPins();
+  }
+
+  @Override
   public List<Pin> getSolution() {
     return gameBoard.getSolution().getPins();
   }
@@ -101,6 +117,12 @@ public class MasterMindAPIImpl implements MasterMindAPI {
   @Override
   public List<Pin> firstComputerGuess() {
     return strategy.firstGuess().getPins();
+  }
+
+  @Override
+  public MasterMindAPI newGame() {
+    doInitialize(getNrOfHoles(), getNrOfColors(), getMaxNrOfMoves());
+    return this;
   }
 
 }

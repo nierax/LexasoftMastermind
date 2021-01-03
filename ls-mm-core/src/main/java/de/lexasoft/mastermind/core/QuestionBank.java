@@ -5,6 +5,9 @@ package de.lexasoft.mastermind.core;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.lexasoft.game.DiceCup;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
@@ -20,6 +23,8 @@ public class QuestionBank extends AnyBank {
 
   private NrOfColors nrOfColors;
   private DiceCup diceCup;
+
+  private static Logger LOGGER = LoggerFactory.getLogger(QuestionBank.class);
 
   /**
    * Adds a counted attribute to the pin, which is needed for the internal
@@ -113,7 +118,7 @@ public class QuestionBank extends AnyBank {
         myPin.setCounted();
       }
     }
-    System.out.println("Found black hits: " + blackHits);
+    LOGGER.debug("Found black hits: " + blackHits);
     return blackHits;
   }
 
@@ -145,7 +150,7 @@ public class QuestionBank extends AnyBank {
         }
       }
     }
-    System.out.println("Found white hits: " + whiteHits);
+    LOGGER.debug("Found white hits: " + whiteHits);
     return whiteHits;
   }
 

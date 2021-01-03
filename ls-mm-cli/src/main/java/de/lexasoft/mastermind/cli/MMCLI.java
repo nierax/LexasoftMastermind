@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.lexasoft.mastermind.core.api.AnswerPinColor;
 import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.MasterMindAPI;
@@ -21,6 +24,8 @@ import de.lexasoft.mastermind.core.api.QuestionPinColor;
  *
  */
 public class MMCLI {
+
+  private static Logger LOGGER = LoggerFactory.getLogger(MMCLI.class);
 
   private MMInputValidator validator;
 
@@ -43,9 +48,13 @@ public class MMCLI {
    * @param args
    */
   void runGame(String[] args) {
+    LOGGER.info("Starting game...");
     mmApi = askParameters();
     playPlayerGuess();
+    mmApi = mmApi.newGame();
+    playComputerGuess();
     System.out.println("Good bye.");
+    LOGGER.info("Game over...");
   }
 
   /**
@@ -75,15 +84,36 @@ public class MMCLI {
     if (solution.size() == mmApi.getNrOfHoles().getValue()) {
       mmApi.setSolution(solution);
     }
-    List<Pin> computerGuess = mmApi.firstComputerGuess();
+    List<Pin> computerGuess = null;
+    List<Pin> answer2Computer = null;
     while (mmApi.getState() == GameState.MOVE_OPEN) {
       int moveIdx = mmApi.getMoveIndex();
-      List<Pin> answer2Computer;
-      System.out.println(String.format("My guess nr %s is: %s", moveIdx + 1, computerGuess.toString()));
-      if (!mmApi.isSolutionKnown()) {
-        System.out.print(String.format("%s, it is Your turn to give the answer (white pin: 0, black pin: 1): "));
-        answer2Computer = readAnswerFromKeyboard();
+      if (moveIdx == 0) {
+        computerGuess = mmApi.firstComputerGuess();
+      } else {
+        computerGuess = mmApi.nextComputerGuess(computerGuess, answer2Computer);
       }
+      System.out.println(String.format("My guess nr %s is: %s", moveIdx + 1, computerGuess.toString()));
+      if (mmApi.isSolutionKnown()) {
+        answer2Computer = mmApi.answerQuestion(computerGuess);
+      } else {
+        System.out
+            .print(String.format("%s, it is Your turn to give the answer (white pin: 0, black pin: 1): ", playersName));
+        answer2Computer = readAnswerFromKeyboard();
+        answer2Computer = mmApi.provideAnswer(answer2Computer);
+      }
+    }
+    switch (mmApi.getState()) {
+    case WON: {
+      System.out.println(String.format("I've won in %s moves.", mmApi.getMoveIndex() + 1));
+      break;
+    }
+    case LOST: {
+      System.out.println(String.format("Ok, I've used alls % moves. I've lost.", mmApi.getMoveIndex() + 1));
+      break;
+    }
+    default:
+      break;
     }
   }
 

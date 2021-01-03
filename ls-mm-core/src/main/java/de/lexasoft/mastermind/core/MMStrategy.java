@@ -6,6 +6,9 @@ package de.lexasoft.mastermind.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.lexasoft.game.Dice;
 import de.lexasoft.mastermind.core.api.MasterMindValidationException;
 import de.lexasoft.mastermind.core.api.NrOfColors;
@@ -18,6 +21,8 @@ import de.lexasoft.mastermind.core.api.Pin;
  * @author Axel
  */
 public class MMStrategy {
+
+  private static Logger LOGGER = LoggerFactory.getLogger(MMStrategy.class);
 
   private List<List<Pin>> stillPossibleCombinations;
   private NrOfColors nrOfColors;
@@ -77,6 +82,7 @@ public class MMStrategy {
           "There was a mistake in the answers, as no possible combinations remain.");
     }
     setStillPossibleCombinations(leftCombinations);
+    LOGGER.info(String.format("Left combinations: %s", getStillPossibleCombinations().size()));
     QuestionBank nextGuess = new QuestionBank(nrOfHoles, nrOfColors);
     nextGuess.setPins(leftCombinations.get(indexOfNextGuess(leftCombinations)));
     return nextGuess;

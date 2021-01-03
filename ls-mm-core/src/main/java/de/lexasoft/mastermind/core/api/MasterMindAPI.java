@@ -77,6 +77,16 @@ public interface MasterMindAPI {
   List<Pin> answerQuestion(List<Pin> pins);
 
   /**
+   * Provides the answer to the current move.
+   * <p>
+   * Just needs to be called, if the solution is unknown.
+   * 
+   * @param pins List of answer pins (0,1)
+   * @return The answer again
+   */
+  List<Pin> provideAnswer(List<Pin> pins);
+
+  /**
    * Next guess, the computer does according to its strategy.
    * 
    * @return The list of pins, guessed by the computer.
@@ -89,5 +99,12 @@ public interface MasterMindAPI {
    * @return The list of pins, guessed by the computer.
    */
   List<Pin> firstComputerGuess();
+
+  /**
+   * Reinitialize for a new game.
+   * 
+   * @return Reference to a newly reinitialized API object.
+   */
+  MasterMindAPI newGame();
 
 }
