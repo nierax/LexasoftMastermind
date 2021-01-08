@@ -10,6 +10,9 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.lexasoft.common.cli.ConsoleValidator;
+import de.lexasoft.common.model.MinimumValidator;
+import de.lexasoft.common.model.RangeValidator;
 import de.lexasoft.mastermind.core.api.AnswerPinColor;
 import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.MasterMindAPI;
@@ -27,12 +30,11 @@ public class MMCLI {
 
   private static Logger LOGGER = LoggerFactory.getLogger(MMCLI.class);
 
-  private MMInputValidator validator;
-
   private MasterMindFactoryAPI mmFactory;
   private MasterMindAPI mmApi;
   private String playersName;
   private Scanner scanner;
+  private ConsoleValidator console;
   private boolean playerGuess;
   private boolean computerGuess;
 
@@ -40,9 +42,9 @@ public class MMCLI {
    * 
    */
   private MMCLI() {
-    validator = new MMInputValidator();
     mmFactory = new MasterMindFactoryAPI();
     scanner = new Scanner(System.in);
+    console = new ConsoleValidator();
   }
 
   /**
@@ -134,36 +136,20 @@ public class MMCLI {
     System.out.print("Player's name: ");
     playersName = scanner.next();
     System.out.println("Ok, " + playersName);
-    while (true) {
-      System.out.print("Number of colors to guess (at least 6): ");
-      iNrOfColors = scanner.nextInt();
-      if (validator.validateNrOfColors(iNrOfColors)) {
-        break;
-      }
-    }
-    while (true) {
-      System.out.print("Number of positions in combination (at least 4): ");
-      iNrOfHoles = scanner.nextInt();
-      if (validator.validateNrOfHoles(iNrOfHoles)) {
-        break;
-      }
-    }
-    while (true) {
-      System.out.print("Number of moves to guess (ar least 6): ");
-      iNrOfMoves = scanner.nextInt();
-      if (validator.validateNrOfMoves(iNrOfMoves)) {
-        break;
-      }
-    }
-    while (true) {
-      System.out.print("Modus (0: You play alone, 1: Computer plays alone, 2: Both play: ");
-      int iModus = scanner.nextInt();
-      if (validator.validatePlayerMode(iModus)) {
-        playerGuess = (iModus == 0) || (iModus == 2);
-        computerGuess = (iModus == 1) || (iModus == 2);
-        break;
-      }
-    }
+    iNrOfColors = console.fromConsole("Number of colors to guess (at least 6): ", () -> {
+      return scanner.nextInt();
+    }, new MinimumValidator<Integer>(6));
+    iNrOfHoles = console.fromConsole("Number of positions in combination (at least 4): ", () -> {
+      return scanner.nextInt();
+    }, new MinimumValidator<Integer>(4));
+    iNrOfMoves = console.fromConsole("Number of moves to guess (ar least 6): ", () -> {
+      return scanner.nextInt();
+    }, new MinimumValidator<Integer>(6));
+    int iModus = console.fromConsole("Modus (0: You play alone, 1: Computer plays alone, 2: Both play: ", () -> {
+      return scanner.nextInt();
+    }, new RangeValidator<Integer>(0, 2));
+    playerGuess = (iModus == 0) || (iModus == 2);
+    computerGuess = (iModus == 1) || (iModus == 2);
     return mmFactory.createBoard(iNrOfHoles, iNrOfColors, iNrOfMoves);
   }
 
