@@ -11,12 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.lexasoft.common.cli.ConsoleValidator;
-import de.lexasoft.common.model.MinimumValidator;
 import de.lexasoft.common.model.RangeValidator;
 import de.lexasoft.mastermind.core.api.AnswerPinColor;
 import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.MasterMindAPI;
 import de.lexasoft.mastermind.core.api.MasterMindFactoryAPI;
+import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.NrOfMoves;
 import de.lexasoft.mastermind.core.api.Pin;
 import de.lexasoft.mastermind.core.api.QuestionPinColor;
 
@@ -138,13 +140,13 @@ public class MMCLI {
     System.out.println("Ok, " + playersName);
     iNrOfColors = console.fromConsole("Number of colors to guess (at least 6): ", () -> {
       return scanner.nextInt();
-    }, new MinimumValidator<Integer>(6));
+    }, NrOfColors.VALIDATOR);
     iNrOfHoles = console.fromConsole("Number of positions in combination (at least 4): ", () -> {
       return scanner.nextInt();
-    }, new MinimumValidator<Integer>(4));
+    }, NrOfHoles.VALIDATOR);
     iNrOfMoves = console.fromConsole("Number of moves to guess (ar least 6): ", () -> {
       return scanner.nextInt();
-    }, new MinimumValidator<Integer>(6));
+    }, NrOfMoves.VALIDATOR);
     int iModus = console.fromConsole("Modus (0: You play alone, 1: Computer plays alone, 2: Both play: ", () -> {
       return scanner.nextInt();
     }, new RangeValidator<Integer>(0, 2));

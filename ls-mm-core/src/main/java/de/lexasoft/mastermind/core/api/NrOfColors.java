@@ -4,6 +4,7 @@
 package de.lexasoft.mastermind.core.api;
 
 import de.lexasoft.common.model.MinimumValidator;
+import de.lexasoft.common.model.Validator;
 import de.lexasoft.common.model.Value;
 
 /**
@@ -18,13 +19,13 @@ public class NrOfColors extends Value<Integer> {
   /**
    * Minimum number of colors.
    */
-  public static final int MINIMUM_NUMBER_OF_COLORS = 6;
+  public static final Validator<Integer> VALIDATOR = new MinimumValidator<>(6);
 
   /**
    * @param value
    */
   public NrOfColors(Integer value) {
-    super(new MinimumValidator<>(MINIMUM_NUMBER_OF_COLORS), value);
+    super(VALIDATOR, value);
   }
 
 }
