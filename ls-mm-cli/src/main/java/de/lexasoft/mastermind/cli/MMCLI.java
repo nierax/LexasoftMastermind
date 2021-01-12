@@ -132,19 +132,16 @@ public class MMCLI {
    * Input the parameters for the game.
    */
   private MasterMindAPI askParameters() {
-    int iNrOfColors;
-    int iNrOfHoles;
-    int iNrOfMoves;
     System.out.print("Player's name: ");
     playersName = scanner.next();
     System.out.println("Ok, " + playersName);
-    iNrOfColors = console.fromConsole("Number of colors to guess (at least 6): ", () -> {
+    int iNrOfColors = console.fromConsole("Number of colors to guess (at least 6): ", () -> {
       return scanner.nextInt();
     }, NrOfColors.VALIDATOR);
-    iNrOfHoles = console.fromConsole("Number of positions in combination (at least 4): ", () -> {
+    int iNrOfHoles = console.fromConsole("Number of positions in combination (at least 4): ", () -> {
       return scanner.nextInt();
     }, NrOfHoles.VALIDATOR);
-    iNrOfMoves = console.fromConsole("Number of moves to guess (ar least 6): ", () -> {
+    int iNrOfMoves = console.fromConsole("Number of moves to guess (ar least 6): ", () -> {
       return scanner.nextInt();
     }, NrOfMoves.VALIDATOR);
     int iModus = console.fromConsole("Modus (0: You play alone, 1: Computer plays alone, 2: Both play: ", () -> {
