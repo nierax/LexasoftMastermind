@@ -23,7 +23,8 @@ import de.lexasoft.mastermind.core.api.MasterMindValidationException;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.Pin;
-import de.lexasoft.mastermind.core.api.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.PinColor;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Test for the AnyBank class. Ensure the basis methods to work.
@@ -33,19 +34,19 @@ import de.lexasoft.mastermind.core.api.QuestionPinColor;
  */
 class AnyBankTest {
 
-  private AnyBank cut;
+  private AnyBank<QuestionPin> cut;
   private static final NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
   private static final NrOfColors NR_OF_COLORS = new NrOfColors(6);
 
   @BeforeEach
   void prepareTestCase() {
-    cut = new AnyBank(NR_OF_HOLES);
+    cut = new AnyBank<>(NR_OF_HOLES);
   }
 
-  private List<Pin> createListOfPins(int nrOfPins) {
-    List<Pin> pins = new ArrayList<>();
+  private List<QuestionPin> createListOfPins(int nrOfPins) {
+    List<QuestionPin> pins = new ArrayList<>();
     for (int i = 0; i < nrOfPins; i++) {
-      Pin pin = new Pin(new QuestionPinColor(NR_OF_COLORS, 0));
+      QuestionPin pin = new QuestionPin(NR_OF_COLORS, new PinColor(0));
       pins.add(pin);
     }
     return pins;
@@ -66,13 +67,13 @@ class AnyBankTest {
    */
   @Test
   void testAddPin() {
-    cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 0)));
+    cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(0)));
     assertEquals(0, cut.getHole(0).getPin().getColor().getValue(), "Value of pin must be equal to the given.");
-    cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 1)));
+    cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(1)));
     assertEquals(1, cut.getHole(1).getPin().getColor().getValue(), "Value of pin must be equal to the given.");
-    cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 2)));
+    cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(2)));
     assertEquals(2, cut.getHole(2).getPin().getColor().getValue(), "Value of pin must be equal to the given.");
-    cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 3)));
+    cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(3)));
     assertEquals(3, cut.getHole(3).getPin().getColor().getValue(), "Value of pin must be equal to the given.");
   }
 
@@ -81,11 +82,11 @@ class AnyBankTest {
    */
   @Test
   void testAddPin_NoFreeSlot() {
-    List<Pin> source = createListOfPins(4);
+    List<QuestionPin> source = createListOfPins(4);
     cut.setPins(source);
     // All slots are used. The next add should generate an exception
     assertThrows(MasterMindValidationException.class, () -> {
-      cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 4)));
+      cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(4)));
     });
   }
 
@@ -95,10 +96,10 @@ class AnyBankTest {
    */
   @Test
   void testAddPin_i_() {
-    Pin firstPin = cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 0)), 0);
+    Pin firstPin = cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(0)), 0);
     assertSame(firstPin, cut.getPin(0), "The pin was not set at the given position.");
     // Set a new pin to the same position.
-    Pin nextPin = cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 1)), 0);
+    Pin nextPin = cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(1)), 0);
     // Pin should be changed now.
     assertNotSame(firstPin, cut.getPin(0),
         "After the next pin is set, the pin in the bank isn't the first one anymore.");
@@ -109,7 +110,7 @@ class AnyBankTest {
   @ValueSource(ints = { -1, 4 })
   void testAddPin_i_IllegalPosition(int position) {
     assertThrows(IndexOutOfBoundsException.class, () -> {
-      cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 0)), position);
+      cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(0)), position);
     });
   }
 
@@ -119,9 +120,9 @@ class AnyBankTest {
    */
   @Test
   void testSetPinsOk() {
-    List<Pin> source = createListOfPins(4);
+    List<QuestionPin> source = createListOfPins(4);
     cut.setPins(source);
-    for (Hole hole : cut.getHoles()) {
+    for (Hole<QuestionPin> hole : cut.getHoles()) {
       assertTrue(hole.holdsAPin(), "Each hole must hold a pin.");
       assertEquals(source.iterator().next().getValue(), hole.getPin().getValue(),
           "Each value must be equal to the given.");
@@ -135,7 +136,7 @@ class AnyBankTest {
    */
   @Test
   void testSetPinsTooManyElements() {
-    List<Pin> source = createListOfPins(5);
+    List<QuestionPin> source = createListOfPins(5);
     assertThrows(IndexOutOfBoundsException.class, () -> {
       cut.setPins(source);
     });
@@ -149,21 +150,21 @@ class AnyBankTest {
   void testCurrentNrOfPins() {
     // First the number is 0;
     assertEquals(0, cut.currentNrOfPins(), "Right after creation the number of pins is 0");
-    List<Pin> source = createListOfPins(2);
+    List<QuestionPin> source = createListOfPins(2);
     cut.setPins(source);
     assertEquals(2, cut.currentNrOfPins(), "2 Pins added, so the number should be 2");
     // Adds one more pin in the hole at last position.
-    cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 3)), 3);
+    cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(3)), 3);
     assertEquals(3, cut.currentNrOfPins(), "One more pin added, so the number should be 3");
     // Adds one more pin in the last free hole on position 2.
-    cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 2)), 2);
+    cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(2)), 2);
     assertEquals(4, cut.currentNrOfPins(), "Now 4 pins added, so the number should be 4");
   }
 
   @Test
   void testRemovePin_i_() {
     // Fill the bank
-    List<Pin> pins = createListOfPins(NR_OF_HOLES.getValue());
+    List<QuestionPin> pins = createListOfPins(NR_OF_HOLES.getValue());
     cut.setPins(pins);
     assertEquals(NR_OF_HOLES.getValue(), cut.currentNrOfPins());
     // Remove the first pin
@@ -181,11 +182,11 @@ class AnyBankTest {
     assertFalse(cut.isCompletelyFilled(), "Bank must not be filled after creation.");
     // Fill, but let one pin kept empty.
     for (int i = 0; i < cut.getNrOfHoles().getValue() - 1; i++) {
-      cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 1)));
+      cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(1)));
     }
     assertFalse(cut.isCompletelyFilled(), "One hole not filled, so the bank must be confirmed not filled.");
     // Fill the last pin
-    cut.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 3)));
+    cut.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(3)));
     assertTrue(cut.isCompletelyFilled(), "All holes filled, so the bank must be confirmed filled.");
   }
 
@@ -195,9 +196,9 @@ class AnyBankTest {
   @Test
   void testCopy_ok() {
     cut.setPins(createListOfPins(4));
-    AnyBank source = new AnyBank(NR_OF_HOLES);
-    Pin pin0 = new Pin(new QuestionPinColor(NR_OF_COLORS, 1));
-    Pin pin2 = new Pin(new QuestionPinColor(NR_OF_COLORS, 2));
+    AnyBank<QuestionPin> source = new AnyBank<>(NR_OF_HOLES);
+    QuestionPin pin0 = new QuestionPin(NR_OF_COLORS, new PinColor(1));
+    QuestionPin pin2 = new QuestionPin(NR_OF_COLORS, new PinColor(2));
     source.addPin(pin0, 0);
     source.addPin(pin2, 2);
 
@@ -211,17 +212,17 @@ class AnyBankTest {
 
   @Test
   void testCopy_DifferentNrOfHoles() {
-    AnyBank source = new AnyBank(new NrOfHoles(5));
+    AnyBank<QuestionPin> source = new AnyBank<>(new NrOfHoles(5));
     assertThrows(MasterMindValidationException.class, () -> {
       cut.copy(source);
     });
   }
 
   private static Stream<Arguments> testEquals() {
-    return Stream.of(Arguments.of(new AnyBank(NR_OF_HOLES), new int[] { 0, 1, 2, 3 }, false),
-        Arguments.of(new AnyBank(NR_OF_HOLES), new int[] { 0, 0, 0, 0 }, true),
-        Arguments.of(new AnyBank(new NrOfHoles(5)), new int[] { 0, 0, 0, 0, 0 }, false),
-        Arguments.of(new AnyBank(new NrOfHoles(5)), new int[] { 0, 0, 0, 0 }, false));
+    return Stream.of(Arguments.of(new AnyBank<QuestionPin>(NR_OF_HOLES), new int[] { 0, 1, 2, 3 }, false),
+        Arguments.of(new AnyBank<QuestionPin>(NR_OF_HOLES), new int[] { 0, 0, 0, 0 }, true),
+        Arguments.of(new AnyBank<QuestionPin>(new NrOfHoles(5)), new int[] { 0, 0, 0, 0, 0 }, false),
+        Arguments.of(new AnyBank<QuestionPin>(new NrOfHoles(5)), new int[] { 0, 0, 0, 0 }, false));
   }
 
   /**
@@ -233,12 +234,12 @@ class AnyBankTest {
    */
   @ParameterizedTest
   @MethodSource
-  void testEquals(AnyBank otherBank, int[] values, boolean expResult) {
+  void testEquals(AnyBank<QuestionPin> otherBank, int[] values, boolean expResult) {
     // Fill all holes with pins with color 0
     cut.setPins(createListOfPins(4));
     // Fill the other bank with the values given
     for (int i = 0; i < values.length; i++) {
-      otherBank.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, values[i])));
+      otherBank.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(values[i])));
     }
     assertEquals(expResult, cut.equals(otherBank));
   }
@@ -248,10 +249,10 @@ class AnyBankTest {
     // Fill all holes with pins with color 0
     cut.setPins(createListOfPins(4));
     // now remove all pins
-    AnyBank result = cut.removeAllPins();
+    AnyBank<QuestionPin> result = cut.removeAllPins();
     assertNotNull(result, "removeAllPins() must not return null.");
     assertSame(result, cut, "removeAllPins() must return same object as cut.");
-    for (Hole hole : result.getHoles()) {
+    for (Hole<QuestionPin> hole : result.getHoles()) {
       assertFalse(hole.holdsAPin(), "Hole mus be empty now.");
     }
   }

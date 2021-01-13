@@ -13,7 +13,7 @@ import de.lexasoft.game.Dice;
 import de.lexasoft.mastermind.core.api.MasterMindValidationException;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Holds the strategy, the computer uses to find the right combination.
@@ -24,7 +24,7 @@ public class MMStrategy {
 
   private static Logger LOGGER = LoggerFactory.getLogger(MMStrategy.class);
 
-  private List<List<Pin>> stillPossibleCombinations;
+  private List<List<QuestionPin>> stillPossibleCombinations;
   private NrOfColors nrOfColors;
   private NrOfHoles nrOfHoles;
 
@@ -37,15 +37,15 @@ public class MMStrategy {
     this.nrOfHoles = nrOfHoles;
   }
 
-  List<List<Pin>> getStillPossibleCombinations() {
+  List<List<QuestionPin>> getStillPossibleCombinations() {
     return stillPossibleCombinations;
   }
 
-  void setStillPossibleCombinations(List<List<Pin>> stillPossibleCombinations) {
+  void setStillPossibleCombinations(List<List<QuestionPin>> stillPossibleCombinations) {
     this.stillPossibleCombinations = stillPossibleCombinations;
   }
 
-  private int indexOfNextGuess(List<List<Pin>> leftCombinations) {
+  private int indexOfNextGuess(List<List<QuestionPin>> leftCombinations) {
     if (leftCombinations.size() == 1) {
       return 0;
     }
@@ -62,14 +62,14 @@ public class MMStrategy {
    * @return The next guess.
    */
   public QuestionBank nextGuess(QuestionBank lastGuess, AnswerBank lastAnswer) {
-    List<List<Pin>> leftCombinations = new ArrayList<>();
-    Iterable<List<Pin>> availableCombinations;
+    List<List<QuestionPin>> leftCombinations = new ArrayList<>();
+    Iterable<List<QuestionPin>> availableCombinations;
     if (getStillPossibleCombinations() == null) {
       availableCombinations = new CombinationCreator(nrOfColors, nrOfHoles);
     } else {
       availableCombinations = getStillPossibleCombinations();
     }
-    for (List<Pin> list : availableCombinations) {
+    for (List<QuestionPin> list : availableCombinations) {
       QuestionBank toCheck = new QuestionBank(nrOfHoles, nrOfColors);
       toCheck.setPins(list);
       AnswerBank answer = lastGuess.answer(toCheck);

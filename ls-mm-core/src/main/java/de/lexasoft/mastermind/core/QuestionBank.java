@@ -11,15 +11,15 @@ import org.slf4j.LoggerFactory;
 import de.lexasoft.game.DiceCup;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.Pin;
-import de.lexasoft.mastermind.core.api.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.PinColor;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Represents one line of pins for question.
  * 
  * @author Axel
  */
-public class QuestionBank extends AnyBank {
+public class QuestionBank extends AnyBank<QuestionPin> {
 
   private NrOfColors nrOfColors;
   private DiceCup diceCup;
@@ -30,11 +30,11 @@ public class QuestionBank extends AnyBank {
    * Adds a counted attribute to the pin, which is needed for the internal
    * answering process.
    */
-  class QuestionPin extends Pin {
+  class InternalQuestionPin extends QuestionPin {
     private boolean counted;
 
-    public QuestionPin(Pin pin) {
-      super(pin.getColor());
+    public InternalQuestionPin(QuestionPin pin) {
+      super(getNrOfColors(), pin.getColor());
       setValue(pin.getColor());
       counted = false;
     }
@@ -84,9 +84,9 @@ public class QuestionBank extends AnyBank {
    * Sets all pins counted.
    */
   void setAllPinsCounted() {
-    for (Hole hole : getHoles()) {
+    for (Hole<QuestionPin> hole : getHoles()) {
       if (hole.holdsAPin()) {
-        ((QuestionPin) hole.getPin()).setCounted();
+        ((InternalQuestionPin) hole.getPin()).setCounted();
       }
     }
   }
@@ -95,9 +95,9 @@ public class QuestionBank extends AnyBank {
    * Reset all pins counted.
    */
   void resetAllPinsCounted() {
-    for (Hole hole : getHoles()) {
+    for (Hole<QuestionPin> hole : getHoles()) {
       if (hole.holdsAPin()) {
-        ((QuestionPin) hole.getPin()).resetCounted();
+        ((InternalQuestionPin) hole.getPin()).resetCounted();
       }
     }
   }
@@ -109,8 +109,8 @@ public class QuestionBank extends AnyBank {
   private int countBlackHits(QuestionBank solution) {
     int blackHits = 0;
     for (int i = 0; i < getNrOfHoles().getValue(); i++) {
-      QuestionPin myPin = (QuestionPin) getPin(i);
-      QuestionPin solutionPin = (QuestionPin) solution.getPin(i);
+      InternalQuestionPin myPin = (InternalQuestionPin) getPin(i);
+      InternalQuestionPin solutionPin = (InternalQuestionPin) solution.getPin(i);
       // Hits at the same position
       if (solutionPin.comparePin(myPin)) {
         blackHits++;
@@ -129,11 +129,11 @@ public class QuestionBank extends AnyBank {
   private int countWhiteHits(QuestionBank solution) {
     int whiteHits = 0;
     for (int i = 0; i < getNrOfHoles().getValue(); i++) {
-      QuestionPin myPin = (QuestionPin) getPin(i);
+      InternalQuestionPin myPin = (InternalQuestionPin) getPin(i);
       // If the pin had a black hit before, it must not be counted again.
       if (!myPin.isCounted()) {
         for (int j = 0; j < solution.getNrOfHoles().getValue(); j++) {
-          QuestionPin solutionPin = (QuestionPin) solution.getPin(j);
+          InternalQuestionPin solutionPin = (InternalQuestionPin) solution.getPin(j);
           // Same index would be black and must not be counted
           // If the solution pin was counted before, we must not count this one
           if ((i != j) && !solutionPin.isCounted()) {
@@ -202,7 +202,7 @@ public class QuestionBank extends AnyBank {
     List<Integer> values = diceCup.roll();
     for (Integer value : values) {
       // Subtract 1 from the value, because dice is 1-based, but pins are 0-based.
-      addPin(new Pin(new QuestionPinColor(nrOfColors, value - 1)));
+      addPin(new QuestionPin(nrOfColors, new PinColor(value - 1)));
     }
     return this;
   }
@@ -214,8 +214,8 @@ public class QuestionBank extends AnyBank {
    * process.
    */
   @Override
-  Pin addPin(Pin pin, int position) {
-    QuestionPin myPin = new QuestionPin(pin);
+  QuestionPin addPin(QuestionPin pin, int position) {
+    InternalQuestionPin myPin = new InternalQuestionPin((QuestionPin) pin);
     return super.addPin(myPin, position);
   }
 
@@ -226,8 +226,8 @@ public class QuestionBank extends AnyBank {
    * process.
    */
   @Override
-  Pin addPin(Pin pin) {
-    QuestionPin myPin = new QuestionPin(pin);
+  QuestionPin addPin(QuestionPin pin) {
+    InternalQuestionPin myPin = new InternalQuestionPin((QuestionPin) pin);
     return super.addPin(myPin);
   }
 

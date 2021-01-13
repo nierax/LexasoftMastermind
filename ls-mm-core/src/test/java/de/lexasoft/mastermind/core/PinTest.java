@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.common.model.Validator;
 import de.lexasoft.mastermind.core.api.Pin;
-import de.lexasoft.mastermind.core.api.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.PinColor;
 
 /**
  * Tests a pin as a component.
@@ -18,11 +18,17 @@ import de.lexasoft.mastermind.core.api.QuestionPinColor;
 public class PinTest {
 
   private Pin cut;
-  private final static NrOfColors NR_OF_COLORS = new NrOfColors(6);
+  private final static Validator<PinColor> ALWAYS_TRUE = new Validator<PinColor>() {
+
+    @Override
+    public boolean validate(PinColor value) {
+      return true;
+    }
+  };
 
   @BeforeEach
   void prepare() {
-    cut = new Pin(new QuestionPinColor(NR_OF_COLORS, 0));
+    cut = new Pin(ALWAYS_TRUE, new PinColor(0));
   }
 
   /**
@@ -30,7 +36,7 @@ public class PinTest {
    */
   @Test
   void testComparePinEqual() {
-    Pin otherPin = new Pin(new QuestionPinColor(NR_OF_COLORS, 0));
+    Pin otherPin = new Pin(ALWAYS_TRUE, new PinColor(0));
     assertTrue(cut.comparePin(otherPin), "Both pins have same value. Must be true");
   }
 
@@ -39,7 +45,7 @@ public class PinTest {
    */
   @Test
   void testComparePinNotEqual() {
-    Pin otherPin = new Pin(new QuestionPinColor(NR_OF_COLORS, 5));
+    Pin otherPin = new Pin(ALWAYS_TRUE, new PinColor(5));
     assertFalse(cut.comparePin(otherPin), "Pins have different values. Must be false");
   }
 

@@ -28,6 +28,15 @@ public class PinColor extends Value<Integer> {
   }
 
   /**
+   * Color requires a value.
+   * 
+   * @param value
+   */
+  public PinColor(Integer value) {
+    super(value);
+  }
+
+  /**
    * Not allowed to set a new value of color after constructor.
    */
   @Override

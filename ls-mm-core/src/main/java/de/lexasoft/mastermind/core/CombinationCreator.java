@@ -9,8 +9,8 @@ import java.util.List;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.Pin;
-import de.lexasoft.mastermind.core.api.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.PinColor;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Creates all combinations of number of colors and holes one by one by calling
@@ -22,7 +22,7 @@ import de.lexasoft.mastermind.core.api.QuestionPinColor;
  * 
  * @author Axel
  */
-public class CombinationCreator implements Iterable<List<Pin>>, Iterator<List<Pin>> {
+public class CombinationCreator implements Iterable<List<QuestionPin>>, Iterator<List<QuestionPin>> {
 
   private NrOfColors nrOfColors;
   private NrOfHoles nrOfHoles;
@@ -77,11 +77,11 @@ public class CombinationCreator implements Iterable<List<Pin>>, Iterator<List<Pi
    * @return A list of pins, which can be set in a question bank.
    */
   @Override
-  public List<Pin> next() {
-    List<Pin> combination = new ArrayList<>();
+  public List<QuestionPin> next() {
+    List<QuestionPin> combination = new ArrayList<>();
     increasePosition(0);
     for (int i = 0; i < lastArray.length; i++) {
-      combination.add(new Pin(new QuestionPinColor(nrOfColors, lastArray[i])));
+      combination.add(new QuestionPin(nrOfColors, new PinColor(lastArray[i])));
     }
     return combination;
   }
@@ -90,7 +90,7 @@ public class CombinationCreator implements Iterable<List<Pin>>, Iterator<List<Pi
    * Added to be able, to put the creator into a foreach loop.
    */
   @Override
-  public Iterator<List<Pin>> iterator() {
+  public Iterator<List<QuestionPin>> iterator() {
     return this;
   }
 

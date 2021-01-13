@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * @author admin
@@ -30,8 +30,8 @@ class CombinationCreatorTest {
    */
   @Test
   final void testNext() {
-    List<List<Pin>> combinations = new ArrayList<>();
-    for (List<Pin> pin : cut) {
+    List<List<QuestionPin>> combinations = new ArrayList<>();
+    for (List<QuestionPin> pin : cut) {
       combinations.add(pin);
       System.out.println(pin);
     }
@@ -50,7 +50,7 @@ class CombinationCreatorTest {
   /**
    * @param resultInQuestion
    */
-  private void assertCombination(List<Pin> resultInQuestion, int[] expected) {
+  private void assertCombination(List<QuestionPin> resultInQuestion, int[] expected) {
     for (int i = 0; i < resultInQuestion.size(); i++) {
       assertEquals(expected[i], resultInQuestion.get(i).getColor().getValue());
     }

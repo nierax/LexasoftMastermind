@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.Pin;
-import de.lexasoft.mastermind.core.api.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.PinColor;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Tests the move class
@@ -38,8 +38,8 @@ class MoveTest {
     // right after creation the move must be incomplete.
     assertFalse(cut.isComplete(), "Must be incomplete, right after creation");
     // QuestionBank is complete, but answer is not given => False
-    for (Hole hole : cut.getQuestion().getHoles()) {
-      hole.setPin(new Pin(new QuestionPinColor(NR_OF_COLORS, 0)));
+    for (Hole<QuestionPin> hole : cut.getQuestion().getHoles()) {
+      hole.setPin(new QuestionPin(NR_OF_COLORS, new PinColor(0)));
     }
     assertFalse(cut.isComplete(), "Must be incomplete, if the question is complete, but the answer is not given.");
     // AnswerBank is set complete as well -> True

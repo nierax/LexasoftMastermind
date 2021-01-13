@@ -15,9 +15,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import de.lexasoft.mastermind.core.QuestionBank.QuestionPin;
+import de.lexasoft.mastermind.core.QuestionBank.InternalQuestionPin;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Tests the important methods in question bank.
@@ -69,11 +70,11 @@ class QuestionBankTest {
     assertEquals(expectedBlack, answer.getNrOfBlackPins());
     assertEquals(expectedWhite, answer.getNrOfWhitePins());
     // Both solution and question must be free for another answer
-    for (Hole hole : this.solution.getHoles()) {
-      assertFalse(((QuestionPin) hole.getPin()).isCounted());
+    for (Hole<QuestionPin> hole : this.solution.getHoles()) {
+      assertFalse(((InternalQuestionPin) hole.getPin()).isCounted());
     }
-    for (Hole hole : this.solution.getHoles()) {
-      assertFalse(((QuestionPin) hole.getPin()).isCounted());
+    for (Hole<QuestionPin> hole : this.solution.getHoles()) {
+      assertFalse(((InternalQuestionPin) hole.getPin()).isCounted());
     }
     assertTrue(answer.isGiven(), "The answer must be marked as given.");
   }
@@ -126,12 +127,12 @@ class QuestionBankTest {
   void test_setResetAllPinsCounted() {
     solution.setPins(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 }));
     solution.setAllPinsCounted();
-    for (Hole hole : this.solution.getHoles()) {
-      assertTrue(((QuestionPin) hole.getPin()).isCounted());
+    for (Hole<QuestionPin> hole : this.solution.getHoles()) {
+      assertTrue(((InternalQuestionPin) hole.getPin()).isCounted());
     }
     solution.resetAllPinsCounted();
-    for (Hole hole : this.solution.getHoles()) {
-      assertFalse(((QuestionPin) hole.getPin()).isCounted());
+    for (Hole<QuestionPin> hole : this.solution.getHoles()) {
+      assertFalse(((InternalQuestionPin) hole.getPin()).isCounted());
     }
   }
 

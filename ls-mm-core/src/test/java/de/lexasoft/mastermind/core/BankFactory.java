@@ -8,8 +8,8 @@ import java.util.List;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.Pin;
-import de.lexasoft.mastermind.core.api.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.PinColor;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Help class to easily create instances of banks in test situations.
@@ -33,9 +33,9 @@ public class BankFactory {
    * @return A questionBank filled with the given values.
    */
   final static QuestionBank createQuestionBank(NrOfColors nrOfColors, NrOfHoles nrOfHoles, int[] values) {
-    List<Pin> pins = new ArrayList<>();
+    List<QuestionPin> pins = new ArrayList<>();
     for (int i = 0; i < values.length; i++) {
-      pins.add(i, new Pin(new QuestionPinColor(nrOfColors, values[i])));
+      pins.add(i, new QuestionPin(nrOfColors, new PinColor(values[i])));
     }
     return createQuestionBank(nrOfColors, nrOfHoles, pins);
   }
@@ -48,22 +48,22 @@ public class BankFactory {
    * @param pins       List with the pins to set.
    * @return
    */
-  final static QuestionBank createQuestionBank(NrOfColors nrOfColors, NrOfHoles nrOfHoles, List<Pin> pins) {
+  final static QuestionBank createQuestionBank(NrOfColors nrOfColors, NrOfHoles nrOfHoles, List<QuestionPin> pins) {
     QuestionBank questionBank = new QuestionBank(nrOfHoles, nrOfColors);
     questionBank.setPins(pins);
     return questionBank;
   }
 
   /**
-   * Helps to create a list form an integer array
+   * Helps to create a list from an integer array
    * 
    * @param array
    * @return
    */
-  final static List<Pin> createListFromArray(NrOfColors nrOfColors, int[] array) {
-    List<Pin> list = new ArrayList<>();
+  final static List<QuestionPin> createListFromArray(NrOfColors nrOfColors, int[] array) {
+    List<QuestionPin> list = new ArrayList<>();
     for (int i = 0; i < array.length; i++) {
-      list.add(new Pin(new QuestionPinColor(nrOfColors, array[i])));
+      list.add(new QuestionPin(nrOfColors, new PinColor(array[i])));
     }
     return list;
   }

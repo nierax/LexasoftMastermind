@@ -1,5 +1,6 @@
 package de.lexasoft.mastermind.core.api;
 
+import de.lexasoft.common.model.Validator;
 import de.lexasoft.common.model.Value;
 
 /**
@@ -13,12 +14,12 @@ import de.lexasoft.common.model.Value;
 public class Pin extends Value<PinColor> {
 
   /**
-   * Create a pin with number of colors.
    * 
-   * @param nrOfColors
+   * @param validator
+   * @param color
    */
-  public Pin(PinColor color) {
-    super(color);
+  public Pin(Validator<PinColor> validator, PinColor color) {
+    super(validator, color);
   }
 
   /**

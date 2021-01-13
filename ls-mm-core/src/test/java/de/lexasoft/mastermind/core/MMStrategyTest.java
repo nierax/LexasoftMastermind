@@ -20,7 +20,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * @author Axel
@@ -31,7 +31,7 @@ class MMStrategyTest {
   private MMStrategy cut;
   private final static NrOfColors NR_OF_COLORS = new NrOfColors(6);
   private final static NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
-  private List<List<Pin>> possibleCombinations;
+  private List<List<QuestionPin>> possibleCombinations;
 
   /**
    * Create the cut.
@@ -71,8 +71,8 @@ class MMStrategyTest {
     assertNull(strategy.getStillPossibleCombinations(), "List of combinations must be null after creation.");
   }
 
-  private boolean hasEntry(List<List<Pin>> result, List<Pin> expected) {
-    for (List<Pin> pins : result) {
+  private boolean hasEntry(List<List<QuestionPin>> result, List<QuestionPin> expected) {
+    for (List<QuestionPin> pins : result) {
       if (pins.equals(expected)) {
         return true;
       }
@@ -111,7 +111,7 @@ class MMStrategyTest {
     QuestionBank nextGuess = cut.nextGuess(lastGuess, answer);
 
     assertNextGuess(nextGuess);
-    List<List<Pin>> result = cut.getStillPossibleCombinations();
+    List<List<QuestionPin>> result = cut.getStillPossibleCombinations();
     assertEquals(entriesLeft.length, result.size(), "Number of remaining combinations is not correct.");
     for (int i = 0; i < entriesLeft.length; i++) {
       assertTrue(hasEntry(result, possibleCombinations.get(entriesLeft[i])));

@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import de.lexasoft.mastermind.core.api.AnswerPin;
 import de.lexasoft.mastermind.core.api.MasterMindValidationException;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 
@@ -167,7 +168,7 @@ class AnswerBankTest {
    */
   @Test
   void testCopy_WrongOject() {
-    AnyBank anyBank = new AnyBank(NR_OF_HOLES);
+    AnyBank<AnswerPin> anyBank = new AnyBank<>(NR_OF_HOLES);
     assertThrows(IllegalArgumentException.class, () -> {
       cut.copy(anyBank);
     });

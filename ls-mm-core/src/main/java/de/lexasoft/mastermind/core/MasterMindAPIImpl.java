@@ -5,12 +5,13 @@ package de.lexasoft.mastermind.core;
 
 import java.util.List;
 
+import de.lexasoft.mastermind.core.api.AnswerPin;
 import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.MasterMindAPI;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.NrOfMoves;
-import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * This is the default implementation of the master mind api.
@@ -76,38 +77,38 @@ public class MasterMindAPIImpl implements MasterMindAPI {
   }
 
   @Override
-  public List<Pin> createSolution() {
+  public List<QuestionPin> createSolution() {
     return gameBoard.setSolution(strategy.createSolution()).getPins();
   }
 
   @Override
-  public List<Pin> answerQuestion(List<Pin> questionPins) {
+  public List<AnswerPin> answerQuestion(List<QuestionPin> questionPins) {
     QuestionBank question = new QuestionBank(getNrOfHoles(), getNrOfColors());
     question.setPins(questionPins);
     return gameBoard.answer(question).getPins();
   }
 
   @Override
-  public List<Pin> provideAnswer(List<Pin> pins) {
+  public List<AnswerPin> provideAnswer(List<AnswerPin> pins) {
     AnswerBank answer = new AnswerBank(getNrOfHoles());
     answer.setPins(pins);
     return gameBoard.answer(answer).getPins();
   }
 
   @Override
-  public List<Pin> getSolution() {
+  public List<QuestionPin> getSolution() {
     return gameBoard.getSolution().getPins();
   }
 
   @Override
-  public List<Pin> setSolution(List<Pin> solution) {
+  public List<QuestionPin> setSolution(List<QuestionPin> solution) {
     QuestionBank solutionBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
     solutionBank.setPins(solution);
     return gameBoard.setSolution(solutionBank).getPins();
   }
 
   @Override
-  public List<Pin> nextComputerGuess(List<Pin> lastGuess, List<Pin> lastAnswer) {
+  public List<QuestionPin> nextComputerGuess(List<QuestionPin> lastGuess, List<AnswerPin> lastAnswer) {
     QuestionBank lastGuessBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
     lastGuessBank.setPins(lastGuess);
     AnswerBank answerBank = new AnswerBank(getNrOfHoles());
@@ -116,7 +117,7 @@ public class MasterMindAPIImpl implements MasterMindAPI {
   }
 
   @Override
-  public List<Pin> firstComputerGuess() {
+  public List<QuestionPin> firstComputerGuess() {
     return strategy.firstGuess().getPins();
   }
 

@@ -3,34 +3,35 @@
  */
 package de.lexasoft.mastermind.core;
 
-import de.lexasoft.mastermind.core.api.AnswerPinColor;
+import de.lexasoft.mastermind.core.api.AnswerPin;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.PinColor;
 
 /**
  * Represents the bank for answers with only white and black pins.
  * 
  * @author Axel
  */
-public class AnswerBank extends AnyBank {
+public class AnswerBank extends AnyBank<AnswerPin> {
 
   static final int WHITE_VALUE = 0;
   static final int BLACK_VALUE = 1;
 
   private boolean answerGiven;
 
-  class WhitePin extends Pin {
+  class WhitePin extends AnswerPin {
 
     public WhitePin() {
-      super(new AnswerPinColor(WHITE_VALUE));
+      super(new PinColor(WHITE_VALUE));
     }
 
   }
 
-  class BlackPin extends Pin {
+  class BlackPin extends AnswerPin {
 
     public BlackPin() {
-      super(new AnswerPinColor(BLACK_VALUE));
+      super(new PinColor(BLACK_VALUE));
     }
 
   }
@@ -89,7 +90,7 @@ public class AnswerBank extends AnyBank {
    */
   private int countValues(Pin pin) {
     int nrOfValues = 0;
-    for (Hole hole : getHoles()) {
+    for (Hole<AnswerPin> hole : getHoles()) {
       if (hole.holdsAPin()) {
         if (hole.getPin().equals(pin)) {
           nrOfValues++;
@@ -149,7 +150,7 @@ public class AnswerBank extends AnyBank {
   }
 
   @Override
-  public AnyBank copy(AnyBank source) {
+  public AnyBank<AnswerPin> copy(AnyBank<AnswerPin> source) {
     if (!(source instanceof AnswerBank)) {
       throw new IllegalArgumentException("Banks to copy must be comparable instances.");
     }

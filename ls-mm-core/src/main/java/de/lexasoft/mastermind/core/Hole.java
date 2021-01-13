@@ -12,7 +12,7 @@ import de.lexasoft.mastermind.core.api.Pin;
  * @author Axel
  *
  */
-public class Hole extends Value<Pin> {
+public class Hole<T extends Pin> extends Value<T> {
 
   /**
    * Does this hole hold a pin?
@@ -28,7 +28,7 @@ public class Hole extends Value<Pin> {
    * 
    * @return Returns the pin or null, if there wasn't given one.
    */
-  public Pin getPin() {
+  public T getPin() {
     return getValue();
   }
 
@@ -37,14 +37,14 @@ public class Hole extends Value<Pin> {
    * 
    * @param pin The pin to set.
    */
-  public Pin setPin(Pin pin) {
+  public T setPin(T pin) {
     return setValue(pin);
   }
 
   /**
    * Removes the pin from the hole.
    */
-  public Pin removePin() {
+  public T removePin() {
     return unsetValue();
   }
 

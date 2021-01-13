@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 
 import de.lexasoft.common.cli.ConsoleValidator;
 import de.lexasoft.common.model.RangeValidator;
-import de.lexasoft.mastermind.core.api.AnswerPinColor;
+import de.lexasoft.mastermind.core.api.AnswerPin;
 import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.MasterMindAPI;
 import de.lexasoft.mastermind.core.api.MasterMindFactoryAPI;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.NrOfMoves;
-import de.lexasoft.mastermind.core.api.Pin;
-import de.lexasoft.mastermind.core.api.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.PinColor;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * CLI application for master mind. Demo purpose only.
@@ -76,7 +76,7 @@ public class MMCLI {
     while (mmApi.getState() == GameState.MOVE_OPEN) {
       int moveIdx = mmApi.getMoveIndex();
       System.out.print(String.format("%s guess nr.%s (X, X, X, X): ", playersName, moveIdx + 1));
-      List<Pin> answerPins = mmApi.answerQuestion(readQuestionFromKeyboard());
+      List<AnswerPin> answerPins = mmApi.answerQuestion(readQuestionFromKeyboard());
       System.out.println(" Answer: " + answerPins.toString());
       if (mmApi.getState() == GameState.WON) {
         System.out.println(String.format("Correct. %s has won in %s moves.", playersName, moveIdx + 1));
@@ -90,12 +90,12 @@ public class MMCLI {
   private void playComputerGuess() {
     System.out.println(String.format("Now it is Your turn to give me a combination to guess, %s.", playersName));
     System.out.print("Enter Your combination or just <ENTER>, if You want to answer Yourself: ");
-    List<Pin> solution = readQuestionFromKeyboard();
+    List<QuestionPin> solution = readQuestionFromKeyboard();
     if (solution.size() == mmApi.getNrOfHoles().getValue()) {
       mmApi.setSolution(solution);
     }
-    List<Pin> computerGuess = null;
-    List<Pin> answer2Computer = null;
+    List<QuestionPin> computerGuess = null;
+    List<AnswerPin> answer2Computer = null;
     while (mmApi.getState() == GameState.MOVE_OPEN) {
       int moveIdx = mmApi.getMoveIndex();
       if (moveIdx == 0) {
@@ -152,22 +152,22 @@ public class MMCLI {
     return mmFactory.createBoard(iNrOfHoles, iNrOfColors, iNrOfMoves);
   }
 
-  private List<Pin> readQuestionFromKeyboard() {
+  private List<QuestionPin> readQuestionFromKeyboard() {
     String value = scanner.next();
     String[] values = value.split(",");
-    List<Pin> pins = new ArrayList<Pin>();
+    List<QuestionPin> pins = new ArrayList<>();
     for (int i = 0; i < values.length; i++) {
-      pins.add(new Pin(new QuestionPinColor(mmApi.getNrOfColors(), Integer.valueOf(values[i]))));
+      pins.add(new QuestionPin(mmApi.getNrOfColors(), new PinColor(Integer.valueOf(values[i]))));
     }
     return pins;
   }
 
-  private List<Pin> readAnswerFromKeyboard() {
-    List<Pin> pins = new ArrayList<Pin>();
+  private List<AnswerPin> readAnswerFromKeyboard() {
+    List<AnswerPin> pins = new ArrayList<>();
     String value = scanner.next();
     String[] values = value.split(",");
     for (int i = 0; i < values.length; i++) {
-      pins.add(new Pin(new AnswerPinColor(Integer.valueOf(values[i]))));
+      pins.add(new AnswerPin(new PinColor(Integer.valueOf(values[i]))));
     }
     return pins;
 

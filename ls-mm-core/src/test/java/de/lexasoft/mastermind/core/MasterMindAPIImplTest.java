@@ -9,10 +9,12 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.lexasoft.mastermind.core.api.AnswerPin;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.NrOfMoves;
 import de.lexasoft.mastermind.core.api.Pin;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 class MasterMindAPIImplTest {
 
@@ -29,7 +31,7 @@ class MasterMindAPIImplTest {
 
   @Test
   final void testCreateSolution() {
-    List<Pin> pins = cut.createSolution();
+    List<QuestionPin> pins = cut.createSolution();
     assertNotNull(pins, "Solution must not be null.");
     assertEquals(NR_OF_HOLES.getValue(), pins.size(), "Must have a pin for every hole.");
   }
@@ -37,8 +39,8 @@ class MasterMindAPIImplTest {
   @Test
   final void testAnswerQuestion() {
     cut.createSolution();
-    List<Pin> question = BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 });
-    List<Pin> answer = cut.answerQuestion(question);
+    List<QuestionPin> question = BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 });
+    List<AnswerPin> answer = cut.answerQuestion(question);
     assertNotNull(answer, "Answer must not be null");
     for (Pin pin : answer) {
       Integer colorValue = pin.getColor().getValue();

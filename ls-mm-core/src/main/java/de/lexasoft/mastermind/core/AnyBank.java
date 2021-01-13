@@ -18,9 +18,9 @@ import de.lexasoft.mastermind.core.api.Pin;
  * @author Axel
  *
  */
-public class AnyBank {
+public class AnyBank<T extends Pin> {
 
-  private List<Hole> holes;
+  private List<Hole<T>> holes;
   private NrOfHoles nrOfHoles;
 
   /**
@@ -34,18 +34,18 @@ public class AnyBank {
     this.nrOfHoles = nrOfHoles;
     this.holes = new ArrayList<>();
     for (int i = 0; i < nrOfHoles.getValue(); i++) {
-      holes.add(new Hole());
+      holes.add(new Hole<T>());
     }
   }
 
   /**
    * @return Get all pins in the bank.
    */
-  List<Hole> getHoles() {
+  List<Hole<T>> getHoles() {
     return holes;
   }
 
-  Hole getHole(int position) {
+  Hole<T> getHole(int position) {
     if ((position < 0) || (position > nrOfHoles.getValue())) {
       throw new IndexOutOfBoundsException(
           String.format("Position %s does not exist. Must be between %s and %s", position, 0, nrOfHoles.getValue()));
@@ -69,7 +69,7 @@ public class AnyBank {
    * @param source
    * @return
    */
-  public AnyBank copy(AnyBank source) {
+  public AnyBank<T> copy(AnyBank<T> source) {
     if (!nrOfHoles.equals(source.nrOfHoles)) {
       throw new MasterMindValidationException("Banks to copy must have same number of holes.");
     }
@@ -89,9 +89,9 @@ public class AnyBank {
    * 
    * @param pins The pins to get.
    */
-  public void setPins(List<Pin> pins) {
+  public void setPins(List<T> pins) {
     checkPinBoundaries(pins.size());
-    for (Pin pin : pins) {
+    for (T pin : pins) {
       addPin(pin);
     }
   }
@@ -102,7 +102,7 @@ public class AnyBank {
    *         free hole left.
    */
   private int findFirstFreePosition() {
-    for (Hole hole : holes) {
+    for (Hole<T> hole : holes) {
       if (!hole.holdsAPin()) {
         return holes.indexOf(hole);
       }
@@ -119,7 +119,7 @@ public class AnyBank {
    * @param position The position, where the pin is to add.
    * @return The pin, added before.
    */
-  Pin addPin(Pin pin, int position) {
+  T addPin(T pin, int position) {
     checkPinBoundaries(position);
     getHole(position).setValue(pin);
     return pin;
@@ -130,7 +130,7 @@ public class AnyBank {
    * 
    * @param pin Pin to be added.
    */
-  Pin addPin(Pin pin) {
+  T addPin(T pin) {
     int position = findFirstFreePosition();
     if (position < 0) {
       throw new MasterMindValidationException("Could not add a pin, because there was no free hole.");
@@ -144,7 +144,7 @@ public class AnyBank {
    * @param position The position, where the pin should be removed.
    * @return The removed pin, if there was one before. Null otherwise.
    */
-  Pin removePin(int position) {
+  T removePin(int position) {
     return getHole(position).removePin();
   }
 
@@ -153,8 +153,8 @@ public class AnyBank {
    * 
    * @return Reference to this object.
    */
-  AnyBank removeAllPins() {
-    for (Hole hole : holes) {
+  AnyBank<T> removeAllPins() {
+    for (Hole<T> hole : holes) {
       hole.removePin();
     }
     return this;
@@ -167,7 +167,7 @@ public class AnyBank {
    */
   int currentNrOfPins() {
     int number = 0;
-    for (Hole hole : holes) {
+    for (Hole<T> hole : holes) {
       if (hole.holdsAPin()) {
         number++;
       }
@@ -195,7 +195,7 @@ public class AnyBank {
    * @param position
    * @return Pin at the given position
    */
-  public Pin getPin(int position) {
+  public T getPin(int position) {
     return holes.get(position).getPin();
   }
 
@@ -205,9 +205,9 @@ public class AnyBank {
    * 
    * @return List of pins.
    */
-  public List<Pin> getPins() {
-    List<Pin> pins = new ArrayList<>();
-    for (Hole hole : holes) {
+  public List<T> getPins() {
+    List<T> pins = new ArrayList<>();
+    for (Hole<T> hole : holes) {
       if (hole.holdsAPin()) {
         pins.add(hole.getPin());
       }
@@ -215,6 +215,7 @@ public class AnyBank {
     return pins;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public boolean equals(Object obj) {
     if (!(obj instanceof AnyBank)) {
@@ -223,11 +224,11 @@ public class AnyBank {
     if (super.equals(obj)) {
       return true;
     }
-    if (!nrOfHoles.equals(((AnyBank) obj).nrOfHoles)) {
+    if (!nrOfHoles.equals(((AnyBank<T>) obj).nrOfHoles)) {
       return false;
     }
     for (int i = 0; i < nrOfHoles.getValue(); i++) {
-      if (!holes.get(i).equals(((AnyBank) obj).holes.get(i))) {
+      if (!holes.get(i).equals(((AnyBank<T>) obj).holes.get(i))) {
         return false;
       }
     }

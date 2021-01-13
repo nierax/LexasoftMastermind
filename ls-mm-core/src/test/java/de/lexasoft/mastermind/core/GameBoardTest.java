@@ -18,8 +18,8 @@ import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.NrOfMoves;
-import de.lexasoft.mastermind.core.api.Pin;
-import de.lexasoft.mastermind.core.api.QuestionPinColor;
+import de.lexasoft.mastermind.core.api.PinColor;
+import de.lexasoft.mastermind.core.api.QuestionPin;
 
 class GameBoardTest {
 
@@ -56,7 +56,7 @@ class GameBoardTest {
   private QuestionBank createQuestionbankFromArray(int[] values) {
     QuestionBank question = new QuestionBank(NR_OF_HOLES, NR_OF_COLORS);
     for (int i = 0; i < values.length; i++) {
-      question.addPin(new Pin(new QuestionPinColor(NR_OF_COLORS, values[i])));
+      question.addPin(new QuestionPin(NR_OF_COLORS, new PinColor(values[i])));
     }
     return question;
   }
