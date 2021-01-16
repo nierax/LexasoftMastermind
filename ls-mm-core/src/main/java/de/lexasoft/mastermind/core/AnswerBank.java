@@ -158,4 +158,14 @@ public class AnswerBank extends AnyBank<AnswerPin> {
     return super.copy(source);
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof AnswerBank)) {
+      return false;
+    }
+    AnswerBank other = (AnswerBank) obj;
+    return (this.getNrOfBlackPins() == other.getNrOfBlackPins())
+        && (this.getNrOfWhitePins() == other.getNrOfWhitePins());
+  }
+
 }

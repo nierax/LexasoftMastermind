@@ -26,7 +26,7 @@ final class QPColorValidator implements Validator<PinColor> {
 /**
  * This pin represents a color to guess.
  * 
- * @author admin
+ * @author Axel
  *
  */
 public class QuestionPin extends Pin {

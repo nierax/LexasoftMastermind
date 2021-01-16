@@ -31,7 +31,7 @@ class MMStrategyPerformanceTest {
     QuestionBank lastGuess = BankFactory.createQuestionBank(NR_OF_COLORS, NR_OF_HOLES, new int[] { 2, 7, 1, 1, 6, 3 });
     AnswerBank lastAnswer = new AnswerBank(NR_OF_HOLES);
     lastAnswer.addWhitePins(2);
-//    lastAnswer.addBlackPins(2);
+    lastAnswer.addBlackPins(2);
 
     long time = System.currentTimeMillis();
     // Call for the next step

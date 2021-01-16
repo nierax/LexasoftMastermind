@@ -1,6 +1,7 @@
 package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -172,5 +173,25 @@ class AnswerBankTest {
     assertThrows(IllegalArgumentException.class, () -> {
       cut.copy(anyBank);
     });
+  }
+
+  @Test
+  void testEquals_OtherPositions_Ok() {
+    AnswerBank answer2 = new AnswerBank(NR_OF_HOLES);
+    cut.addBlackPin();
+    cut.addWhitePin();
+    answer2.addWhitePin();
+    answer2.addBlackPin();
+
+    assertTrue(cut.equals(answer2), "Must be true, regardless the order");
+  }
+
+  @Test
+  void testEquals_False() {
+    AnswerBank answer2 = new AnswerBank(NR_OF_HOLES);
+    answer2.addWhitePin();
+    answer2.addBlackPin();
+
+    assertFalse(cut.equals(answer2), "Must be false.");
   }
 }
