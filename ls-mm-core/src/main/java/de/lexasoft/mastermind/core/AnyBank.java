@@ -91,9 +91,23 @@ public class AnyBank<T extends Pin> {
    */
   public void setPins(List<T> pins) {
     checkPinBoundaries(pins.size());
+    doSetPins(pins);
+  }
+
+  /**
+   * Does the copying without checking the boundaries, assuming, that this can't
+   * be wrong.
+   * <p>
+   * So the context must assure, that this check wopuldn't fail.
+   * <p>
+   * Used in strategy to save time.
+   * 
+   * @param pins
+   */
+  void doSetPins(List<T> pins) {
     removeAllPins();
-    for (T pin : pins) {
-      addPin(pin);
+    for (int i = 0; i < pins.size(); i++) {
+      addPin(pins.get(i), i);
     }
   }
 

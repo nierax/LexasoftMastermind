@@ -69,12 +69,14 @@ public class MMStrategy {
     } else {
       availableCombinations = getStillPossibleCombinations();
     }
-    for (List<QuestionPin> list : availableCombinations) {
-      QuestionBank toCheck = new QuestionBank(nrOfHoles, nrOfColors);
-      toCheck.setPins(list);
-      AnswerBank answer = lastGuess.answer(toCheck);
+    QuestionBank toCheck = new QuestionBank(nrOfHoles, nrOfColors);
+    AnswerBank answer = new AnswerBank(nrOfHoles);
+    for (List<QuestionPin> combination2Check : availableCombinations) {
+      toCheck.doSetPins(combination2Check);
+      answer.removeAllPins();
+      answer = lastGuess.doAnswer(toCheck, answer);
       if (lastAnswer.equals(answer)) {
-        leftCombinations.add(list);
+        leftCombinations.add(combination2Check);
       }
     }
     if (leftCombinations.size() == 0) {

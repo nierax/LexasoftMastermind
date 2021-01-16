@@ -177,7 +177,20 @@ public class QuestionBank extends AnyBank<QuestionPin> {
    */
   public AnswerBank answer(QuestionBank solution) {
     validateBanks(this, solution);
-    AnswerBank answer = new AnswerBank(getNrOfHoles());
+    return doAnswer(solution, new AnswerBank(getNrOfHoles()));
+  }
+
+  /**
+   * Compares without checking, whether the banks are completely filled.
+   * <p>
+   * Can be used to save time, if the context makes sure, that the banks are
+   * filled.
+   * 
+   * @param solution The bank with the solution, given to guess.
+   * @param answer   The answer bank to use.
+   * @return The answer bank with the number of white and black pins
+   */
+  AnswerBank doAnswer(QuestionBank solution, AnswerBank answer) {
     // Count black hits. Must be done first.
     answer.addBlackPins(countBlackHits(solution));
     // White hits second
