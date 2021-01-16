@@ -257,4 +257,30 @@ class AnyBankTest {
     }
   }
 
+  private void assertPins(AnyBank<?> cut, int[] expected) {
+    int i = 0;
+    for (Hole<?> hole : cut.getHoles()) {
+      assertEquals(expected[i], hole.getPin().getColor().getValue(),
+          String.format("Pin on position %s not as expected.", i++));
+    }
+  }
+
+  /**
+   * Set the pins from a list must reset the list of holes.
+   */
+  @Test
+  void testSetPins() {
+    int[] call1 = new int[] { 0, 1, 2, 3 };
+    int[] call2 = new int[] { 2, 3, 4, 5 };
+
+    // First call
+    cut.setPins(BankFactory.createListFromArray(NR_OF_COLORS, call1));
+    assertPins(cut, call1);
+
+    // Second call
+    cut.setPins(BankFactory.createListFromArray(NR_OF_COLORS, call2));
+    assertPins(cut, call2);
+
+  }
+
 }

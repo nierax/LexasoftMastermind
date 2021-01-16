@@ -91,6 +91,7 @@ public class AnyBank<T extends Pin> {
    */
   public void setPins(List<T> pins) {
     checkPinBoundaries(pins.size());
+    removeAllPins();
     for (T pin : pins) {
       addPin(pin);
     }
