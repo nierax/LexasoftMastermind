@@ -1,4 +1,4 @@
-package de.lexasoft.mastermind.core;
+package de.lexasoft.mastermind.core.api;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

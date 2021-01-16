@@ -1,4 +1,4 @@
-package de.lexasoft.mastermind.core;
+package de.lexasoft.mastermind.core.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,14 +8,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
+import de.lexasoft.mastermind.core.api.NrOfMoves;
 
-class NrOfColorsTest {
+class NrOfMovesTest {
 
-  private NrOfColors cut;
+  private NrOfMoves cut;
 
   @BeforeEach
   void prepareTest() {
-    cut = new NrOfColors(6);
+    cut = new NrOfMoves(6);
   }
 
   @ParameterizedTest
@@ -29,7 +30,7 @@ class NrOfColorsTest {
   @ParameterizedTest
   @ValueSource(ints = { 6, 7, 8, 9, 10, 1000, 100000 })
   final void testNrOfColors_Ok(int value) {
-    cut = new NrOfColors(value);
+    cut = new NrOfMoves(value);
     assertEquals(value, cut.getValue());
   }
 
