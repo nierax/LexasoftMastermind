@@ -35,6 +35,7 @@ public class CombinationCreator implements Iterable<List<QuestionPin>>, Iterator
     this.nrOfColors = nrOfColors;
     this.nrOfHoles = nrOfHoles;
     lastArray = new int[nrOfHoles.getValue()];
+    // set array to start from to [-1,0,0,..,0]
     lastArray[0] = -1;
     for (int i = 1; i < lastArray.length; i++) {
       lastArray[i] = 0;

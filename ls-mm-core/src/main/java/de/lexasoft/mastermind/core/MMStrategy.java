@@ -62,6 +62,7 @@ public class MMStrategy {
    * @return The next guess.
    */
   public QuestionBank nextGuess(QuestionBank lastGuess, AnswerBank lastAnswer) {
+    Long time = System.currentTimeMillis();
     List<List<QuestionPin>> leftCombinations = new ArrayList<>();
     Iterable<List<QuestionPin>> availableCombinations;
     if (getStillPossibleCombinations() == null) {
@@ -87,6 +88,7 @@ public class MMStrategy {
     LOGGER.info(String.format("Left combinations: %s", getStillPossibleCombinations().size()));
     QuestionBank nextGuess = new QuestionBank(nrOfHoles, nrOfColors);
     nextGuess.setPins(leftCombinations.get(indexOfNextGuess(leftCombinations)));
+    LOGGER.info(String.format("Time used 2 guess: %sms", System.currentTimeMillis() - time));
     return nextGuess;
   }
 

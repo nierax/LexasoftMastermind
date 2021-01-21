@@ -5,6 +5,9 @@ package de.lexasoft.mastermind.core;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.lexasoft.mastermind.core.api.AnswerPin;
 import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.MasterMindAPI;
@@ -23,12 +26,15 @@ public class MasterMindAPIImpl implements MasterMindAPI {
 
   private GameBoard gameBoard;
   private MMStrategy strategy;
+  private final static Logger LOGGER = LoggerFactory.getLogger(MasterMindAPI.class);
 
   /**
    * 
    */
   public MasterMindAPIImpl(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
     doInitialize(nrOfHoles, nrOfColors, nrOfMoves);
+    LOGGER.info(String.format("MasterMindAPI created with %s holes, %s colors and %s maximum moves", nrOfHoles,
+        nrOfColors, nrOfMoves));
   }
 
   /**
