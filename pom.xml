@@ -10,6 +10,7 @@
 
 	<modules>
 		<module>ls-mm-core</module>
+    <module>ls-mm-cli</module>
 	</modules>
 
 	<dependencyManagement>
@@ -51,6 +52,23 @@
         <configuration>
           <release>15</release>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
       </plugin>
     </plugins>
     </build>
