@@ -22,7 +22,7 @@
 			<artifactId>ls-games</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>de.lexasoft.commons</groupId>
+			<groupId>de.lexasoft</groupId>
 			<artifactId>ls-commons</artifactId>
 		</dependency>
       <dependency>
