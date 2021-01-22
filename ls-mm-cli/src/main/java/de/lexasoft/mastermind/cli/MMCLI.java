@@ -120,7 +120,7 @@ public class MMCLI {
       break;
     }
     case LOST: {
-      System.out.println(String.format("Ok, I've used alls % moves. I've lost.", mmApi.getMoveIndex() + 1));
+      System.out.println(String.format("Ok, I've used all %s moves. I've lost.", mmApi.getMoveIndex() + 1));
       break;
     }
     default:
