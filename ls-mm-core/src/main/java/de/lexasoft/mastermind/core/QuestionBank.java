@@ -118,7 +118,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
         myPin.setCounted();
       }
     }
-    LOGGER.debug("Found black hits: " + blackHits);
+    LOGGER.debug(String.format("Found black hits: %s", blackHits));
     return blackHits;
   }
 
@@ -150,7 +150,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
         }
       }
     }
-    LOGGER.debug("Found white hits: " + whiteHits);
+    LOGGER.debug(String.format("Found white hits: %s", whiteHits));
     return whiteHits;
   }
 
