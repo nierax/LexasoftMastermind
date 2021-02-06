@@ -22,10 +22,14 @@ public class NrOfColors extends Value<Integer> {
   public static final Validator<Integer> VALIDATOR = new MinimumValidator<>(6);
 
   /**
-   * @param value
+   * Creates the object with the given number of colors.
+   * <p>
+   * Number of colors must not be below 6, otherwise an IllegalArgumentException will be thrown.
+   * 
+   * @param nrOfColors Number of colors, at least 6.
    */
-  public NrOfColors(Integer value) {
-    super(VALIDATOR, value);
+  public NrOfColors(Integer nrOfColors) {
+    super(VALIDATOR, nrOfColors);
   }
 
 }

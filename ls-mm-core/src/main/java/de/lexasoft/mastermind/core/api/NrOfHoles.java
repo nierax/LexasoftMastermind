@@ -22,10 +22,14 @@ public class NrOfHoles extends Value<Integer> {
   public static final Validator<Integer> VALIDATOR = new MinimumValidator<>(4);
 
   /**
-   * @param value
+   * Creates the object with the given number of holes.
+   * <p>
+   * Number of holes must not be below 4, otherwise an IllegalArgumentException will be thrown.
+   * 
+   * @param nrOfHoles Number of holes, at least 4.
    */
-  public NrOfHoles(Integer value) {
-    super(VALIDATOR, value);
+  public NrOfHoles(Integer nrOfHoles) {
+    super(VALIDATOR, nrOfHoles);
   }
 
 }
