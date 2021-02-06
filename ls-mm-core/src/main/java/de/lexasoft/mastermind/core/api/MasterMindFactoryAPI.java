@@ -34,16 +34,4 @@ public class MasterMindFactoryAPI {
     return new MasterMindAPIImpl(nrOfPositions, nrOfColors, nrOfMoves);
   }
 
-  /**
-   * Creates a master mind board.
-   * 
-   * @param nrOfPositions Number of positions to guess
-   * @param nrOfColors    Number of colors per pin.
-   * @param nrOfMoves     Maximum number of moves to win the game.
-   * @return
-   */
-  public MasterMindAPI createBoard(int nrOfPositions, int nrOfColors, int nrOfMoves) {
-    return createBoard(new NrOfHoles(nrOfPositions), new NrOfColors(nrOfColors), new NrOfMoves(nrOfMoves));
-  }
-
 }

@@ -135,21 +135,26 @@ public class MMCLI {
     System.out.print("Player's name: ");
     playersName = scanner.next();
     System.out.println("Ok, " + playersName);
-    int iNrOfColors = console.fromConsole("Number of colors to guess (at least 6): ", () -> {
+    
+    NrOfColors nrOfColors = new NrOfColors(console.fromConsole("Number of colors to guess (at least 6): ", () -> {
       return scanner.nextInt();
-    }, NrOfColors.VALIDATOR);
-    int iNrOfHoles = console.fromConsole("Number of positions in combination (at least 4): ", () -> {
+    }, NrOfColors.VALIDATOR));
+    
+    NrOfHoles nrOfHoles = new NrOfHoles(console.fromConsole("Number of positions in combination (at least 4): ", () -> {
       return scanner.nextInt();
-    }, NrOfHoles.VALIDATOR);
-    int iNrOfMoves = console.fromConsole("Number of moves to guess (ar least 6): ", () -> {
+    }, NrOfHoles.VALIDATOR));
+    
+    NrOfMoves nrOfMoves = new NrOfMoves(console.fromConsole("Number of moves to guess (ar least 6): ", () -> {
       return scanner.nextInt();
-    }, NrOfMoves.VALIDATOR);
+    }, NrOfMoves.VALIDATOR));
+    
     int iModus = console.fromConsole("Modus (0: You play alone, 1: Computer plays alone, 2: Both play: ", () -> {
       return scanner.nextInt();
     }, new RangeValidator<Integer>(0, 2));
+
     playerGuess = (iModus == 0) || (iModus == 2);
     computerGuess = (iModus == 1) || (iModus == 2);
-    return mmFactory.createBoard(iNrOfHoles, iNrOfColors, iNrOfMoves);
+    return mmFactory.createBoard(nrOfHoles, nrOfColors, nrOfMoves);
   }
 
   private List<QuestionPin> readQuestionFromKeyboard() {
