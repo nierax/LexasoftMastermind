@@ -24,12 +24,12 @@
 			<dependency>
 				<groupId>de.lexasoft</groupId>
 				<artifactId>ls-games</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>de.lexasoft</groupId>
 				<artifactId>ls-commons</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>de.lexasoft</groupId>
