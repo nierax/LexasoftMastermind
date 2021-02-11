@@ -16,7 +16,7 @@ public class NrOfMoves extends ScalarType<Integer> {
 	/**
 	 * Minimum number of moves.
 	 */
-	public static final Validator<Integer> VALIDATOR = new MinimumValidator<>(6);
+	public static final Validator<Integer> VALIDATOR = MinimumValidator.of(6);
 
 	/**
 	 * Creates the object with the given number of moves.

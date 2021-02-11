@@ -21,7 +21,7 @@ public final class NrOfHoles extends ScalarType<Integer> {
 	/**
 	 * Minimum number of holes.
 	 */
-	public static final Validator<Integer> VALIDATOR = new MinimumValidator<>(4);
+	public static final Validator<Integer> VALIDATOR = MinimumValidator.of(4);
 
 	/**
 	 * Creates the object with the given number of holes.
