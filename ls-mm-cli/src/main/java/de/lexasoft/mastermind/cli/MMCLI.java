@@ -16,7 +16,6 @@ import de.lexasoft.common.model.RangeValidator;
 import de.lexasoft.mastermind.core.api.AnswerPin;
 import de.lexasoft.mastermind.core.api.GameState;
 import de.lexasoft.mastermind.core.api.MasterMindAPI;
-import de.lexasoft.mastermind.core.api.MasterMindFactoryAPI;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.NrOfMoves;
@@ -33,7 +32,6 @@ public class MMCLI {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(MMCLI.class);
 
-	private MasterMindFactoryAPI mmFactory;
 	private MasterMindAPI mmApi;
 	private String playersName;
 	private Scanner scanner;
@@ -45,7 +43,6 @@ public class MMCLI {
 	 * 
 	 */
 	private MMCLI() {
-		mmFactory = new MasterMindFactoryAPI();
 		scanner = new Scanner(System.in);
 		console = new ConsoleValidator();
 	}
@@ -155,7 +152,7 @@ public class MMCLI {
 
 		playerGuess = (iModus == 0) || (iModus == 2);
 		computerGuess = (iModus == 1) || (iModus == 2);
-		return mmFactory.createBoard(nrOfHoles, nrOfColors, nrOfMoves);
+		return MasterMindAPI.of(nrOfHoles, nrOfColors, nrOfMoves);
 	}
 
 	private List<QuestionPin> readQuestionFromKeyboard() {
