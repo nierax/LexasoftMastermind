@@ -30,8 +30,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 		private boolean counted;
 
 		public InternalQuestionPin(QuestionPin pin) {
-			super(getNrOfColors(), pin.getColor());
-			setValue(pin.getColor());
+			super(getNrOfColors(), pin.color());
 			counted = false;
 		}
 
@@ -46,14 +45,14 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 		/**
 		 * Marks the pin counted.
 		 */
-		void setCounted() {
+		void counted() {
 			counted = true;
 		}
 
 		/**
 		 * Removes the counted mark from the pin.
 		 */
-		void resetCounted() {
+		void notCounted() {
 			counted = false;
 		}
 
@@ -82,7 +81,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	void setAllPinsCounted() {
 		for (Hole<QuestionPin> hole : getHoles()) {
 			if (hole.holdsAPin()) {
-				((InternalQuestionPin) hole.getPin()).setCounted();
+				((InternalQuestionPin) hole.getPin()).counted();
 			}
 		}
 	}
@@ -93,7 +92,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	void resetAllPinsCounted() {
 		for (Hole<QuestionPin> hole : getHoles()) {
 			if (hole.holdsAPin()) {
-				((InternalQuestionPin) hole.getPin()).resetCounted();
+				((InternalQuestionPin) hole.getPin()).notCounted();
 			}
 		}
 	}
@@ -110,8 +109,8 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 			// Hits at the same position
 			if (solutionPin.comparePin(myPin)) {
 				blackHits++;
-				solutionPin.setCounted();
-				myPin.setCounted();
+				solutionPin.counted();
+				myPin.counted();
 			}
 		}
 		return blackHits;
@@ -136,7 +135,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 							// One more hit
 							whiteHits++;
 							// Mark solution as counted
-							solutionPin.setCounted();
+							solutionPin.counted();
 							// Just count once. Because we break here, it is not necessary to set this pin
 							// as counted.
 							break;
@@ -209,7 +208,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 		List<Integer> values = diceCup.roll();
 		for (Integer value : values) {
 			// Subtract 1 from the value, because dice is 1-based, but pins are 0-based.
-			addPin(new QuestionPin(nrOfColors, new PinColor(value - 1)));
+			addPin(QuestionPin.of(nrOfColors, PinColor.of(value - 1)));
 		}
 		return this;
 	}

@@ -163,7 +163,7 @@ public class MMCLI {
 		String[] values = value.split(",");
 		List<QuestionPin> pins = new ArrayList<>();
 		for (int i = 0; i < values.length; i++) {
-			pins.add(new QuestionPin(mmApi.getNrOfColors(), new PinColor(Integer.valueOf(values[i]))));
+			pins.add(QuestionPin.of(mmApi.getNrOfColors(), PinColor.of(Integer.valueOf(values[i]))));
 		}
 		return pins;
 	}
@@ -173,7 +173,7 @@ public class MMCLI {
 		String value = scanner.next();
 		String[] values = value.split(",");
 		for (int i = 0; i < values.length; i++) {
-			pins.add(new AnswerPin(new PinColor(Integer.valueOf(values[i]))));
+			pins.add(AnswerPin.of(PinColor.of(Integer.valueOf(values[i]))));
 		}
 		return pins;
 
