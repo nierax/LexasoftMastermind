@@ -109,8 +109,8 @@ public class MMCLI {
 				answer2Computer = mmApi.answerQuestion(computerGuess);
 				System.out.println(String.format("Answer: %s", answer2Computer.toString()));
 			} else {
-				System.out
-				    .print(String.format("%s, it is Your turn to give the answer (white pin: 0, black pin: 1): ", playersName));
+				System.out.print(String
+				    .format("%s, it is Your turn to give the answer (white pin: 0, black pin: 1, Nothing: n): ", playersName));
 				answer2Computer = readAnswerFromKeyboard();
 				answer2Computer = mmApi.provideAnswer(answer2Computer);
 			}
@@ -171,9 +171,11 @@ public class MMCLI {
 	private List<AnswerPin> readAnswerFromKeyboard() {
 		List<AnswerPin> pins = new ArrayList<>();
 		String value = scanner.next();
-		String[] values = value.split(",");
-		for (int i = 0; i < values.length; i++) {
-			pins.add(AnswerPin.of(PinColor.of(Integer.valueOf(values[i]))));
+		if (!value.startsWith("n")) {
+			String[] values = value.split(",");
+			for (int i = 0; i < values.length; i++) {
+				pins.add(AnswerPin.of(PinColor.of(Integer.valueOf(values[i]))));
+			}
 		}
 		return pins;
 
