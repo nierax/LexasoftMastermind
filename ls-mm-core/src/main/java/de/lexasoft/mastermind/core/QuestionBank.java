@@ -68,7 +68,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	public QuestionBank(NrOfHoles nrOfHoles, NrOfColors nrOfColors) {
 		super(nrOfHoles);
 		this.nrOfColors = nrOfColors;
-		diceCup = DiceCup.of(getNrOfHoles().getValue(), Range.of(1, nrOfColors.getValue()));
+		diceCup = DiceCup.of(getNrOfHoles().value(), Range.of(1, nrOfColors.value()));
 	}
 
 	NrOfColors getNrOfColors() {
@@ -103,7 +103,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	 */
 	private int countBlackHits(QuestionBank solution) {
 		int blackHits = 0;
-		for (int i = 0; i < getNrOfHoles().getValue(); i++) {
+		for (int i = 0; i < getNrOfHoles().value(); i++) {
 			InternalQuestionPin myPin = (InternalQuestionPin) getPin(i);
 			InternalQuestionPin solutionPin = (InternalQuestionPin) solution.getPin(i);
 			// Hits at the same position
@@ -122,11 +122,11 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	 */
 	private int countWhiteHits(QuestionBank solution) {
 		int whiteHits = 0;
-		for (int i = 0; i < getNrOfHoles().getValue(); i++) {
+		for (int i = 0; i < getNrOfHoles().value(); i++) {
 			InternalQuestionPin myPin = (InternalQuestionPin) getPin(i);
 			// If the pin had a black hit before, it must not be counted again.
 			if (!myPin.isCounted()) {
-				for (int j = 0; j < solution.getNrOfHoles().getValue(); j++) {
+				for (int j = 0; j < solution.getNrOfHoles().value(); j++) {
 					InternalQuestionPin solutionPin = (InternalQuestionPin) solution.getPin(j);
 					// Same index would be black and must not be counted
 					// If the solution pin was counted before, we must not count this one
@@ -157,7 +157,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 		if (!question.isCompletelyFilled() || !solution.isCompletelyFilled()) {
 			throw new IllegalArgumentException("Both question and solution must be filled completely");
 		}
-		if (question.getNrOfHoles().getValue() != solution.getNrOfHoles().getValue()) {
+		if (question.getNrOfHoles().value() != solution.getNrOfHoles().value()) {
 			throw new IllegalArgumentException("Both question and solution must have the same number of holes.");
 		}
 	}

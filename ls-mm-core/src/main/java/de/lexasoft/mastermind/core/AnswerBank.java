@@ -130,7 +130,7 @@ public class AnswerBank extends AnyBank<AnswerPin> {
 	 * @return True, if the answer is correct, false if not.
 	 */
 	public boolean isCorrect() {
-		return getNrOfBlackPins() == getNrOfHoles().getValue();
+		return getNrOfBlackPins() == getNrOfHoles().value();
 	}
 
 	@Override

@@ -92,7 +92,7 @@ public class MMCLI {
 		System.out.println(String.format("Now it is Your turn to give me a combination to guess, %s.", playersName));
 		System.out.print("Enter Your combination or just <ENTER>, if You want to answer Yourself: ");
 		List<QuestionPin> solution = readQuestionFromKeyboard();
-		if (solution.size() == mmApi.getNrOfHoles().getValue()) {
+		if (solution.size() == mmApi.getNrOfHoles().value()) {
 			mmApi.setSolution(solution);
 		}
 		List<QuestionPin> computerGuess = null;
@@ -137,15 +137,15 @@ public class MMCLI {
 		playersName = scanner.next();
 		System.out.println("Ok, " + playersName);
 
-		NrOfColors nrOfColors = new NrOfColors(console.fromConsole("Number of colors to guess (at least 6): ", () -> {
+		NrOfColors nrOfColors = NrOfColors.of(console.fromConsole("Number of colors to guess (at least 6): ", () -> {
 			return scanner.nextInt();
 		}, NrOfColors.VALIDATOR));
 
-		NrOfHoles nrOfHoles = new NrOfHoles(console.fromConsole("Number of positions in combination (at least 4): ", () -> {
+		NrOfHoles nrOfHoles = NrOfHoles.of(console.fromConsole("Number of positions in combination (at least 4): ", () -> {
 			return scanner.nextInt();
 		}, NrOfHoles.VALIDATOR));
 
-		NrOfMoves nrOfMoves = new NrOfMoves(console.fromConsole("Number of moves to guess (ar least 6): ", () -> {
+		NrOfMoves nrOfMoves = NrOfMoves.of(console.fromConsole("Number of moves to guess (ar least 6): ", () -> {
 			return scanner.nextInt();
 		}, NrOfMoves.VALIDATOR));
 

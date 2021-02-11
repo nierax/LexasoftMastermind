@@ -20,8 +20,8 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
  */
 class CombinationCreatorTest {
 
-	private final static NrOfColors NR_OF_COLORS = new NrOfColors(6);
-	private final static NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
+	private final static NrOfColors NR_OF_COLORS = NrOfColors.of(6);
+	private final static NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
 	private CombinationCreator cut = new CombinationCreator(NR_OF_COLORS, NR_OF_HOLES);
 
 	/**

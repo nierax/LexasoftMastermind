@@ -35,8 +35,8 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
 class AnyBankTest {
 
 	private AnyBank<QuestionPin> cut;
-	private static final NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
-	private static final NrOfColors NR_OF_COLORS = new NrOfColors(6);
+	private static final NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
+	private static final NrOfColors NR_OF_COLORS = NrOfColors.of(6);
 
 	@BeforeEach
 	void prepareTestCase() {
@@ -59,7 +59,7 @@ class AnyBankTest {
 	void testAnyBank() {
 		assertSame(NR_OF_HOLES, cut.getNrOfHoles());
 		assertNotNull(cut.getHoles(), "List of holes not created.");
-		assertEquals(NR_OF_HOLES.getValue(), cut.getHoles().size(), "The holes should be set to the number of holes");
+		assertEquals(NR_OF_HOLES.value(), cut.getHoles().size(), "The holes should be set to the number of holes");
 	}
 
 	/**
@@ -163,13 +163,13 @@ class AnyBankTest {
 	@Test
 	void testRemovePin_i_() {
 		// Fill the bank
-		List<QuestionPin> pins = createListOfPins(NR_OF_HOLES.getValue());
+		List<QuestionPin> pins = createListOfPins(NR_OF_HOLES.value());
 		cut.setPins(pins);
-		assertEquals(NR_OF_HOLES.getValue(), cut.currentNrOfPins());
+		assertEquals(NR_OF_HOLES.value(), cut.currentNrOfPins());
 		// Remove the first pin
 		Pin pin = cut.removePin(0);
 		assertNotNull(pin, "Pin expected to be returned, but wasn't.");
-		assertEquals(NR_OF_HOLES.getValue() - 1, cut.currentNrOfPins(),
+		assertEquals(NR_OF_HOLES.value() - 1, cut.currentNrOfPins(),
 		    "After removing the pin, the number of pins should be reduced to one below the number of holes.");
 	}
 
@@ -180,7 +180,7 @@ class AnyBankTest {
 	void testIsCompletelyFilled() {
 		assertFalse(cut.isCompletelyFilled(), "Bank must not be filled after creation.");
 		// Fill, but let one pin kept empty.
-		for (int i = 0; i < cut.getNrOfHoles().getValue() - 1; i++) {
+		for (int i = 0; i < cut.getNrOfHoles().value() - 1; i++) {
 			cut.addPin(QuestionPin.of(NR_OF_COLORS, PinColor.of(1)));
 		}
 		assertFalse(cut.isCompletelyFilled(), "One hole not filled, so the bank must be confirmed not filled.");
@@ -211,7 +211,7 @@ class AnyBankTest {
 
 	@Test
 	void testCopy_DifferentNrOfHoles() {
-		AnyBank<QuestionPin> source = new AnyBank<>(new NrOfHoles(5));
+		AnyBank<QuestionPin> source = new AnyBank<>(NrOfHoles.of(5));
 		assertThrows(MasterMindValidationException.class, () -> {
 			cut.copy(source);
 		});
@@ -220,8 +220,8 @@ class AnyBankTest {
 	private static Stream<Arguments> testEquals() {
 		return Stream.of(Arguments.of(new AnyBank<QuestionPin>(NR_OF_HOLES), new int[] { 0, 1, 2, 3 }, false),
 		    Arguments.of(new AnyBank<QuestionPin>(NR_OF_HOLES), new int[] { 0, 0, 0, 0 }, true),
-		    Arguments.of(new AnyBank<QuestionPin>(new NrOfHoles(5)), new int[] { 0, 0, 0, 0, 0 }, false),
-		    Arguments.of(new AnyBank<QuestionPin>(new NrOfHoles(5)), new int[] { 0, 0, 0, 0 }, false));
+		    Arguments.of(new AnyBank<QuestionPin>(NrOfHoles.of(5)), new int[] { 0, 0, 0, 0, 0 }, false),
+		    Arguments.of(new AnyBank<QuestionPin>(NrOfHoles.of(5)), new int[] { 0, 0, 0, 0 }, false));
 	}
 
 	/**

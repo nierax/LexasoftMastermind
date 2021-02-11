@@ -34,7 +34,7 @@ public class CombinationCreator implements Iterable<List<QuestionPin>>, Iterator
 	public CombinationCreator(NrOfColors nrOfColors, NrOfHoles nrOfHoles) {
 		this.nrOfColors = nrOfColors;
 		this.nrOfHoles = nrOfHoles;
-		lastArray = new int[nrOfHoles.getValue()];
+		lastArray = new int[nrOfHoles.value()];
 		// set array to start from to [-1,0,0,..,0]
 		lastArray[0] = -1;
 		for (int i = 1; i < lastArray.length; i++) {
@@ -47,8 +47,8 @@ public class CombinationCreator implements Iterable<List<QuestionPin>>, Iterator
 	 */
 	@Override
 	public boolean hasNext() {
-		for (int i = nrOfHoles.getValue() - 1; i >= 0; i--) {
-			if (lastArray[i] < nrOfColors.getValue() - 1) {
+		for (int i = nrOfHoles.value() - 1; i >= 0; i--) {
+			if (lastArray[i] < nrOfColors.value() - 1) {
 				return true;
 			}
 		}
@@ -65,7 +65,7 @@ public class CombinationCreator implements Iterable<List<QuestionPin>>, Iterator
 	 */
 	private void increasePosition(int position) {
 		lastArray[position]++;
-		if (lastArray[position] == nrOfColors.getValue()) {
+		if (lastArray[position] == nrOfColors.value()) {
 			lastArray[position] = 0;
 			increasePosition(position + 1);
 		}

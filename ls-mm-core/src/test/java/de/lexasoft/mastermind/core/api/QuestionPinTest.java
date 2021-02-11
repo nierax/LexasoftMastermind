@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 class QuestionPinTest {
 
-	private final static NrOfColors NR_OF_COLORS = new NrOfColors(6);
+	private final static NrOfColors NR_OF_COLORS = NrOfColors.of(6);
 
 	/**
 	 * Must be valid for all values between 0 and 6 (because of the declaration of

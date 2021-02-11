@@ -24,9 +24,9 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
 class GameBoardTest {
 
 	private GameBoard cut;
-	private static final NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
-	private static final NrOfColors NR_OF_COLORS = new NrOfColors(6);
-	private static final NrOfMoves NR_OF_MOVES = new NrOfMoves(6);
+	private static final NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
+	private static final NrOfColors NR_OF_COLORS = NrOfColors.of(6);
+	private static final NrOfMoves NR_OF_MOVES = NrOfMoves.of(6);
 
 	@BeforeEach
 	void prepareTestCase() {
@@ -76,11 +76,11 @@ class GameBoardTest {
 		Move move = cut.nextMove();
 		assertNotNull(move, "The new move object must not be null.");
 		assertEquals(1, cut.getMoveIndex(), "After the first move the move index should be 1.");
-		assertEquals(NR_OF_HOLES.getValue(), move.getQuestion().getNrOfHoles().getValue(),
+		assertEquals(NR_OF_HOLES.value(), move.getQuestion().getNrOfHoles().value(),
 		    "Question in move must have same number of holes as the board.");
-		assertEquals(NR_OF_HOLES.getValue(), move.getAnswer().getNrOfHoles().getValue(),
+		assertEquals(NR_OF_HOLES.value(), move.getAnswer().getNrOfHoles().value(),
 		    "Answer in move must have same number of holes as the board.");
-		assertEquals(NR_OF_COLORS.getValue(), move.getQuestion().getNrOfColors().getValue(),
+		assertEquals(NR_OF_COLORS.value(), move.getQuestion().getNrOfColors().value(),
 		    "Question in move must have same number of colors as the board.");
 		assertSame(move, cut.currentMove(), "Current move method mus return the same object as with next move created.");
 	}

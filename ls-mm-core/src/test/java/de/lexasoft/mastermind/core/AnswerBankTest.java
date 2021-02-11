@@ -21,7 +21,7 @@ import de.lexasoft.mastermind.core.api.NrOfHoles;
 class AnswerBankTest {
 
 	private AnswerBank cut;
-	private static final NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
+	private static final NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
 
 	@BeforeEach
 	void prepareTestCase() {
@@ -113,7 +113,7 @@ class AnswerBankTest {
 	 */
 	@Test
 	void testAddWhitePin_OutOfBounds() {
-		cut.addWhitePins(NR_OF_HOLES.getValue());
+		cut.addWhitePins(NR_OF_HOLES.value());
 		assertThrows(MasterMindValidationException.class, () -> {
 			cut.addWhitePin();
 		});
@@ -125,7 +125,7 @@ class AnswerBankTest {
 	 */
 	@Test
 	void testAddBlackPin_OutOfBounds() {
-		cut.addBlackPins(NR_OF_HOLES.getValue());
+		cut.addBlackPins(NR_OF_HOLES.value());
 		assertThrows(MasterMindValidationException.class, () -> {
 			cut.addBlackPin();
 		});

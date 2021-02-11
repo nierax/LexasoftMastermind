@@ -15,7 +15,7 @@ public class QuestionPin extends Pin {
 
 	protected QuestionPin(NrOfColors nrOfColors, PinColor color) {
 		super(color);
-		if (!RangeValidator.of(Range.of(0, nrOfColors.getValue() - 1)).validate(color.value())) {
+		if (!RangeValidator.of(Range.of(0, nrOfColors.value() - 1)).validate(color.value())) {
 			throw new IllegalArgumentException(
 			    String.format("Color %s not valid. Must be between 0 and %s", color, nrOfColors));
 		}

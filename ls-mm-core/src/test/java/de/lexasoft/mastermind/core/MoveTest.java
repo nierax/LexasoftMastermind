@@ -17,13 +17,13 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
 /**
  * Tests the move class
  * 
- * @author Axel
+ * @author nierax
  */
 class MoveTest {
 
 	private Move cut;
-	private static final NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
-	private static final NrOfColors NR_OF_COLORS = new NrOfColors(6);
+	private static final NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
+	private static final NrOfColors NR_OF_COLORS = NrOfColors.of(6);
 
 	@BeforeEach
 	void prepareTextCase() {
