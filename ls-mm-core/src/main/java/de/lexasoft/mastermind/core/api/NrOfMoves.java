@@ -1,7 +1,7 @@
 package de.lexasoft.mastermind.core.api;
 
 import de.lexasoft.common.model.MinimumValidator;
-import de.lexasoft.common.model.ScalarType;
+import de.lexasoft.common.model.SimpleType;
 import de.lexasoft.common.model.Validator;
 import de.lexasoft.common.model.ValueObject;
 
@@ -11,7 +11,7 @@ import de.lexasoft.common.model.ValueObject;
  * @author nierax
  */
 @ValueObject
-public class NrOfMoves extends ScalarType<Integer> {
+public class NrOfMoves extends SimpleType<Integer> {
 
 	/**
 	 * Minimum number of moves.

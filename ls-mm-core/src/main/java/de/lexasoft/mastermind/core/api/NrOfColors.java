@@ -4,7 +4,7 @@
 package de.lexasoft.mastermind.core.api;
 
 import de.lexasoft.common.model.MinimumValidator;
-import de.lexasoft.common.model.ScalarType;
+import de.lexasoft.common.model.SimpleType;
 import de.lexasoft.common.model.Validator;
 
 /**
@@ -14,7 +14,7 @@ import de.lexasoft.common.model.Validator;
  * 
  * @author Axel
  */
-public final class NrOfColors extends ScalarType<Integer> {
+public final class NrOfColors extends SimpleType<Integer> {
 
 	/**
 	 * Minimum number of colors.

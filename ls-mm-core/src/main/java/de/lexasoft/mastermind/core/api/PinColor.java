@@ -3,7 +3,7 @@
  */
 package de.lexasoft.mastermind.core.api;
 
-import de.lexasoft.common.model.ScalarType;
+import de.lexasoft.common.model.SimpleType;
 import de.lexasoft.common.model.ValueObject;
 
 /**
@@ -13,7 +13,7 @@ import de.lexasoft.common.model.ValueObject;
  *
  */
 @ValueObject
-public class PinColor extends ScalarType<Integer> {
+public class PinColor extends SimpleType<Integer> {
 
 	private PinColor(Integer value) {
 		super(value);

@@ -4,7 +4,7 @@
 package de.lexasoft.mastermind.core.api;
 
 import de.lexasoft.common.model.MinimumValidator;
-import de.lexasoft.common.model.ScalarType;
+import de.lexasoft.common.model.SimpleType;
 import de.lexasoft.common.model.Validator;
 import de.lexasoft.common.model.ValueObject;
 
@@ -16,7 +16,7 @@ import de.lexasoft.common.model.ValueObject;
  * @author nierax
  */
 @ValueObject
-public final class NrOfHoles extends ScalarType<Integer> {
+public final class NrOfHoles extends SimpleType<Integer> {
 
 	/**
 	 * Minimum number of holes.
