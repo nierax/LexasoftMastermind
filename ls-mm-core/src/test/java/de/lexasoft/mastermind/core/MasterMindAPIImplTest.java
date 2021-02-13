@@ -18,33 +18,33 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
 
 class MasterMindAPIImplTest {
 
-  private MasterMindAPIImpl cut;
+	private MasterMindAPIImpl cut;
 
-  private final static NrOfHoles NR_OF_HOLES = new NrOfHoles(4);
-  private final static NrOfColors NR_OF_COLORS = new NrOfColors(6);
-  private final static NrOfMoves NR_OF_MOVES = new NrOfMoves(6);
+	private final static NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
+	private final static NrOfColors NR_OF_COLORS = NrOfColors.of(6);
+	private final static NrOfMoves NR_OF_MOVES = NrOfMoves.of(6);
 
-  @BeforeEach
-  void prepareTestCase() {
-    cut = new MasterMindAPIImpl(NR_OF_HOLES, NR_OF_COLORS, NR_OF_MOVES);
-  }
+	@BeforeEach
+	void prepareTestCase() {
+		cut = new MasterMindAPIImpl(NR_OF_HOLES, NR_OF_COLORS, NR_OF_MOVES);
+	}
 
-  @Test
-  final void testCreateSolution() {
-    List<QuestionPin> pins = cut.createSolution();
-    assertNotNull(pins, "Solution must not be null.");
-    assertEquals(NR_OF_HOLES.getValue(), pins.size(), "Must have a pin for every hole.");
-  }
+	@Test
+	final void testCreateSolution() {
+		List<QuestionPin> pins = cut.createSolution();
+		assertNotNull(pins, "Solution must not be null.");
+		assertEquals(NR_OF_HOLES.value(), pins.size(), "Must have a pin for every hole.");
+	}
 
-  @Test
-  final void testAnswerQuestion() {
-    cut.createSolution();
-    List<QuestionPin> question = BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 });
-    List<AnswerPin> answer = cut.answerQuestion(question);
-    assertNotNull(answer, "Answer must not be null");
-    for (Pin pin : answer) {
-      Integer colorValue = pin.getColor().getValue();
-      assertTrue((colorValue == 0) || (colorValue == 1));
-    }
-  }
+	@Test
+	final void testAnswerQuestion() {
+		cut.createSolution();
+		List<QuestionPin> question = BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 });
+		List<AnswerPin> answer = cut.answerQuestion(question);
+		assertNotNull(answer, "Answer must not be null");
+		for (Pin pin : answer) {
+			Integer colorValue = pin.color().value();
+			assertTrue((colorValue == 0) || (colorValue == 1));
+		}
+	}
 }

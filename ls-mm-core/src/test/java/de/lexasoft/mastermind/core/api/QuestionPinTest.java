@@ -15,33 +15,33 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 class QuestionPinTest {
 
-  private final static NrOfColors NR_OF_COLORS = new NrOfColors(6);
+	private final static NrOfColors NR_OF_COLORS = NrOfColors.of(6);
 
-  /**
-   * Must be valid for all values between 0 and 6 (because of the declaration of
-   * NrOfColors above.
-   * 
-   * @param colorValue
-   */
-  @ParameterizedTest
-  @ValueSource(ints = { 0, 1, 2, 3, 4, 5 })
-  final void testQuestionPin_Constructor_Ok(int colorValue) {
-    QuestionPin cut = new QuestionPin(NR_OF_COLORS, new PinColor(colorValue));
-    assertNotNull(cut, "InternalQuestionPin must not be null after constructor");
-    assertEquals(colorValue, cut.getColor().getValue(), "Value of color is not correct.");
-  }
+	/**
+	 * Must be valid for all values between 0 and 6 (because of the declaration of
+	 * NrOfColors above.
+	 * 
+	 * @param colorValue
+	 */
+	@ParameterizedTest
+	@ValueSource(ints = { 0, 1, 2, 3, 4, 5 })
+	final void testQuestionPin_Constructor_Ok(int colorValue) {
+		QuestionPin cut = QuestionPin.of(NR_OF_COLORS, PinColor.of(colorValue));
+		assertNotNull(cut, "InternalQuestionPin must not be null after constructor");
+		assertEquals(colorValue, cut.color().value(), "Value of color is not correct.");
+	}
 
-  /**
-   * Must not be valid for values below 0 and above or equal NrOfColors.
-   * 
-   * @param colorValue
-   */
-  @ParameterizedTest
-  @ValueSource(ints = { -1, 6, 7 })
-  final void testQuestionPin_Constructor_Fail(int colorValue) {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new QuestionPin(NR_OF_COLORS, new PinColor(colorValue));
-    });
-  }
+	/**
+	 * Must not be valid for values below 0 and above or equal NrOfColors.
+	 * 
+	 * @param colorValue
+	 */
+	@ParameterizedTest
+	@ValueSource(ints = { -1, 6, 7 })
+	final void testQuestionPin_Constructor_Fail(int colorValue) {
+		assertThrows(IllegalArgumentException.class, () -> {
+			QuestionPin.of(NR_OF_COLORS, PinColor.of(colorValue));
+		});
+	}
 
 }
