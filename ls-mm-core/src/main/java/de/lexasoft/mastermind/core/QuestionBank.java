@@ -7,6 +7,7 @@ import java.util.List;
 
 import de.lexasoft.common.model.Range;
 import de.lexasoft.game.DiceCup;
+import de.lexasoft.game.DiceDots;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.PinColor;
@@ -68,7 +69,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	public QuestionBank(NrOfHoles nrOfHoles, NrOfColors nrOfColors) {
 		super(nrOfHoles);
 		this.nrOfColors = nrOfColors;
-		diceCup = DiceCup.of(getNrOfHoles().value(), Range.of(1, nrOfColors.value()));
+		diceCup = DiceCup.of(getNrOfHoles().value(), Range.of(0, nrOfColors.value() - 1));
 	}
 
 	NrOfColors getNrOfColors() {
@@ -205,10 +206,9 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	 */
 	public QuestionBank roll() {
 		removeAllPins();
-		List<Integer> values = diceCup.roll();
-		for (Integer value : values) {
-			// Subtract 1 from the value, because dice is 1-based, but pins are 0-based.
-			addPin(QuestionPin.of(nrOfColors, PinColor.of(value - 1)));
+		List<DiceDots> values = diceCup.roll();
+		for (DiceDots dots : values) {
+			addPin(QuestionPin.of(nrOfColors, PinColor.of(dots.value())));
 		}
 		return this;
 	}

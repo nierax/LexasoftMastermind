@@ -51,7 +51,7 @@ public class MMStrategy {
 			return 0;
 		}
 		Dice dice = Dice.of(Range.of(1, leftCombinations.size()));
-		return dice.roll() - 1;
+		return dice.roll().value() - 1;
 	}
 
 	/**
