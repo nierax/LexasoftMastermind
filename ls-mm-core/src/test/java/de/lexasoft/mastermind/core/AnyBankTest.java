@@ -68,13 +68,13 @@ class AnyBankTest {
 	@Test
 	void testAddPin() {
 		cut.addPin(QuestionPin.of(NR_OF_COLORS, PinColor.of(0)));
-		assertEquals(0, cut.getHole(0).getPin().color().value(), "Value of pin must be equal to the given.");
+		assertEquals(0, cut.getHole(0).pin().color().value(), "Value of pin must be equal to the given.");
 		cut.addPin(QuestionPin.of(NR_OF_COLORS, PinColor.of(1)));
-		assertEquals(1, cut.getHole(1).getPin().color().value(), "Value of pin must be equal to the given.");
+		assertEquals(1, cut.getHole(1).pin().color().value(), "Value of pin must be equal to the given.");
 		cut.addPin(QuestionPin.of(NR_OF_COLORS, PinColor.of(2)));
-		assertEquals(2, cut.getHole(2).getPin().color().value(), "Value of pin must be equal to the given.");
+		assertEquals(2, cut.getHole(2).pin().color().value(), "Value of pin must be equal to the given.");
 		cut.addPin(QuestionPin.of(NR_OF_COLORS, PinColor.of(3)));
-		assertEquals(3, cut.getHole(3).getPin().color().value(), "Value of pin must be equal to the given.");
+		assertEquals(3, cut.getHole(3).pin().color().value(), "Value of pin must be equal to the given.");
 	}
 
 	/**
@@ -124,7 +124,7 @@ class AnyBankTest {
 		cut.setPins(source);
 		for (Hole<QuestionPin> hole : cut.getHoles()) {
 			assertTrue(hole.holdsAPin(), "Each hole must hold a pin.");
-			assertEquals(source.iterator().next().value(), hole.getPin().value(), "Each value must be equal to the given.");
+			assertEquals(source.iterator().next().value(), hole.pin().value(), "Each value must be equal to the given.");
 		}
 	}
 
@@ -256,11 +256,10 @@ class AnyBankTest {
 		}
 	}
 
-	private void assertPins(AnyBank<?> cut, int[] expected) {
+	private void assertPins(AnyBank<QuestionPin> cut, int[] expected) {
 		int i = 0;
-		for (Hole<?> hole : cut.getHoles()) {
-			assertEquals(expected[i], hole.getPin().color().value(),
-			    String.format("Pin on position %s not as expected.", i++));
+		for (Hole<QuestionPin> hole : cut.getHoles()) {
+			assertEquals(expected[i], hole.pin().color().value(), String.format("Pin on position %s not as expected.", i++));
 		}
 	}
 

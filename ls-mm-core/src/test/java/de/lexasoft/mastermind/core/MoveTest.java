@@ -39,7 +39,7 @@ class MoveTest {
 		assertFalse(cut.isComplete(), "Must be incomplete, right after creation");
 		// QuestionBank is complete, but answer is not given => False
 		for (Hole<QuestionPin> hole : cut.getQuestion().getHoles()) {
-			hole.setPin(QuestionPin.of(NR_OF_COLORS, PinColor.of(0)));
+			hole.stickPin(QuestionPin.of(NR_OF_COLORS, PinColor.of(0)));
 		}
 		assertFalse(cut.isComplete(), "Must be incomplete, if the question is complete, but the answer is not given.");
 		// AnswerBank is set complete as well -> True

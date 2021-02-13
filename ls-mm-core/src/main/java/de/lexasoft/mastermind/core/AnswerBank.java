@@ -76,7 +76,7 @@ public class AnswerBank extends AnyBank<AnswerPin> {
 		int nrOfValues = 0;
 		for (Hole<AnswerPin> hole : getHoles()) {
 			if (hole.holdsAPin()) {
-				if (hole.getPin().equals(pin)) {
+				if (hole.pin().equals(pin)) {
 					nrOfValues++;
 				}
 			}

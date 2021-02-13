@@ -75,7 +75,7 @@ public class AnyBank<T extends Pin> {
 		}
 		for (int i = 0; i < getNrOfHoles().value(); i++) {
 			if (source.getHole(i).holdsAPin()) {
-				this.getHole(i).setPin(source.getPin(i));
+				this.getHole(i).stickPin(source.getPin(i));
 			} else {
 				this.getHole(i).removePin();
 			}
@@ -136,7 +136,7 @@ public class AnyBank<T extends Pin> {
 	 */
 	T addPin(T pin, int position) {
 		checkPinBoundaries(position);
-		getHole(position).setValue(pin);
+		getHole(position).stickPin(pin);
 		return pin;
 	}
 
@@ -211,7 +211,7 @@ public class AnyBank<T extends Pin> {
 	 * @return Pin at the given position
 	 */
 	public T getPin(int position) {
-		return holes.get(position).getPin();
+		return holes.get(position).pin();
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class AnyBank<T extends Pin> {
 		List<T> pins = new ArrayList<>();
 		for (Hole<T> hole : holes) {
 			if (hole.holdsAPin()) {
-				pins.add(hole.getPin());
+				pins.add(hole.pin());
 			}
 		}
 		return pins;

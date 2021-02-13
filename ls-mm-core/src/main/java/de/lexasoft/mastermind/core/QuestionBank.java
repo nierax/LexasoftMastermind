@@ -16,7 +16,7 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
 /**
  * Represents one line of pins for question.
  * 
- * @author Axel
+ * @author nierax
  */
 public class QuestionBank extends AnyBank<QuestionPin> {
 
@@ -82,7 +82,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	void setAllPinsCounted() {
 		for (Hole<QuestionPin> hole : getHoles()) {
 			if (hole.holdsAPin()) {
-				((InternalQuestionPin) hole.getPin()).counted();
+				((InternalQuestionPin) hole.pin()).counted();
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	void resetAllPinsCounted() {
 		for (Hole<QuestionPin> hole : getHoles()) {
 			if (hole.holdsAPin()) {
-				((InternalQuestionPin) hole.getPin()).notCounted();
+				((InternalQuestionPin) hole.pin()).notCounted();
 			}
 		}
 	}

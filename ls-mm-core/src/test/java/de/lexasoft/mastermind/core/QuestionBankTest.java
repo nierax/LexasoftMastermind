@@ -71,10 +71,10 @@ class QuestionBankTest {
 		assertEquals(expectedWhite, answer.getNrOfWhitePins());
 		// Both solution and question must be free for another answer
 		for (Hole<QuestionPin> hole : this.solution.getHoles()) {
-			assertFalse(((InternalQuestionPin) hole.getPin()).isCounted());
+			assertFalse(((InternalQuestionPin) hole.pin()).isCounted());
 		}
 		for (Hole<QuestionPin> hole : this.solution.getHoles()) {
-			assertFalse(((InternalQuestionPin) hole.getPin()).isCounted());
+			assertFalse(((InternalQuestionPin) hole.pin()).isCounted());
 		}
 		assertTrue(answer.isGiven(), "The answer must be marked as given.");
 	}
@@ -128,11 +128,11 @@ class QuestionBankTest {
 		solution.setPins(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 }));
 		solution.setAllPinsCounted();
 		for (Hole<QuestionPin> hole : this.solution.getHoles()) {
-			assertTrue(((InternalQuestionPin) hole.getPin()).isCounted());
+			assertTrue(((InternalQuestionPin) hole.pin()).isCounted());
 		}
 		solution.resetAllPinsCounted();
 		for (Hole<QuestionPin> hole : this.solution.getHoles()) {
-			assertFalse(((InternalQuestionPin) hole.getPin()).isCounted());
+			assertFalse(((InternalQuestionPin) hole.pin()).isCounted());
 		}
 	}
 
