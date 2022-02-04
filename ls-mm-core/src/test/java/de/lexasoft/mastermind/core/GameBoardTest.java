@@ -73,7 +73,7 @@ class GameBoardTest {
 
 	@Test
 	void testNextMove() {
-		Move move = cut.nextMove();
+		MoveDeprecated move = cut.nextMove();
 		assertNotNull(move, "The new move object must not be null.");
 		assertEquals(1, cut.getMoveIndex(), "After the first move the move index should be 1.");
 		assertEquals(NR_OF_HOLES.value(), move.getQuestion().getNrOfHoles().value(),
@@ -186,7 +186,7 @@ class GameBoardTest {
 	@ValueSource(ints = { 2, 3, 4 })
 	void testGetLastAnsweredMove_Ok(int nrOfMoves) {
 		fillCutWithMoves(nrOfMoves);
-		Move expected = cut.getMove(nrOfMoves - 2);
+		MoveDeprecated expected = cut.getMove(nrOfMoves - 2);
 		expected.getAnswer().setGiven();
 		assertSame(expected, cut.getLastAnsweredMove(), "Did not find the last answered move.");
 	}
