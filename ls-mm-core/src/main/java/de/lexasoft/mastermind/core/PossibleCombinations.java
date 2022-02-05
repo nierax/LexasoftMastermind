@@ -4,9 +4,6 @@
 package de.lexasoft.mastermind.core;
 
 import java.util.Iterator;
-import java.util.List;
-
-import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Represents possible combinations in the games. Either all (before first
@@ -15,7 +12,7 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
  * @author nierax
  *
  */
-public interface PossibleCombinations extends Iterable<List<QuestionPin>>, Iterator<List<QuestionPin>> {
+public interface PossibleCombinations extends Iterable<QuestionBank>, Iterator<QuestionBank> {
 
 	/**
 	 * The number of combinations left so far.

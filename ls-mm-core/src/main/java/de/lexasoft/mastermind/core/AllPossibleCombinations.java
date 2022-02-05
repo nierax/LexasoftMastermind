@@ -3,9 +3,7 @@
  */
 package de.lexasoft.mastermind.core;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
@@ -77,20 +75,20 @@ public class AllPossibleCombinations implements PossibleCombinations {
 	 * @return A list of pins, which can be set in a question bank.
 	 */
 	@Override
-	public List<QuestionPin> next() {
-		List<QuestionPin> combination = new ArrayList<>();
+	public QuestionBank next() {
+		QuestionBank question = new QuestionBank(nrOfHoles, nrOfColors);
 		increasePosition(0);
 		for (int i = 0; i < lastArray.length; i++) {
-			combination.add(QuestionPin.of(nrOfColors, PinColor.of(lastArray[i])));
+			question.addPin(QuestionPin.of(nrOfColors, PinColor.of(lastArray[i])));
 		}
-		return combination;
+		return question;
 	}
 
 	/**
 	 * Added to be able, to put the creator into a foreach loop.
 	 */
 	@Override
-	public Iterator<List<QuestionPin>> iterator() {
+	public Iterator<QuestionBank> iterator() {
 		return this;
 	}
 

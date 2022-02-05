@@ -6,8 +6,6 @@ package de.lexasoft.mastermind.core;
 import java.util.Iterator;
 import java.util.List;
 
-import de.lexasoft.mastermind.core.api.QuestionPin;
-
 /**
  * Represents the combinations, that are currently left within the solution set.
  * 
@@ -19,24 +17,24 @@ public class LeftPossibleCombinations implements PossibleCombinations {
 	/**
 	 * Use a list to hold the combinations.
 	 */
-	private Iterator<List<QuestionPin>> leftCombinations;
+	private Iterator<QuestionBank> leftCombinations;
 	private int nrOfCombinationsLeft;
 
 	/**
 	 * 
 	 * @param leftCombinations
 	 */
-	private LeftPossibleCombinations(List<List<QuestionPin>> leftCombinations) {
+	private LeftPossibleCombinations(List<QuestionBank> leftCombinations) {
 		this.leftCombinations = leftCombinations.iterator();
 		this.nrOfCombinationsLeft = leftCombinations.size();
 	}
 
-	public final static PossibleCombinations fromList(List<List<QuestionPin>> leftCombinations) {
+	public final static PossibleCombinations fromList(List<QuestionBank> leftCombinations) {
 		return new LeftPossibleCombinations(leftCombinations);
 	}
 
 	@Override
-	public Iterator<List<QuestionPin>> iterator() {
+	public Iterator<QuestionBank> iterator() {
 		return leftCombinations;
 	}
 
@@ -46,7 +44,7 @@ public class LeftPossibleCombinations implements PossibleCombinations {
 	}
 
 	@Override
-	public List<QuestionPin> next() {
+	public QuestionBank next() {
 		return leftCombinations.next();
 	}
 

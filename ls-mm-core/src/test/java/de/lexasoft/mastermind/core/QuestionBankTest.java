@@ -31,11 +31,12 @@ class QuestionBankTest {
 	private QuestionBank solution;
 
 	private static final NrOfColors NR_OF_COLORS = NrOfColors.of(6);
+	private static final NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
 
 	@BeforeEach
 	void prepareTestCase() {
-		question = new QuestionBank(NrOfHoles.of(4), NrOfColors.of(6));
-		solution = new QuestionBank(NrOfHoles.of(4), NrOfColors.of(6));
+		question = new QuestionBank(NrOfHoles.of(4), NR_OF_COLORS);
+		solution = new QuestionBank(NrOfHoles.of(4), NR_OF_COLORS);
 	}
 
 	/**
@@ -143,6 +144,16 @@ class QuestionBankTest {
 		assertNotNull(result, "The retruned bank must not be null.");
 		assertSame(result, question, "The retruned bank must be the same object as the called.");
 		assertTrue(result.isCompletelyFilled(), "After roll all pins mus have a value.");
+	}
+
+	@Test
+	void testCopy() {
+		// Prepare
+		QuestionBank cut = new QuestionBank(new int[] { 0, 1, 2, 4 }, NR_OF_COLORS);
+		// Run
+		QuestionBank copy = cut.copy();
+		// Assert
+		assertTrue(cut.equals(copy));
 	}
 
 }

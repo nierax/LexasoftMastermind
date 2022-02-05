@@ -19,7 +19,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * @author nierax
@@ -30,7 +29,7 @@ class MMStrategyTest {
 	private MMStrategy cut;
 	private final static NrOfColors NR_OF_COLORS = NrOfColors.of(6);
 	private final static NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
-	private List<List<QuestionPin>> possibleCombinations;
+	private List<QuestionBank> possibleCombinations;
 
 	/**
 	 * Create the cut.
@@ -40,13 +39,13 @@ class MMStrategyTest {
 		cut = new MMStrategy(NR_OF_COLORS, NR_OF_HOLES);
 		// We produce a set possible combinations
 		possibleCombinations = new ArrayList<>();
-		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 1, 2, 3 }));
-		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 0, 0, 0 }));
-		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 5, 5, 5, 5 }));
-		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 0, 0, 1, 2 }));
-		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 3, 2, 1, 0 }));
-		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 4, 4, 5, 5 }));
-		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 5, 4, 3, 3 }));
+		possibleCombinations.add(new QuestionBank(new int[] { 0, 1, 2, 3 }, NR_OF_COLORS));
+		possibleCombinations.add(new QuestionBank(new int[] { 0, 0, 0, 0 }, NR_OF_COLORS));
+		possibleCombinations.add(new QuestionBank(new int[] { 5, 5, 5, 5 }, NR_OF_COLORS));
+		possibleCombinations.add(new QuestionBank(new int[] { 0, 0, 1, 2 }, NR_OF_COLORS));
+		possibleCombinations.add(new QuestionBank(new int[] { 3, 2, 1, 0 }, NR_OF_COLORS));
+		possibleCombinations.add(new QuestionBank(new int[] { 4, 4, 5, 5 }, NR_OF_COLORS));
+		possibleCombinations.add(new QuestionBank(new int[] { 5, 4, 3, 3 }, NR_OF_COLORS));
 	}
 
 	private static QuestionBank createQuestion(int[] values) {
@@ -60,8 +59,8 @@ class MMStrategyTest {
 		return answer;
 	}
 
-	private boolean hasEntry(PossibleCombinations result, List<QuestionPin> expected) {
-		for (List<QuestionPin> pins : result) {
+	private boolean hasEntry(PossibleCombinations result, QuestionBank expected) {
+		for (QuestionBank pins : result) {
 			if (pins.equals(expected)) {
 				return true;
 			}

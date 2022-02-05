@@ -4,6 +4,7 @@
 package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,9 @@ import org.junit.jupiter.api.Test;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
- * @author admin
+ * @author nierax
  *
  */
 class AllPossibleCombinationsTest {
@@ -36,21 +36,21 @@ class AllPossibleCombinationsTest {
 	 */
 	@Test
 	final void testNext() {
-		List<List<QuestionPin>> combinations = new ArrayList<>();
-		for (List<QuestionPin> pin : cut) {
-			combinations.add(pin);
-			System.out.println(pin);
+		List<QuestionBank> combinations = new ArrayList<>();
+		for (QuestionBank question : cut) {
+			combinations.add(question);
+			System.out.println(question);
 		}
 		assertEquals(1296, combinations.size());
-		assertCombination(combinations.get(0), new int[] { 0, 0, 0, 0 });
-		assertCombination(combinations.get(1), new int[] { 1, 0, 0, 0 });
-		assertCombination(combinations.get(6), new int[] { 0, 1, 0, 0 });
-		assertCombination(combinations.get(12), new int[] { 0, 2, 0, 0 });
-		assertCombination(combinations.get(35), new int[] { 5, 5, 0, 0 });
-		assertCombination(combinations.get(36), new int[] { 0, 0, 1, 0 });
-		assertCombination(combinations.get(215), new int[] { 5, 5, 5, 0 });
-		assertCombination(combinations.get(216), new int[] { 0, 0, 0, 1 });
-		assertCombination(combinations.get(1295), new int[] { 5, 5, 5, 5 });
+		assertTrue(combinations.get(0).equals(new QuestionBank(new int[] { 0, 0, 0, 0 }, NR_OF_COLORS)));
+		assertTrue(combinations.get(1).equals(new QuestionBank(new int[] { 1, 0, 0, 0 }, NR_OF_COLORS)));
+		assertTrue(combinations.get(6).equals(new QuestionBank(new int[] { 0, 1, 0, 0 }, NR_OF_COLORS)));
+		assertTrue(combinations.get(12).equals(new QuestionBank(new int[] { 0, 2, 0, 0 }, NR_OF_COLORS)));
+		assertTrue(combinations.get(35).equals(new QuestionBank(new int[] { 5, 5, 0, 0 }, NR_OF_COLORS)));
+		assertTrue(combinations.get(36).equals(new QuestionBank(new int[] { 0, 0, 1, 0 }, NR_OF_COLORS)));
+		assertTrue(combinations.get(215).equals(new QuestionBank(new int[] { 5, 5, 5, 0 }, NR_OF_COLORS)));
+		assertTrue(combinations.get(216).equals(new QuestionBank(new int[] { 0, 0, 0, 1 }, NR_OF_COLORS)));
+		assertTrue(combinations.get(1295).equals(new QuestionBank(new int[] { 5, 5, 5, 5 }, NR_OF_COLORS)));
 	}
 
 	@Test
@@ -58,15 +58,6 @@ class AllPossibleCombinationsTest {
 		// Created size is 6 colors with 4 pins. That's why we check the right number of
 		// combinations from this.
 		assertEquals(1296, cut.nrOfCombinationsLeft());
-	}
-
-	/**
-	 * @param resultInQuestion
-	 */
-	private void assertCombination(List<QuestionPin> resultInQuestion, int[] expected) {
-		for (int i = 0; i < resultInQuestion.size(); i++) {
-			assertEquals(expected[i], resultInQuestion.get(i).color().value());
-		}
 	}
 
 }

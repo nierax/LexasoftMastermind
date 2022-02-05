@@ -14,7 +14,6 @@ import de.lexasoft.game.Dice;
 import de.lexasoft.mastermind.core.api.MasterMindValidationException;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
-import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
  * Holds the strategy, the computer uses to find the right combination.
@@ -46,7 +45,7 @@ public class MMStrategy {
 		this.possibleCombinations = stillPossibleCombinations;
 	}
 
-	private int indexOfNextGuess(List<List<QuestionPin>> leftCombinations) {
+	private int indexOfNextGuess(List<QuestionBank> leftCombinations) {
 		if (leftCombinations.size() == 1) {
 			return 0;
 		}
@@ -64,13 +63,13 @@ public class MMStrategy {
 	 */
 	public QuestionBank nextGuess(QuestionBank lastGuess, AnswerBank lastAnswer) {
 		Long time = System.currentTimeMillis();
-		List<List<QuestionPin>> leftCombinations = new ArrayList<>();
-		QuestionBank toCheck = new QuestionBank(nrOfHoles, nrOfColors);
+		List<QuestionBank> leftCombinations = new ArrayList<>();
 		AnswerBank answer = new AnswerBank(nrOfHoles);
-		for (List<QuestionPin> combination2Check : getPossibleCombinations()) {
-			toCheck.doSetPins(combination2Check);
+//		Stream<List<QuestionPin>> allCombinations = StreamSupport.stream(getPossibleCombinations().spliterator(), false);
+//		allCombinations.filter(null)
+		for (QuestionBank combination2Check : getPossibleCombinations()) {
 			answer.removeAllPins();
-			answer = lastGuess.doAnswer(toCheck, answer);
+			answer = lastGuess.doAnswer(combination2Check, answer);
 			if (lastAnswer.equals(answer)) {
 				leftCombinations.add(combination2Check);
 			}
@@ -81,10 +80,9 @@ public class MMStrategy {
 		}
 		setPossibleCombinations(LeftPossibleCombinations.fromList(leftCombinations));
 		LOGGER.info(String.format("Left combinations: %s", nrOfLeftCombinations()));
-		QuestionBank nextGuess = new QuestionBank(nrOfHoles, nrOfColors);
-		nextGuess.setPins(leftCombinations.get(indexOfNextGuess(leftCombinations)));
+		QuestionBank nextGuess = leftCombinations.get(indexOfNextGuess(leftCombinations));
 		LOGGER.info(String.format("Time used 2 guess: %sms", System.currentTimeMillis() - time));
-		return nextGuess;
+		return nextGuess.copy();
 	}
 
 	/**
