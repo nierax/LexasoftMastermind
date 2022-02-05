@@ -19,19 +19,19 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
  * 
  * @author nierax
  */
-class MoveDeprecatedTest {
+class MoveTest {
 
-	private MoveDeprecated cut;
+	private Move cut;
 	private static final NrOfHoles NR_OF_HOLES = NrOfHoles.of(4);
 	private static final NrOfColors NR_OF_COLORS = NrOfColors.of(6);
 
 	@BeforeEach
 	void prepareTextCase() {
-		cut = new MoveDeprecated(NR_OF_HOLES, NR_OF_COLORS);
+		cut = new Move(NR_OF_HOLES, NR_OF_COLORS);
 	}
 
 	/**
-	 * Test method for {@link de.lexasoft.mastermind.core.MoveDeprecated#isComplete()}.
+	 * Test method for {@link de.lexasoft.mastermind.core.Move#isComplete()}.
 	 */
 	@Test
 	final void testIsComplete() {

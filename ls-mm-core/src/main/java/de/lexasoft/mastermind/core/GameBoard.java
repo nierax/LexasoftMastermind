@@ -19,7 +19,7 @@ import de.lexasoft.mastermind.core.api.NrOfMoves;
  */
 public class GameBoard {
 
-	private List<MoveDeprecated> moves;
+	private List<Move> moves;
 	private NrOfMoves maxNrOfMoves;
 	private NrOfHoles nrOfHoles;
 	private NrOfColors nrOfColors;
@@ -38,7 +38,7 @@ public class GameBoard {
 	 * @param maxNrOfMoves the maximum number of pins allowed.
 	 */
 	public GameBoard(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves maxNrOfMoves) {
-		moves = new ArrayList<MoveDeprecated>();
+		moves = new ArrayList<Move>();
 		this.maxNrOfMoves = maxNrOfMoves;
 		this.nrOfColors = nrOfColors;
 		this.nrOfHoles = nrOfHoles;
@@ -51,15 +51,15 @@ public class GameBoard {
 	 * 
 	 * @return The object of the newly created move.
 	 */
-	public MoveDeprecated nextMove() {
+	public Move nextMove() {
 		return createNextMove();
 	}
 
 	/**
 	 * @return
 	 */
-	private MoveDeprecated createNextMove() {
-		MoveDeprecated move = new MoveDeprecated(nrOfHoles, nrOfColors);
+	private Move createNextMove() {
+		Move move = new Move(nrOfHoles, nrOfColors);
 		moves.add(move);
 		return move;
 	}
@@ -79,7 +79,7 @@ public class GameBoard {
 	 * 
 	 * @return The current move.
 	 */
-	public MoveDeprecated currentMove() {
+	public Move currentMove() {
 		int index = getMoveIndex();
 		if (index < 0) {
 			return null;
@@ -104,11 +104,11 @@ public class GameBoard {
 	 * @param index The position of the move.
 	 * @return The move on position index
 	 */
-	MoveDeprecated getMove(int index) {
+	Move getMove(int index) {
 		return this.moves.get(index);
 	}
 
-	List<MoveDeprecated> getMoves() {
+	List<Move> getMoves() {
 		return moves;
 	}
 
@@ -203,9 +203,9 @@ public class GameBoard {
 	 * 
 	 * @return The last move with a given answer.
 	 */
-	public MoveDeprecated getLastAnsweredMove() {
+	public Move getLastAnsweredMove() {
 		for (int i = getMoveIndex(); i >= 0; i--) {
-			MoveDeprecated move = getMove(i);
+			Move move = getMove(i);
 			AnswerBank answer = move.getAnswer();
 			if (answer.isGiven()) {
 				return move;
