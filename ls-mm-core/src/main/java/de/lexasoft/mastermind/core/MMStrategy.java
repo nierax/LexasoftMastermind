@@ -3,8 +3,10 @@
  */
 package de.lexasoft.mastermind.core;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,44 +47,48 @@ public class MMStrategy {
 		this.possibleCombinations = stillPossibleCombinations;
 	}
 
-	private int indexOfNextGuess(List<QuestionBank> leftCombinations) {
+	private QuestionBank nextGuess(List<QuestionBank> leftCombinations) {
 		if (leftCombinations.size() == 1) {
-			return 0;
+			return leftCombinations.get(0).copy();
 		}
 		Dice dice = Dice.of(Range.of(1, leftCombinations.size()));
-		return dice.roll().value() - 1;
+		int idx = dice.roll().value() - 1;
+		return leftCombinations.get(idx).copy();
+	}
+
+	private boolean sameAnswerAsGivenByUser(QuestionBank myGuess, QuestionBank possibleGuess, AnswerBank lastAnswer) {
+		AnswerBank answer = new AnswerBank(nrOfHoles);
+		answer = myGuess.doAnswer(possibleGuess, answer);
+		return lastAnswer.equals(answer);
+	}
+
+	private Stream<QuestionBank> asStream() {
+		return StreamSupport.stream(getPossibleCombinations().spliterator(), false);
 	}
 
 	/**
 	 * Gets the next guess. Needs the last guessed question and the answer to that
 	 * question.
 	 * 
-	 * @param lastGuess  The guess made before.
-	 * @param lastAnswer The answer to that guess.
+	 * @param myGuess     The guess made.
+	 * @param usersAnswer The answer to that guess.
 	 * @return The next guess.
 	 */
-	public QuestionBank nextGuess(QuestionBank lastGuess, AnswerBank lastAnswer) {
+	public QuestionBank nextGuess(QuestionBank myGuess, AnswerBank usersAnswer) {
 		Long time = System.currentTimeMillis();
-		List<QuestionBank> leftCombinations = new ArrayList<>();
-		AnswerBank answer = new AnswerBank(nrOfHoles);
-//		Stream<List<QuestionPin>> allCombinations = StreamSupport.stream(getPossibleCombinations().spliterator(), false);
-//		allCombinations.filter(null)
-		for (QuestionBank combination2Check : getPossibleCombinations()) {
-			answer.removeAllPins();
-			answer = lastGuess.doAnswer(combination2Check, answer);
-			if (lastAnswer.equals(answer)) {
-				leftCombinations.add(combination2Check);
-			}
-		}
+
+		List<QuestionBank> leftCombinations = asStream()//
+		    .filter((possibleGuess) -> sameAnswerAsGivenByUser(myGuess, possibleGuess, usersAnswer))//
+		    .collect(Collectors.toList());
+
 		if (leftCombinations.size() == 0) {
 			throw new MasterMindValidationException(
 			    "There was a mistake in the answers, as no possible combinations remain.");
 		}
 		setPossibleCombinations(LeftPossibleCombinations.fromList(leftCombinations));
 		LOGGER.info(String.format("Left combinations: %s", nrOfLeftCombinations()));
-		QuestionBank nextGuess = leftCombinations.get(indexOfNextGuess(leftCombinations));
 		LOGGER.info(String.format("Time used 2 guess: %sms", System.currentTimeMillis() - time));
-		return nextGuess.copy();
+		return nextGuess(leftCombinations);
 	}
 
 	/**
