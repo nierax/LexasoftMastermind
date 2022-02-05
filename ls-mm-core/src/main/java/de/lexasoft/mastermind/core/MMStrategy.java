@@ -19,13 +19,13 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
 /**
  * Holds the strategy, the computer uses to find the right combination.
  * 
- * @author Axel
+ * @author nierax
  */
 public class MMStrategy {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(MMStrategy.class);
 
-	private List<List<QuestionPin>> stillPossibleCombinations;
+	private PossibleCombinations possibleCombinations;
 	private NrOfColors nrOfColors;
 	private NrOfHoles nrOfHoles;
 
@@ -33,17 +33,17 @@ public class MMStrategy {
 	 * 
 	 */
 	public MMStrategy(NrOfColors nrOfColors, NrOfHoles nrOfHoles) {
-		stillPossibleCombinations = null;
+		possibleCombinations = new AllPossibleCombinations(nrOfColors, nrOfHoles);
 		this.nrOfColors = nrOfColors;
 		this.nrOfHoles = nrOfHoles;
 	}
 
-	List<List<QuestionPin>> getStillPossibleCombinations() {
-		return stillPossibleCombinations;
+	PossibleCombinations getPossibleCombinations() {
+		return possibleCombinations;
 	}
 
-	void setStillPossibleCombinations(List<List<QuestionPin>> stillPossibleCombinations) {
-		this.stillPossibleCombinations = stillPossibleCombinations;
+	void setPossibleCombinations(PossibleCombinations stillPossibleCombinations) {
+		this.possibleCombinations = stillPossibleCombinations;
 	}
 
 	private int indexOfNextGuess(List<List<QuestionPin>> leftCombinations) {
@@ -65,15 +65,9 @@ public class MMStrategy {
 	public QuestionBank nextGuess(QuestionBank lastGuess, AnswerBank lastAnswer) {
 		Long time = System.currentTimeMillis();
 		List<List<QuestionPin>> leftCombinations = new ArrayList<>();
-		Iterable<List<QuestionPin>> availableCombinations;
-		if (getStillPossibleCombinations() == null) {
-			availableCombinations = new CombinationCreator(nrOfColors, nrOfHoles);
-		} else {
-			availableCombinations = getStillPossibleCombinations();
-		}
 		QuestionBank toCheck = new QuestionBank(nrOfHoles, nrOfColors);
 		AnswerBank answer = new AnswerBank(nrOfHoles);
-		for (List<QuestionPin> combination2Check : availableCombinations) {
+		for (List<QuestionPin> combination2Check : getPossibleCombinations()) {
 			toCheck.doSetPins(combination2Check);
 			answer.removeAllPins();
 			answer = lastGuess.doAnswer(toCheck, answer);
@@ -85,8 +79,8 @@ public class MMStrategy {
 			throw new MasterMindValidationException(
 			    "There was a mistake in the answers, as no possible combinations remain.");
 		}
-		setStillPossibleCombinations(leftCombinations);
-		LOGGER.info(String.format("Left combinations: %s", getStillPossibleCombinations().size()));
+		setPossibleCombinations(LeftPossibleCombinations.fromList(leftCombinations));
+		LOGGER.info(String.format("Left combinations: %s", nrOfLeftCombinations()));
 		QuestionBank nextGuess = new QuestionBank(nrOfHoles, nrOfColors);
 		nextGuess.setPins(leftCombinations.get(indexOfNextGuess(leftCombinations)));
 		LOGGER.info(String.format("Time used 2 guess: %sms", System.currentTimeMillis() - time));
@@ -101,6 +95,10 @@ public class MMStrategy {
 	public QuestionBank firstGuess() {
 		// Same logic as to create a solution. We reuse this method.
 		return createSolution();
+	}
+
+	public int nrOfLeftCombinations() {
+		return possibleCombinations.nrOfCombinationsLeft();
 	}
 
 	/**

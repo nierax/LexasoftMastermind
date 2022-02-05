@@ -5,7 +5,6 @@ package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import de.lexasoft.mastermind.core.api.NrOfHoles;
 import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
- * @author Axel
+ * @author nierax
  *
  */
 class MMStrategyTest {
@@ -48,7 +47,6 @@ class MMStrategyTest {
 		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 3, 2, 1, 0 }));
 		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 4, 4, 5, 5 }));
 		possibleCombinations.add(BankFactory.createListFromArray(NR_OF_COLORS, new int[] { 5, 4, 3, 3 }));
-		cut.setStillPossibleCombinations(possibleCombinations);
 	}
 
 	private static QuestionBank createQuestion(int[] values) {
@@ -62,16 +60,7 @@ class MMStrategyTest {
 		return answer;
 	}
 
-	/**
-	 * Test method for {@link de.lexasoft.mastermind.core.MMStrategy#MMStrategy()}.
-	 */
-	@Test
-	final void testMMStrategy() {
-		MMStrategy strategy = new MMStrategy(NR_OF_COLORS, NR_OF_HOLES);
-		assertNull(strategy.getStillPossibleCombinations(), "List of combinations must be null after creation.");
-	}
-
-	private boolean hasEntry(List<List<QuestionPin>> result, List<QuestionPin> expected) {
+	private boolean hasEntry(PossibleCombinations result, List<QuestionPin> expected) {
 		for (List<QuestionPin> pins : result) {
 			if (pins.equals(expected)) {
 				return true;
@@ -108,11 +97,14 @@ class MMStrategyTest {
 	@ParameterizedTest
 	@MethodSource
 	void testNextGuess(QuestionBank lastGuess, AnswerBank answer, int[] entriesLeft) {
+		// Mock solution set from previous guesses.
+		cut.setPossibleCombinations(LeftPossibleCombinations.fromList(possibleCombinations));
+
 		QuestionBank nextGuess = cut.nextGuess(lastGuess, answer);
 
 		assertNextGuess(nextGuess);
-		List<List<QuestionPin>> result = cut.getStillPossibleCombinations();
-		assertEquals(entriesLeft.length, result.size(), "Number of remaining combinations is not correct.");
+		PossibleCombinations result = cut.getPossibleCombinations();
+		assertEquals(entriesLeft.length, result.nrOfCombinationsLeft(), "Number of remaining combinations is not correct.");
 		for (int i = 0; i < entriesLeft.length; i++) {
 			assertTrue(hasEntry(result, possibleCombinations.get(entriesLeft[i])));
 		}
@@ -123,12 +115,13 @@ class MMStrategyTest {
 	 */
 	@Test
 	void testNextGuess_FirstCall() {
-		cut.setStillPossibleCombinations(null);
+
 		QuestionBank nextGuess = cut.nextGuess(createQuestion(new int[] { 0, 1, 2, 3 }), createAnswer(0, 2));
-		assertNotNull(cut.getStillPossibleCombinations(), "Possible combinations must be set after first call.");
-		assertTrue(cut.getStillPossibleCombinations().size() > 1,
+		assertNotNull(cut.getPossibleCombinations(), "Possible combinations must be set after first call.");
+		int nrOfCombinationsLeft = cut.nrOfLeftCombinations();
+		assertTrue(nrOfCombinationsLeft > 1,
 		    "There must be possible combinations after first guess, as the result wasn't 4 blacks.");
-		System.out.println("Number of combinationsleft: " + cut.getStillPossibleCombinations().size());
+		System.out.println("Number of combinationsleft: " + nrOfCombinationsLeft);
 		assertNextGuess(nextGuess);
 	}
 
