@@ -3,9 +3,7 @@
  */
 package de.lexasoft.mastermind.core;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
@@ -13,16 +11,15 @@ import de.lexasoft.mastermind.core.api.PinColor;
 import de.lexasoft.mastermind.core.api.QuestionPin;
 
 /**
- * Creates all combinations of number of colors and holes one by one by calling
- * the next() method.
+ * Represents all combinations of number of colors and holes one by one by
+ * calling the next() method.
  * <p>
- * Can be used to form a foreach loop. Thus the logic of scanning the possible
- * combinations against a question can be optimized, as the check can be done
- * directly after the creation of the combination.
+ * Thus not all possible combinations must exist in memory, but just those,
+ * which are validated to belong to the solution set.
  * 
- * @author Axel
+ * @author nierax
  */
-public class CombinationCreator implements Iterable<List<QuestionPin>>, Iterator<List<QuestionPin>> {
+public class AllPossibleCombinations implements PossibleCombinations {
 
 	private NrOfColors nrOfColors;
 	private NrOfHoles nrOfHoles;
@@ -31,7 +28,7 @@ public class CombinationCreator implements Iterable<List<QuestionPin>>, Iterator
 	/**
 	 * 
 	 */
-	public CombinationCreator(NrOfColors nrOfColors, NrOfHoles nrOfHoles) {
+	public AllPossibleCombinations(NrOfColors nrOfColors, NrOfHoles nrOfHoles) {
 		this.nrOfColors = nrOfColors;
 		this.nrOfHoles = nrOfHoles;
 		lastArray = new int[nrOfHoles.value()];
@@ -78,21 +75,26 @@ public class CombinationCreator implements Iterable<List<QuestionPin>>, Iterator
 	 * @return A list of pins, which can be set in a question bank.
 	 */
 	@Override
-	public List<QuestionPin> next() {
-		List<QuestionPin> combination = new ArrayList<>();
+	public QuestionBank next() {
+		QuestionBank question = new QuestionBank(nrOfHoles, nrOfColors);
 		increasePosition(0);
 		for (int i = 0; i < lastArray.length; i++) {
-			combination.add(QuestionPin.of(nrOfColors, PinColor.of(lastArray[i])));
+			question.addPin(QuestionPin.of(nrOfColors, PinColor.of(lastArray[i])));
 		}
-		return combination;
+		return question;
 	}
 
 	/**
 	 * Added to be able, to put the creator into a foreach loop.
 	 */
 	@Override
-	public Iterator<List<QuestionPin>> iterator() {
+	public Iterator<QuestionBank> iterator() {
 		return this;
+	}
+
+	@Override
+	public int nrOfCombinationsLeft() {
+		return (int) Math.pow(nrOfColors.value(), nrOfHoles.value());
 	}
 
 }

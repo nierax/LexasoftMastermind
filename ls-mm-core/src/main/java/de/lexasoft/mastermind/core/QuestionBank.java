@@ -72,6 +72,22 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 		diceCup = DiceCup.of(getNrOfHoles().value(), Range.of(0, nrOfColors.value() - 1));
 	}
 
+	/**
+	 * This constructors takes an array with integer values and creates a question
+	 * bank with their corresponding colors.
+	 * <p>
+	 * First of all used in test scenarios.
+	 * 
+	 * @param pinColorValues
+	 * @param nrOfColors
+	 */
+	QuestionBank(int[] pinColorValues, NrOfColors nrOfColors) {
+		this(NrOfHoles.of(pinColorValues.length), nrOfColors);
+		for (int i = 0; i < pinColorValues.length; i++) {
+			addPin(QuestionPin.of(nrOfColors, PinColor.of(pinColorValues[i])));
+		}
+	}
+
 	NrOfColors getNrOfColors() {
 		return nrOfColors;
 	}
@@ -235,6 +251,16 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	QuestionPin addPin(QuestionPin pin) {
 		InternalQuestionPin myPin = new InternalQuestionPin((QuestionPin) pin);
 		return super.addPin(myPin);
+	}
+
+	/**
+	 * 
+	 * @return A copy of this object.
+	 */
+	public QuestionBank copy() {
+		QuestionBank copy = new QuestionBank(getNrOfHoles(), getNrOfColors());
+		copy.setPins(getPins());
+		return copy;
 	}
 
 }
