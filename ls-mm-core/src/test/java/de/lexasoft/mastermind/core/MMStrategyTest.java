@@ -5,6 +5,7 @@ package de.lexasoft.mastermind.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import de.lexasoft.mastermind.core.api.MasterMindValidationException;
 import de.lexasoft.mastermind.core.api.NrOfColors;
 import de.lexasoft.mastermind.core.api.NrOfHoles;
 
@@ -122,6 +124,17 @@ class MMStrategyTest {
 		    "There must be possible combinations after first guess, as the result wasn't 4 blacks.");
 		System.out.println("Number of combinationsleft: " + nrOfCombinationsLeft);
 		assertNextGuess(nextGuess);
+	}
+
+	@Test
+	void testNextGuess_NoMorePossibleCombinations() {
+		// Mock solution set from previous guesses.
+		cut.setPossibleCombinations(LeftPossibleCombinations.fromList(possibleCombinations));
+		assertThrows(MasterMindValidationException.class, () -> {
+			// This should cause an exception, as there is no solution for this
+			// combination of guess and answer.
+			cut.nextGuess(createQuestion(new int[] { 5, 5, 3, 3 }), createAnswer(3, 0));
+		});
 	}
 
 }

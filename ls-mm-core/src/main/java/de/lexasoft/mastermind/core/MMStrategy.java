@@ -47,7 +47,14 @@ public class MMStrategy {
 		this.possibleCombinations = stillPossibleCombinations;
 	}
 
-	private QuestionBank nextGuess(List<QuestionBank> leftCombinations) {
+	/**
+	 * Randomly determines a possible next guess from the remaining list of
+	 * combinations.
+	 * 
+	 * @param leftCombinations The list of combinations, left.
+	 * @return A random element from the list of combinations.
+	 */
+	private QuestionBank findRandomGuessFrom(List<QuestionBank> leftCombinations) {
 		if (leftCombinations.size() == 1) {
 			return leftCombinations.get(0).copy();
 		}
@@ -78,17 +85,17 @@ public class MMStrategy {
 		Long time = System.currentTimeMillis();
 
 		List<QuestionBank> leftCombinations = asStream()//
-		    .filter((possibleGuess) -> sameAnswerAsGivenByUser(myGuess, possibleGuess, usersAnswer))//
+		    .filter(possibleGuess -> sameAnswerAsGivenByUser(myGuess, possibleGuess, usersAnswer))
 		    .collect(Collectors.toList());
 
-		if (leftCombinations.size() == 0) {
+		if (leftCombinations.isEmpty()) {
 			throw new MasterMindValidationException(
 			    "There was a mistake in the answers, as no possible combinations remain.");
 		}
 		setPossibleCombinations(LeftPossibleCombinations.fromList(leftCombinations));
 		LOGGER.info(String.format("Left combinations: %s", nrOfLeftCombinations()));
 		LOGGER.info(String.format("Time used 2 guess: %sms", System.currentTimeMillis() - time));
-		return nextGuess(leftCombinations);
+		return findRandomGuessFrom(leftCombinations);
 	}
 
 	/**
