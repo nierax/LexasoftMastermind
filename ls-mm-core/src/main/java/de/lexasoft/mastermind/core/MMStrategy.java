@@ -93,8 +93,10 @@ public class MMStrategy {
 			    "There was a mistake in the answers, as no possible combinations remain.");
 		}
 		setPossibleCombinations(LeftPossibleCombinations.fromList(leftCombinations));
-		LOGGER.info(String.format("Left combinations: %s", nrOfLeftCombinations()));
-		LOGGER.info(String.format("Time used 2 guess: %sms", System.currentTimeMillis() - time));
+
+		LOGGER.info(String.format("Left %s combinations in %sms ", //
+		    nrOfLeftCombinations(), //
+		    System.currentTimeMillis() - time));
 		return findRandomGuessFrom(leftCombinations);
 	}
 

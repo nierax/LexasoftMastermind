@@ -3,9 +3,14 @@
  */
 package de.lexasoft.mastermind.cli;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.LogManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +36,35 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
 public class MMCLI {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(MMCLI.class);
+
+	private static final void initializeLogging() {
+		InputStream stream = MMCLI.class.getClassLoader().getResourceAsStream("logging-cli.properties");
+		initializeLogging(stream);
+	}
+
+	/**
+	 * @param stream
+	 */
+	private static void initializeLogging(InputStream stream) {
+		try {
+			LogManager.getLogManager().readConfiguration(stream);
+		} catch (SecurityException | IOException e) {
+			LOGGER.error("Could not initialize logger", e);
+		}
+	}
+
+	private static void initializeLogging(String[] args) {
+		if (args.length == 0) {
+			initializeLogging();
+		} else {
+			try {
+				initializeLogging(new FileInputStream(args[0]));
+			} catch (FileNotFoundException e) {
+				initializeLogging();
+				LOGGER.error(String.format("Did not find the file provided %s", args[0]), e);
+			}
+		}
+	}
 
 	private MasterMindAPI mmApi;
 	private String playersName;
@@ -184,6 +218,7 @@ public class MMCLI {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		initializeLogging(args);
 		MMCLI cli = new MMCLI();
 		try {
 			cli.runGame(args);
