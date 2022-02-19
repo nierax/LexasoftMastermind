@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>de.lexasoft</groupId>
 		<artifactId>ls-mastermind</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3</version>
 	</parent>
 
 	<dependencies>
@@ -42,6 +42,18 @@
 							</descriptorRefs>
 						</configuration>
 					</execution>
+          <execution>
+            <id>create-distribution</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>assembly/zip-delivery.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
 				</executions>
 			</plugin>
 		</plugins>
