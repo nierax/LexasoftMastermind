@@ -58,14 +58,13 @@ public class MMStrategy {
 		if (leftCombinations.size() == 1) {
 			return leftCombinations.get(0).copy();
 		}
-		Dice dice = Dice.of(Range.of(1, leftCombinations.size()));
+		var dice = Dice.of(Range.of(1, leftCombinations.size()));
 		int idx = dice.roll().value() - 1;
 		return leftCombinations.get(idx).copy();
 	}
 
 	private boolean sameAnswerAsGivenByUser(QuestionBank myGuess, QuestionBank possibleGuess, AnswerBank lastAnswer) {
-		AnswerBank answer = new AnswerBank(nrOfHoles);
-		answer = myGuess.doAnswer(possibleGuess, answer);
+		var answer = myGuess.doAnswer(possibleGuess);
 		return lastAnswer.equals(answer);
 	}
 

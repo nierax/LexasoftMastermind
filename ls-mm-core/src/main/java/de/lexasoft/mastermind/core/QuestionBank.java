@@ -187,7 +187,7 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	 */
 	public AnswerBank answer(QuestionBank solution) {
 		validateBanks(this, solution);
-		return doAnswer(solution, new AnswerBank(getNrOfHoles()));
+		return doAnswer(solution);
 	}
 
 	/**
@@ -197,10 +197,10 @@ public class QuestionBank extends AnyBank<QuestionPin> {
 	 * filled.
 	 * 
 	 * @param solution The bank with the solution, given to guess.
-	 * @param answer   The answer bank to use.
 	 * @return The answer bank with the number of white and black pins
 	 */
-	AnswerBank doAnswer(QuestionBank solution, AnswerBank answer) {
+	AnswerBank doAnswer(QuestionBank solution) {
+		var answer = new AnswerBank(getNrOfHoles());
 		// Count black hits. Must be done first.
 		answer.addBlackPins(countBlackHits(solution));
 		// White hits second
