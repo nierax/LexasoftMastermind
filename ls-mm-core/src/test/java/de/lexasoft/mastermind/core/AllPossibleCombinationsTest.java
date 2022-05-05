@@ -35,13 +35,16 @@ class AllPossibleCombinationsTest {
 	 * {@link de.lexasoft.mastermind.core.AllPossibleCombinations#next()}.
 	 */
 	@Test
-	final void testNext() {
+	final void areExpectedCombinationsInTheList() {
 		List<QuestionBank> combinations = new ArrayList<>();
+		// Iterate through all combinations and keep in separate list
 		for (QuestionBank question : cut) {
 			combinations.add(question);
 			System.out.println(question);
 		}
+		// Expected number of combinations copied?
 		assertEquals(1296, combinations.size());
+		// Expected values on selected positions?
 		assertTrue(combinations.get(0).equals(new QuestionBank(new int[] { 0, 0, 0, 0 }, NR_OF_COLORS)));
 		assertTrue(combinations.get(1).equals(new QuestionBank(new int[] { 1, 0, 0, 0 }, NR_OF_COLORS)));
 		assertTrue(combinations.get(6).equals(new QuestionBank(new int[] { 0, 1, 0, 0 }, NR_OF_COLORS)));

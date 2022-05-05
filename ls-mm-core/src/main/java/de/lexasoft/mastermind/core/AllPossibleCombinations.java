@@ -16,6 +16,11 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
  * <p>
  * Thus not all possible combinations must exist in memory, but just those,
  * which are validated to belong to the solution set.
+ * <p>
+ * <code> Create -> check -> ok? -y-> add to list <br>
+ *                     | <br>
+ *                     -n-> throw away
+ * </code>
  * 
  * @author nierax
  */
@@ -55,8 +60,8 @@ public class AllPossibleCombinations implements PossibleCombinations {
 	/**
 	 * Increases the number arithmetically.
 	 * <p>
-	 * Does not check, whether there is new possibility. So the hasNext() method has
-	 * to be called before.
+	 * Does not check, whether there is a new possibility. So the hasNext() method
+	 * has to be called before.
 	 * 
 	 * @param position The position to start from.
 	 */
@@ -69,14 +74,14 @@ public class AllPossibleCombinations implements PossibleCombinations {
 	}
 
 	/**
-	 * Gets the next combination. Does not check, whether there is new possibility.
-	 * So the hasNext() method has to be called before.
+	 * Gets the next combination. Does not check, whether there are new
+	 * possibilities. So the hasNext() method has to be called before.
 	 * 
 	 * @return A list of pins, which can be set in a question bank.
 	 */
 	@Override
 	public QuestionBank next() {
-		QuestionBank question = new QuestionBank(nrOfHoles, nrOfColors);
+		var question = new QuestionBank(nrOfHoles, nrOfColors);
 		increasePosition(0);
 		for (int i = 0; i < lastArray.length; i++) {
 			question.addPin(QuestionPin.of(nrOfColors, PinColor.of(lastArray[i])));
