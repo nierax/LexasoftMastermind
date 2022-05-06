@@ -82,10 +82,9 @@ public class MMCLI {
 	}
 
 	/**
-	 * 
-	 * @param args
+	 * Starts and then runs the game
 	 */
-	void runGame(String[] args) {
+	void runGame() {
 		LOGGER.info("Starting game...");
 		mmApi = askParameters();
 		if (playerGuess) {
@@ -221,7 +220,7 @@ public class MMCLI {
 		initializeLogging(args);
 		MMCLI cli = new MMCLI();
 		try {
-			cli.runGame(args);
+			cli.runGame();
 		} finally {
 			cli.scanner.close();
 		}

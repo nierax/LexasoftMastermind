@@ -24,113 +24,113 @@ import de.lexasoft.mastermind.core.api.QuestionPin;
  */
 public class MasterMindAPIImpl implements MasterMindAPI {
 
-  private GameBoard gameBoard;
-  private MMStrategy strategy;
-  private final static Logger LOGGER = LoggerFactory.getLogger(MasterMindAPI.class);
+	private GameBoard gameBoard;
+	private MMStrategy strategy;
+	private final static Logger LOGGER = LoggerFactory.getLogger(MasterMindAPI.class);
 
-  /**
-   * 
-   */
-  public MasterMindAPIImpl(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
-    doInitialize(nrOfHoles, nrOfColors, nrOfMoves);
-    LOGGER.info(String.format("MasterMindAPI created with %s holes, %s colors and %s maximum moves", nrOfHoles,
-        nrOfColors, nrOfMoves));
-  }
+	/**
+	 * 
+	 */
+	public MasterMindAPIImpl(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
+		doInitialize(nrOfHoles, nrOfColors, nrOfMoves);
+		LOGGER.info(String.format("MasterMindAPI created with %s holes, %s colors and %s maximum moves", nrOfHoles,
+		    nrOfColors, nrOfMoves));
+	}
 
-  /**
-   * @param nrOfHoles
-   * @param nrOfColors
-   * @param nrOfMoves
-   */
-  private void doInitialize(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
-    gameBoard = new GameBoard(nrOfHoles, nrOfColors, nrOfMoves);
-    strategy = new MMStrategy(nrOfColors, nrOfHoles);
-  }
+	/**
+	 * @param nrOfHoles
+	 * @param nrOfColors
+	 * @param nrOfMoves
+	 */
+	private void doInitialize(NrOfHoles nrOfHoles, NrOfColors nrOfColors, NrOfMoves nrOfMoves) {
+		gameBoard = new GameBoard(nrOfHoles, nrOfColors, nrOfMoves);
+		strategy = new MMStrategy(nrOfColors, nrOfHoles);
+	}
 
-  @Override
-  public boolean nextMoveAllowed() {
-    return gameBoard.nextMoveAllowed();
-  }
+	@Override
+	public boolean nextMoveAllowed() {
+		return gameBoard.nextMoveAllowed();
+	}
 
-  @Override
-  public Integer getMoveIndex() {
-    return gameBoard.getMoveIndex();
-  }
+	@Override
+	public Integer getMoveIndex() {
+		return gameBoard.getMoveIndex();
+	}
 
-  @Override
-  public NrOfMoves getMaxNrOfMoves() {
-    return gameBoard.getMaxNrOfMoves();
-  }
+	@Override
+	public NrOfMoves getMaxNrOfMoves() {
+		return gameBoard.getMaxNrOfMoves();
+	}
 
-  @Override
-  public NrOfHoles getNrOfHoles() {
-    return gameBoard.getNrOfHoles();
-  }
+	@Override
+	public NrOfHoles getNrOfHoles() {
+		return gameBoard.getNrOfHoles();
+	}
 
-  @Override
-  public NrOfColors getNrOfColors() {
-    return gameBoard.getNrOfColors();
-  }
+	@Override
+	public NrOfColors getNrOfColors() {
+		return gameBoard.getNrOfColors();
+	}
 
-  @Override
-  public boolean isSolutionKnown() {
-    return gameBoard.isSolutionKnown();
-  }
+	@Override
+	public boolean isSolutionKnown() {
+		return gameBoard.isSolutionKnown();
+	}
 
-  @Override
-  public GameState getState() {
-    return gameBoard.getState();
-  }
+	@Override
+	public GameState getState() {
+		return gameBoard.getState();
+	}
 
-  @Override
-  public List<QuestionPin> createSolution() {
-    return gameBoard.setSolution(strategy.createSolution()).getPins();
-  }
+	@Override
+	public List<QuestionPin> createSolution() {
+		return gameBoard.setSolution(strategy.createSolution()).getPins();
+	}
 
-  @Override
-  public List<AnswerPin> answerQuestion(List<QuestionPin> questionPins) {
-    QuestionBank question = new QuestionBank(getNrOfHoles(), getNrOfColors());
-    question.setPins(questionPins);
-    return gameBoard.answer(question).getPins();
-  }
+	@Override
+	public List<AnswerPin> answerQuestion(List<QuestionPin> questionPins) {
+		var question = new QuestionBank(getNrOfHoles(), getNrOfColors());
+		question.setPins(questionPins);
+		return gameBoard.answer(question).getPins();
+	}
 
-  @Override
-  public List<AnswerPin> provideAnswer(List<AnswerPin> pins) {
-    AnswerBank answer = new AnswerBank(getNrOfHoles());
-    answer.setPins(pins);
-    return gameBoard.answer(answer).getPins();
-  }
+	@Override
+	public List<AnswerPin> provideAnswer(List<AnswerPin> pins) {
+		var answer = new AnswerBank(getNrOfHoles());
+		answer.setPins(pins);
+		return gameBoard.answer(answer).getPins();
+	}
 
-  @Override
-  public List<QuestionPin> getSolution() {
-    return gameBoard.getSolution().getPins();
-  }
+	@Override
+	public List<QuestionPin> getSolution() {
+		return gameBoard.getSolution().getPins();
+	}
 
-  @Override
-  public List<QuestionPin> setSolution(List<QuestionPin> solution) {
-    QuestionBank solutionBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
-    solutionBank.setPins(solution);
-    return gameBoard.setSolution(solutionBank).getPins();
-  }
+	@Override
+	public List<QuestionPin> setSolution(List<QuestionPin> solution) {
+		var solutionBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
+		solutionBank.setPins(solution);
+		return gameBoard.setSolution(solutionBank).getPins();
+	}
 
-  @Override
-  public List<QuestionPin> nextComputerGuess(List<QuestionPin> lastGuess, List<AnswerPin> lastAnswer) {
-    QuestionBank lastGuessBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
-    lastGuessBank.setPins(lastGuess);
-    AnswerBank answerBank = new AnswerBank(getNrOfHoles());
-    answerBank.setPins(lastAnswer);
-    return strategy.nextGuess(lastGuessBank, answerBank).getPins();
-  }
+	@Override
+	public List<QuestionPin> nextComputerGuess(List<QuestionPin> lastGuess, List<AnswerPin> lastAnswer) {
+		QuestionBank lastGuessBank = new QuestionBank(getNrOfHoles(), getNrOfColors());
+		lastGuessBank.setPins(lastGuess);
+		var answerBank = new AnswerBank(getNrOfHoles());
+		answerBank.setPins(lastAnswer);
+		return strategy.nextGuess(lastGuessBank, answerBank).getPins();
+	}
 
-  @Override
-  public List<QuestionPin> firstComputerGuess() {
-    return strategy.firstGuess().getPins();
-  }
+	@Override
+	public List<QuestionPin> firstComputerGuess() {
+		return strategy.firstGuess().getPins();
+	}
 
-  @Override
-  public MasterMindAPI newGame() {
-    doInitialize(getNrOfHoles(), getNrOfColors(), getMaxNrOfMoves());
-    return this;
-  }
+	@Override
+	public MasterMindAPI newGame() {
+		doInitialize(getNrOfHoles(), getNrOfColors(), getMaxNrOfMoves());
+		return this;
+	}
 
 }
