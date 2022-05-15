@@ -30,7 +30,7 @@ public class GameBoard {
 	 * Creates the game board with the given number of colors and pins and the
 	 * maximal number of moves allowed.
 	 * <p>
-	 * Die List of moves is kept empty at start, It will be filled with every new
+	 * The List of moves is kept empty at start, It will be filled with every new
 	 * move.
 	 * 
 	 * @param nrOfPins     The number of pins
