@@ -99,12 +99,12 @@ class MMStrategyTest {
 	@MethodSource
 	void testNextGuess(QuestionBank lastGuess, AnswerBank answer, int[] entriesLeft) {
 		// Mock solution set from previous guesses.
-		cut.setPossibleCombinations(LeftPossibleCombinations.fromList(possibleCombinations));
+		cut.setLeftoverCombinations(LeftoverCombinations.fromList(possibleCombinations));
 
 		QuestionBank nextGuess = cut.nextGuess(lastGuess, answer);
 
 		assertNextGuess(nextGuess);
-		PossibleCombinations result = cut.getPossibleCombinations();
+		PossibleCombinations result = cut.getLeftoverCombinations();
 		assertEquals(entriesLeft.length, result.nrOfCombinationsLeft(), "Number of remaining combinations is not correct.");
 		for (int i = 0; i < entriesLeft.length; i++) {
 			assertTrue(hasEntry(result, possibleCombinations.get(entriesLeft[i])));
@@ -118,7 +118,7 @@ class MMStrategyTest {
 	void testNextGuess_FirstCall() {
 
 		QuestionBank nextGuess = cut.nextGuess(createQuestion(new int[] { 0, 1, 2, 3 }), createAnswer(0, 2));
-		assertNotNull(cut.getPossibleCombinations(), "Possible combinations must be set after first call.");
+		assertNotNull(cut.getLeftoverCombinations(), "Possible combinations must be set after first call.");
 		int nrOfCombinationsLeft = cut.nrOfLeftCombinations();
 		assertTrue(nrOfCombinationsLeft > 1,
 		    "There must be possible combinations after first guess, as the result wasn't 4 blacks.");
@@ -129,7 +129,7 @@ class MMStrategyTest {
 	@Test
 	void testNextGuess_NoMorePossibleCombinations() {
 		// Mock solution set from previous guesses.
-		cut.setPossibleCombinations(LeftPossibleCombinations.fromList(possibleCombinations));
+		cut.setLeftoverCombinations(LeftoverCombinations.fromList(possibleCombinations));
 		assertThrows(MasterMindValidationException.class, () -> {
 			// This should cause an exception, as there is no solution for this
 			// combination of guess and answer.

@@ -26,7 +26,7 @@ public class MMStrategy {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(MMStrategy.class);
 
-	private PossibleCombinations possibleCombinations;
+	private PossibleCombinations leftoverCombinations;
 	private NrOfColors nrOfColors;
 	private NrOfHoles nrOfHoles;
 
@@ -34,17 +34,17 @@ public class MMStrategy {
 	 * 
 	 */
 	public MMStrategy(NrOfColors nrOfColors, NrOfHoles nrOfHoles) {
-		possibleCombinations = new AllPossibleCombinations(nrOfColors, nrOfHoles);
+		leftoverCombinations = new AllPossibleCombinations(nrOfColors, nrOfHoles);
 		this.nrOfColors = nrOfColors;
 		this.nrOfHoles = nrOfHoles;
 	}
 
-	PossibleCombinations getPossibleCombinations() {
-		return possibleCombinations;
+	PossibleCombinations getLeftoverCombinations() {
+		return leftoverCombinations;
 	}
 
-	void setPossibleCombinations(PossibleCombinations stillPossibleCombinations) {
-		this.possibleCombinations = stillPossibleCombinations;
+	void setLeftoverCombinations(PossibleCombinations stillPossibleCombinations) {
+		this.leftoverCombinations = stillPossibleCombinations;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class MMStrategy {
 	}
 
 	private Stream<QuestionBank> asStream() {
-		return StreamSupport.stream(getPossibleCombinations().spliterator(), false);
+		return StreamSupport.stream(getLeftoverCombinations().spliterator(), false);
 	}
 
 	/**
@@ -83,20 +83,20 @@ public class MMStrategy {
 	public QuestionBank nextGuess(QuestionBank myGuess, AnswerBank usersAnswer) {
 		Long time = System.currentTimeMillis();
 
-		List<QuestionBank> leftCombinations = asStream()//
+		List<QuestionBank> leftoverCombinations = asStream()//
 		    .filter(possibleGuess -> sameAnswerAsGivenByUser(myGuess, possibleGuess, usersAnswer))
 		    .collect(Collectors.toList());
 
-		if (leftCombinations.isEmpty()) {
+		if (leftoverCombinations.isEmpty()) {
 			throw new MasterMindValidationException(
 			    "There was a mistake in the answers, as no possible combinations remain.");
 		}
-		setPossibleCombinations(LeftPossibleCombinations.fromList(leftCombinations));
+		setLeftoverCombinations(LeftoverCombinations.fromList(leftoverCombinations));
 
 		LOGGER.info(String.format("Left %s combinations in %sms ", //
 		    nrOfLeftCombinations(), //
 		    System.currentTimeMillis() - time));
-		return findRandomGuessFrom(leftCombinations);
+		return findRandomGuessFrom(leftoverCombinations);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class MMStrategy {
 	}
 
 	public int nrOfLeftCombinations() {
-		return possibleCombinations.nrOfCombinationsLeft();
+		return leftoverCombinations.nrOfCombinationsLeft();
 	}
 
 	/**

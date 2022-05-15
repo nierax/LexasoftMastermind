@@ -12,7 +12,7 @@ import java.util.List;
  * @author nierax
  *
  */
-public class LeftPossibleCombinations implements PossibleCombinations {
+public class LeftoverCombinations implements PossibleCombinations {
 
 	/**
 	 * Use a list to hold the combinations.
@@ -24,13 +24,13 @@ public class LeftPossibleCombinations implements PossibleCombinations {
 	 * 
 	 * @param leftCombinations
 	 */
-	private LeftPossibleCombinations(List<QuestionBank> leftCombinations) {
+	private LeftoverCombinations(List<QuestionBank> leftCombinations) {
 		this.leftCombinations = leftCombinations.iterator();
 		this.nrOfCombinationsLeft = leftCombinations.size();
 	}
 
 	public final static PossibleCombinations fromList(List<QuestionBank> leftCombinations) {
-		return new LeftPossibleCombinations(leftCombinations);
+		return new LeftoverCombinations(leftCombinations);
 	}
 
 	@Override
