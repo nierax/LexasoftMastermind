@@ -120,8 +120,7 @@ class MMStrategyTest {
 		QuestionBank nextGuess = cut.nextGuess(createQuestion(new int[] { 0, 1, 2, 3 }), createAnswer(0, 2));
 		assertNotNull(cut.getLeftoverCombinations(), "Possible combinations must be set after first call.");
 		int nrOfCombinationsLeft = cut.nrOfLeftCombinations();
-		assertTrue(nrOfCombinationsLeft > 1,
-		    "There must be possible combinations after first guess, as the result wasn't 4 blacks.");
+		assertEquals(96, nrOfCombinationsLeft, "There must be 96 combinations left after first guess in this test case.");
 		System.out.println("Number of combinationsleft: " + nrOfCombinationsLeft);
 		assertNextGuess(nextGuess);
 	}

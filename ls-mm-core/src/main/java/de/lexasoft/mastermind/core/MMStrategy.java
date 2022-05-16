@@ -4,6 +4,7 @@
 package de.lexasoft.mastermind.core;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -34,7 +35,7 @@ public class MMStrategy {
 	 * 
 	 */
 	public MMStrategy(NrOfColors nrOfColors, NrOfHoles nrOfHoles) {
-		leftoverCombinations = new AllPossibleCombinations(nrOfColors, nrOfHoles);
+		leftoverCombinations = null;
 		this.nrOfColors = nrOfColors;
 		this.nrOfHoles = nrOfHoles;
 	}
@@ -68,8 +69,13 @@ public class MMStrategy {
 		return lastAnswer.equals(answer);
 	}
 
-	private Stream<QuestionBank> asStream() {
-		return StreamSupport.stream(getLeftoverCombinations().spliterator(), false);
+	private Stream<QuestionBank> asStream(PossibleCombinations leftOver) {
+		return StreamSupport.stream(leftOver.spliterator(), false);
+	}
+
+	private PossibleCombinations getAllOrLeftoverCombinations() {
+		return Optional.ofNullable(leftoverCombinations)//
+		    .orElseGet(() -> new AllPossibleCombinations(nrOfColors, nrOfHoles));
 	}
 
 	/**
@@ -83,20 +89,20 @@ public class MMStrategy {
 	public QuestionBank nextGuess(QuestionBank myGuess, AnswerBank usersAnswer) {
 		Long time = System.currentTimeMillis();
 
-		List<QuestionBank> leftoverCombinations = asStream()//
+		List<QuestionBank> nowLeftoverCombinations = asStream(getAllOrLeftoverCombinations())//
 		    .filter(possibleGuess -> sameAnswerAsGivenByUser(myGuess, possibleGuess, usersAnswer))
 		    .collect(Collectors.toList());
 
-		if (leftoverCombinations.isEmpty()) {
+		if (nowLeftoverCombinations.isEmpty()) {
 			throw new MasterMindValidationException(
 			    "There was a mistake in the answers, as no possible combinations remain.");
 		}
-		setLeftoverCombinations(LeftoverCombinations.fromList(leftoverCombinations));
+		setLeftoverCombinations(LeftoverCombinations.fromList(nowLeftoverCombinations));
 
 		LOGGER.info(String.format("Left %s combinations in %sms ", //
 		    nrOfLeftCombinations(), //
 		    System.currentTimeMillis() - time));
-		return findRandomGuessFrom(leftoverCombinations);
+		return findRandomGuessFrom(nowLeftoverCombinations);
 	}
 
 	/**
