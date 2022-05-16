@@ -20,4 +20,7 @@ public interface PossibleCombinations extends Iterable<QuestionBank>, Iterator<Q
 	 * @return
 	 */
 	int nrOfCombinationsLeft();
+
+	boolean hasCombinationsLeft();
+
 }

@@ -53,4 +53,9 @@ public class LeftoverCombinations implements PossibleCombinations {
 		return nrOfCombinationsLeft;
 	}
 
+	@Override
+	public boolean hasCombinationsLeft() {
+		return nrOfCombinationsLeft() > 0;
+	}
+
 }

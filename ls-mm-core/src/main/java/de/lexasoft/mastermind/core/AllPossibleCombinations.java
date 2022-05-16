@@ -102,4 +102,9 @@ public class AllPossibleCombinations implements PossibleCombinations {
 		return (int) Math.pow(nrOfColors.value(), nrOfHoles.value());
 	}
 
+	@Override
+	public boolean hasCombinationsLeft() {
+		return nrOfCombinationsLeft() > 0;
+	}
+
 }

@@ -48,6 +48,10 @@ public class MMStrategy {
 		this.leftoverCombinations = stillPossibleCombinations;
 	}
 
+	void keepCombinations(List<QuestionBank> listOfCombinations) {
+		this.leftoverCombinations = LeftoverCombinations.fromList(listOfCombinations);
+	}
+
 	/**
 	 * Randomly determines a possible next guess from the remaining list of
 	 * combinations.
@@ -97,7 +101,8 @@ public class MMStrategy {
 			throw new MasterMindValidationException(
 			    "There was a mistake in the answers, as no possible combinations remain.");
 		}
-		setLeftoverCombinations(LeftoverCombinations.fromList(nowLeftoverCombinations));
+
+		keepCombinations(nowLeftoverCombinations);
 
 		LOGGER.info(String.format("Left %s combinations in %sms ", //
 		    nrOfLeftCombinations(), //
